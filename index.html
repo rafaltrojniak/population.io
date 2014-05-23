@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <link rel="icon" type="image/png" href="img/favicon.png">
+    <title>The World Population Project</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link type="text/css" rel="stylesheet" href="style.css">
+    <script type="text/javascript" src="lib.js"></script>
+  </head>
+  <body>
+    <div class="container">
+      <div class="drawings">
+        <canvas class="background"></canvas>
+        <canvas class="animation"></canvas>
+        <svg>
+          <g class="pointer">
+            <path></path>
+            <circle></circle>
+          </g>
+          <g class="axis graph2XAxis"></g>
+          <g class="axis graph2YAxis"></g>
+          <text x="585" y="681" class="yearsLabel">age</text>
+          <text transform="translate(38,344) rotate(-90)" class="peopleLabel">people</text>
+          <g class="graph2">
+            <rect class="you"></rect>
+            <path class="you"></path>
+          </g>
+          <g class="graph3">
+            <path></path>
+            <text class="rank"></text>
+            <text class="percent"></text>
+          </g>
+        </svg>
+      </div>
+      <div class="title">
+        <h1>The World Population Project</h1>
+        <h2>You and the other 7.2 billion</h2>
+      </div>
+      <div class="spinner"></div>
+      <div class="txt1">
+        <h2>This is the total World Population</h2>
+        <h3>Each small <span class='square'></span> represents 2.6 million people</h3>
+        <div class="years"><span class="year"><span class='square' style='background-color: #cb0b14'></span> 0-20 </span><span class="year"><span class='square' style='background-color: #fd9728'></span> 20-40</span><span class="year"><span class='square' style='background-color: #ffd33a'></span> 40-60</span><span class="year"><span class='square' style='background-color: #6fa9e9'></span> 60-80</span><span class="year"><span class='square' style='background-color: #0b6eb6'></span> 80-100</span><span class="year">years</span></div>
+        <div style="height:20px;" class="spacer"></div>
+        <h2 class="question">How do you relate to them?</h2>
+        <div class="inputContainer">
+          <input type="text" placeholder="day" id="day">
+          <input type="text" placeholder="month" id="month">
+          <input type="text" placeholder="year" id="year">
+          <div id="go" class="button">GO</div>
+        </div>
+        <h5>enter your birthday</h5>
+      </div>
+      <div class="txt2">
+        <h2>you are here</h2>
+        <h3><span id='sameDay'></span> people were born the same day</h3>
+        <h3><span id='sameHour'></span> people were born in the same hour</h3>
+      </div>
+      <div class="txt3">
+        <h2>If we order everyone by age, where would you be on the line?</h2>
+      </div>
+    </div>
+    <script type="text/javascript" src="bundle.js"></script>
+  </body>
+</html>
