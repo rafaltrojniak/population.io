@@ -9,6 +9,11 @@
               birthday: {year: null, month: null, day: null, formatted: ''},
               country: '',
               active: false,
+              hideSummaryCtrl: true,
+              hideMilestonesCtrl: true,
+              hideBirthdaysCtrl: true,
+              hideExpectancyCtrl: true,
+              hideDeathCtrl: true,
               getAge: function () {
                   var ageDate = new Date(Date.now() - (new Date(this.birthday.formatted)).getTime());
                   return Math.abs(ageDate.getUTCFullYear() - 1970);
