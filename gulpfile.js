@@ -39,7 +39,7 @@ var gulp = require('gulp'),
           'bower_components/angular-sanitize/angular-sanitize.js',
 
           'app/scripts/app.js',
-          'app/scripts/controllers.js',
+          'app/scripts/controllers/*.js',
           'app/scripts/directives.js',
           'app/scripts/directives/*.js',
           'app/scripts/filters.js',
