@@ -7,19 +7,45 @@
           ['$scope', '$interpolate', '$timeout', '$http', '$interval', '$modal', '$state', '$location', '$document', '$rootScope', '$filter', 'ProfileService', 'PopulationIOService', 'BrowserService',
           function ($scope, $interpolate, $timeout, $http, $interval, $modal, $state, $location, $document, $rootScope, $filter, ProfileService, PopulationIOService, BrowserService) {
             $scope.type = 'distribution';
-            $scope.$watch(function () {return ProfileService.hideDeathCtrl}, function (newVal) {
+
+            /*$scope.$watch(function () {return ProfileService.hideDeathCtrl}, function (newVal) {
               if (!newVal) {
                 _update();
               }
-            })
+            })*/
+
+            $rootScope.$on('loadDeath', function () {
+              if($rootScope.deathLoadingStarted !== true){
+                _update();
+            }
+            });
+
+
+            var _initiateLoading = function(){
+              $rootScope.openConnectionsDeath = 3;
+              $rootScope.loadingDataSections += 1;
+              $rootScope.deathLoadingStarted = true;
+            };
+            var _oneAjaxFinished = function(){
+              $rootScope.openConnectionsDeath -=1;
+
+              if($rootScope.openConnectionsDeath === 0){
+                $rootScope.loadingDataSections -=1;
+                $rootScope.$emit('deathLoaded');
+                ProfileService.hideDeathCtrl = false;
+                console.log('death loaded');
+              }
+            };
 
             var _update = function() {
+              console.log('loading death');
+              _initiateLoading();
               PopulationIOService.loadMortalityDistribution({
                 country: ProfileService.country,
                 gender: ProfileService.gender,
                 age: ProfileService.getAge()
               }, function (data) {
-
+                _oneAjaxFinished();
                 $scope.loading -= 1;
                 $scope.mortalityDistributionData = data;
                 if (data) {
@@ -33,6 +59,7 @@
                 date: $filter('date')(new Date(), 'yyyy-MM-dd'),
                 age: ProfileService.getAgeString()
               }, function (remainingLife) {
+                _oneAjaxFinished()
                 var today = new Date();
                 $scope.dodWorld = $filter('date')(today.setDate(today.getDate() + (remainingLife * 365)), 'd MMM, yyyy');
 
@@ -45,11 +72,13 @@
                 date: $filter('date')(new Date(), 'yyyy-MM-dd'),
                 age: ProfileService.getAgeString()
               }, function (remainingLife) {
+                _oneAjaxFinished();
                 var today = new Date();
                 $scope.dodCountry = $filter('date')(today.setDate(today.getDate() + (remainingLife * 365)), 'd MMM, yyyy');
                 $scope.remainingLifeCountryInYears = parseFloat(remainingLife).toFixed(1);
                 $scope.totalLifeCountryInYears = moment(today).diff(moment(ProfileService.birthday), 'years', true);
               });
+
               $scope.$watchGroup(['remainingLifeCountryInYears', 'remainingLifeWorldInYears'],
               function (newVals, oldVals) {
                 if ((newVals[0] && newVals[1]) && (newVals[0] !== oldVals[0] && newVals[1] !== oldVals[0])) {

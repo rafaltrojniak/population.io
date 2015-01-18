@@ -5,6 +5,8 @@
 
       .controller('MainCtrl', ['$scope', '$timeout', '$http', '$interval', '$modal', '$state', '$location', '$document', '$rootScope', '$filter', 'ProfileService', 'PopulationIOService', 'BrowserService', 'Countries',
           function ($scope, $timeout, $http, $interval, $modal, $state, $location, $document, $rootScope, $filter, ProfileService, PopulationIOService, BrowserService, Countries) {
+
+
               $rootScope.countriesList = function (newVal) {
                   var alternativeName = newVal;
                   var aliases = [
@@ -54,16 +56,19 @@
                   return ProfileService.active;
               }, function (active) {
                   if (active) {
+                    $rootScope.loadingDataSections += 2;
                       PopulationIOService.loadWpRankToday({
                           dob: ProfileService.birthday.formatted,
                           sex: 'unisex',
                           country: 'World'
                       }, function (rank) {
+                        $rootScope.loadingDataSections -= 1;
                           $scope.rankGlobal = rank;
                           $rootScope.$emit('rankGlobalChanged', $scope.rankGlobal);
                       });
                       //console.log(ProfileService.country)
                       PopulationIOService.getLocalPopulation(ProfileService.country, function (data) {
+                        $rootScope.loadingDataSections -= 1;
                           $scope.localPopulationToday = data.total_population[0].population;
                           $scope.localPopulationTomorrow = data.total_population[1].population;
                       });
@@ -78,17 +83,19 @@
                   var path = $location.$$path.replace(/.+[/](.*)$/g, '$1');
                   var pathItems = $location.$$path.split('/');
 
-                  var currentPageSection = pathItems[6];
-
-                  if(currentPageSection ==="summary"){
-                    ProfileService.hideSummaryCtrl = false;
-                    ProfileService.hideMilestonesCtrl = false;
-                  }else if(currentPageSection ==="milestones"){
-                    ProfileService.hideBirthdaysCtrl = false;
-                  }else if(currentPageSection ==="birthdays"){
-                    ProfileService.hideExpectancyCtrl = false;
-                  }else if(currentPageSection ==="expectancy"){
-                    ProfileService.hideDeathCtrl = false;
+                  console.log('MainCtrl $locationChangeSuccess '+ pathItems[6]);
+                  if($rootScope.dataProvidedByForm !== true){
+                      if(pathItems[6] === 'summary'){
+                        $rootScope.$emit('loadSummary');
+                      }else if(pathItems[6] === 'milestones'){
+                        $rootScope.$emit('loadMilestones');
+                      }else if(pathItems[6] === 'birthdays'){
+                        $rootScope.$emit('loadBirthdays');
+                      }else if(pathItems[6] === 'expectancy'){
+                        $rootScope.$emit('loadExpectancy');
+                      }else if(pathItems[6] === 'death'){
+                        $rootScope.$emit('loadDeath');
+                      }
                   }
 
                   if ($location.preventReload) {
@@ -131,7 +138,7 @@
                   }
               });
 
-              $rootScope.$on('ready', function () {
+              /*$rootScope.$on('ready', function () {
                   $scope.showSection('home');
                   $scope.loading = 1;
               });
@@ -140,8 +147,56 @@
               });
               $rootScope.$on('loadingOff', function () {
                   $scope.loading = 0
+              });*/
+              var loadAll = function(){
+                $rootScope.$emit('loadSummary');
+                $rootScope.$emit('loadMilestones');
+                $rootScope.$emit('loadBirthdays');
+                $rootScope.$emit('loadExpectancy');
+                $rootScope.$emit('loadDeath');
+              }
+
+              $rootScope.$on('summaryLoaded',function(){
+                if($rootScope.dataProvidedByForm === true){
+                  $rootScope.$emit('loadMilestones');
+                }else{
+                  loadAll();
+                }
               });
+              $rootScope.$on('milestonesLoaded',function(){
+                if($rootScope.dataProvidedByForm === true){
+                  $rootScope.$emit('loadBirthdays');
+                }else{
+                  loadAll();
+                }
+              });
+              $rootScope.$on('birthdaysLoaded',function(){
+
+                if($rootScope.dataProvidedByForm === true){
+                  console.log('birthdaysLoaded sending loadExpectancy');
+                  $rootScope.$emit('loadExpectancy');
+                }else{
+                  loadAll();
+                }
+              });
+              $rootScope.$on('expectancyLoaded',function(){
+                if($rootScope.dataProvidedByForm === true){
+                  $rootScope.$emit('loadDeath');
+                }else{
+                  loadAll();
+                }
+              });
+              $rootScope.$on('deathLoaded',function(){
+                if($rootScope.dataProvidedByForm !== true){
+                  loadAll();
+                }
+              });
+
+
+
+
               $rootScope.$on('duScrollspy:becameActive', function ($event, $element) {
+                console.log('duScrollspy:becameActive activated');
                   var section = $element.prop('id');
                   if (section) {
                       var path = $location.$$path.replace(/[^/]*$/g, ''),

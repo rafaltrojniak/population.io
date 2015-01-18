@@ -6,17 +6,11 @@
       .controller('MilestonesCtrl', ['$scope', '$rootScope', '$state', '$filter', '$sce', 'ProfileService', 'PopulationIOService',
           function ($scope, $rootScope, $state, $filter, $sce, ProfileService, PopulationIOService) {
 
-              /*$rootScope.$on('ready', function () {
-                  _update();
-              });*/
-
-              $scope.$watch(function () {
-                return ProfileService.hideMilestonesCtrl;
-              }, function (newValue) {
-                if(!newValue){
-                  _update();
-                }
-              });
+            $rootScope.$on('loadMilestones', function () {
+              if($rootScope.milestonesLoadingStarted !== true){
+                _loadDataFromServer();
+              }
+            });
 
 
               var _getDateWithOffset = function (date, offset) {
@@ -29,7 +23,7 @@
 
               var _loadLifeExpectancyRemaining = function (country, onSuccess) {
 
-                  $scope.loading += 1;
+                  //$scope.loading += 1;
 
                   PopulationIOService.loadLifeExpectancyRemaining({
                       sex: ProfileService.gender,
@@ -37,7 +31,7 @@
                       date: $filter('date')(new Date(), 'yyyy-MM-dd'),
                       age: ProfileService.getAgeString()
                   }, function (remainingLife) {
-
+                    _oneAjaxFinished();
                       var today = new Date();
                       var date = today.setDate(today.getDate() + (remainingLife * 365));
 
@@ -51,9 +45,10 @@
                           onSuccess(remainingLife);
                       }
 
-                      $scope.loading -= 1;
+                      //$scope.loading -= 1;
                   }, function () {
-                      $scope.loading -= 1;
+                    _oneAjaxFinished();
+                      //$scope.loading -= 1;
                   });
               };
 
@@ -71,15 +66,13 @@
                       ].join(''));
                   };
 
-                  $scope.loading += 1;
-
                   PopulationIOService.loadWpRankRanked({
                       dob: ProfileService.birthday.formatted,
                       sex: 'unisex',
                       country: 'World',
                       rank: rank
                   }, function (date) {
-
+                    _oneAjaxFinished();
                       if (_isDateGreaterThenToday(date)) {
                           if (new Date(date) < $scope.nextYear || !$scope.nextYear) {
                               _updateTitleAlive(date, atomicNumber);
@@ -162,16 +155,27 @@
                   $scope.highlightMilestone(item);
               });
 
-              $scope.$watch(function () {
-                  return $scope.loading;
-              }, function (loading) {
-                  if (loading === 0) {
-                      ProfileService.active = true;
-                  }
-              });
 
-              var _update = function () {
+              var _initiateLoading = function(){
+                console.log("init loading milestones");
+                $rootScope.openConnectionsMilestones = 7;
+                $rootScope.loadingDataSections +=1 ;
+                $rootScope.milestonesLoadingStarted = true;
+              };
 
+              var _oneAjaxFinished = function(){
+                $rootScope.openConnectionsMilestones -=1;
+                console.log("one ajax milestones "+   $rootScope.openConnectionsMilestones);
+                if($rootScope.openConnectionsMilestones === 0){
+                  $rootScope.$emit('milestonesLoaded');
+                  $rootScope.loadingDataSections -= 1;
+                  ProfileService.hideMilestonesCtrl = false;
+                  console.log("loaded milestones");
+                }
+              };
+
+              var _loadDataFromServer = function () {
+                _initiateLoading();
                   $scope.age = ProfileService.getAge();
                   $scope.loading = 0;
                   $scope.year = $filter('date')(new Date(), 'yyyy');
@@ -221,6 +225,6 @@
               };
           }])
 
-    
+
           ;
 }());

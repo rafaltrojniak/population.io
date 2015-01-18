@@ -9,16 +9,14 @@
 
       var countries = [];
 
-  $scope.$watch(function () {
-    return ProfileService.hideBirthdaysCtrl;
-  }, function (newValue) {
-    if(!newValue){
+  $rootScope.$on('loadBirthdays', function () {
+    if($rootScope.birthdaysLoadingStarted !==true){
+      console.log("loading loadBirthdays");
       d3.csv('data/countries.csv', function (data) {
         countries = data;
         _update();
       });
     }
-
   });
 
   var _getCountry = function (name) {
@@ -116,10 +114,12 @@
         country: country,
         age: ProfileService.getAge()
       }, function (data) {
+        _oneAjaxFinished();
         if (_getCountry(country).GMI_CNTRY) {
           callback(country, data[0].total / 365);
         }
       }, function () {
+        _oneAjaxFinished();
         callback();
       });
 
@@ -130,8 +130,25 @@
     }
   };
 
-  var _update = function () {
+  var _initiateLoading = function(){
+    $rootScope.openConnectionsBirthdays = 12;
+    $rootScope.loadingDataSections += 1;
+    $rootScope.birthdaysLoadingStarted = true;
+  };
+  var _oneAjaxFinished = function(){
+    $rootScope.openConnectionsBirthdays -=1;
 
+    if($rootScope.openConnectionsBirthdays === 0){
+      $rootScope.loadingDataSections -=1;
+      $rootScope.$emit('birthdaysLoaded');
+      ProfileService.hideBirthdaysCtrl = false;
+      console.log('brithdays loaded');
+    }
+  };
+
+  var _update = function () {
+    console.log('loading brithdays');
+    _initiateLoading();
     $scope.loading = 1;
     $scope.continentsData = [];
     $scope.worldData = [];
@@ -154,9 +171,9 @@
         '</span> people were born in the same hour?'
         ].join(''));
 
-        $scope.loading -= 1;
+        _oneAjaxFinished();
       }, function () {
-        $scope.loading -= 1;
+        _oneAjaxFinished();
       });
 
       _updateCountriesAroundTheWorld();

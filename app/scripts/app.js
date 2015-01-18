@@ -11,6 +11,7 @@ angular
   })
   .run(function ($rootScope) {
     console.log('App is running...');
+    $rootScope.loadingDataSections = 0;
     $rootScope.currentPage = 0;
   })
 ;

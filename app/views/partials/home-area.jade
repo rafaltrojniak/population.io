@@ -18,4 +18,4 @@ world-clock
                 .toggle
                     label.icon.icon-female(ng-model="profile.gender" btn-radio="'female'", required) Female
                     label.icon.icon-male(ng-model="profile.gender" btn-radio="'male'", required) Male
-                a.btn.btn-big(ng-click="goGoGadget()", ng-disabled="loading", ng-class='{inactive:goForm.$invalid, loading:loading}') <span class="fa fa-refresh"></span>
+                a.btn.btn-big(ng-click="goGoGadget()", ng-disabled="loadingSummaryInProgress", ng-class='{inactive:goForm.$invalid, loading: loadingDataSections }') <span class="fa fa-refresh"></span>

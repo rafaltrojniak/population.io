@@ -83,6 +83,24 @@
                       }).POPIO_NAME;
                       //console.log(ProfileService.country);
 
+                      ProfileService.birthday = {year: year, month: month, day: day, formatted: [year, month, day].join('-')};
+
+                      ProfileService.hideSummaryCtrl = true;
+                      ProfileService.hideMilestonesCtrl = true;
+                      ProfileService.hideBirthdaysCtrl = true;
+                      ProfileService.hideExpectancyCtrl = true;
+                      ProfileService.hideDeathCtrl = true;
+
+                      $rootScope.milestonesLoadingStarted = false;
+                      $rootScope.summaryLoadingStarted = false;
+                      $rootScope.expectancyLoadingStarted = false;
+                      $rootScope.deathLoadingStarted = false;
+                      $rootScope.birthdaysLoadingStarted = false;
+
+                      $rootScope.$emit('loadSummary');
+                      $rootScope.dataProvidedByForm = true;
+                      console.log($rootScope.loadingDataSections + " huhuh");
+
                       $location.path([
                         year,
                         month,
@@ -91,19 +109,8 @@
                         ProfileService.country,
                         'summary'
                         ].join('/'));
-                      };
+                    };
 
-                      $rootScope.$on('ready', function () {
-                        $scope.loading = 1;
-                      });
-
-                      $scope.$watch(function () {
-                        return ProfileService.active;
-                      }, function (active) {
-                        if (active) {
-                          $scope.loading = 0;
-                        }
-                      });
 
                       $scope.showDatepicker = function ($event) {
                         $event.preventDefault();
@@ -113,6 +120,8 @@
 
                       $scope.isDatepickerVisible = false;
                       $scope.countries = Countries;
+
+                      $rootScope.$emit('ready');// ? 
                     }])
 
           ;

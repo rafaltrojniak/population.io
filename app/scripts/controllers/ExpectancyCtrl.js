@@ -10,13 +10,17 @@
               $scope.countries = Countries;
               var date = $filter('date')(new Date(), 'yyyy-MM-dd');
 
-              /*$rootScope.$on('ready', function () {
+              $rootScope.$on('loadExpectancy', function () {
+                if($rootScope.expectancyLoadingStarted !== true){
+                  console.log('load expectancy');
                   $scope.selectedCountryRel = null;
                   $scope.countryRel = null;
                   $scope.activeCountryRel = null;
                   _update();
-              });*/
+                }
+              });
 
+/*
               $scope.$watch(function () {
                 return ProfileService.hideExpectancyCtrl
               }, function (newValue) {
@@ -28,11 +32,28 @@
                 }
 
               });
+*/
+
+              var _initiateLoading = function(){
+                $rootScope.openConnectionsExpectancy = 1;
+                $rootScope.loadingDataSections += 1;
+                $rootScope.expectancyLoadingStarted = true;
+              };
+              var _oneAjaxFinished = function(){
+                $rootScope.openConnectionsExpectancy -=1;
+
+                if($rootScope.openConnectionsExpectancy === 0){
+                  $rootScope.loadingDataSections -=1;
+                  $rootScope.$emit('expectancyLoaded');
+                  ProfileService.hideExpectancyCtrl = false;
+                }
+              };
 
 
-              $scope.loading = 0;
 
               var _update = function () {
+                _initiateLoading();
+                console.log('loading expectancy');
                   $scope.selectedCountryRef = _getCountryObjectByFullName(ProfileService.country);
                   _updateCountryRef(date);
               };
@@ -62,16 +83,19 @@
                           }()
                       };
                       $scope.loading -= 1;
+                      _oneAjaxFinished();
                       if (!$scope.$$phase) {
                           $scope.$apply();
                       }
                   }, function () {
+                    _oneAjaxFinished();
                       $scope.loading -= 1;
                   });
               };
 
               var _updateCountryRel = function (date) {
                   $scope.loading += 1;
+                  $rootScope.openConnectionsExpectancy += 1;
                   PopulationIOService.loadLifeExpectancyRemaining({
                       sex: ProfileService.gender,
                       country: _getCountryObject($scope.selectedCountryRel).POPIO_NAME,
@@ -93,12 +117,14 @@
                       };
 
                       $scope.loading -= 1;
+                      _oneAjaxFinished()
 
                       if (!$scope.$$phase) {
                           $scope.$apply();
                       }
                   }, function () {
                       $scope.loading -= 1;
+                      _oneAjaxFinished();
                   });
               };
 

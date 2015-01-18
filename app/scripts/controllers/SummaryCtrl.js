@@ -9,18 +9,23 @@
               $scope.region = 'World';
               $scope.age = new Date().getFullYear() - ProfileService.birthday.year;
 
-              /*$rootScope.$on('ready', function () {
-                  _update();
-              });*/
-
-              $scope.$watch(function () {
-                return ProfileService.hideSummaryCtrl;
-              }, function (newValue) {
-                if(!newValue){
-                  _update();
+              $rootScope.$on('loadSummary', function () {
+                if($rootScope.summaryLoadingStarted !== true ){
+                  console.log("loading loadSummary");
+                  _loadDataFromServer();
                 }
 
               });
+
+              /*
+              $scope.$watch(function () {
+                return ProfileService.hideSummaryCtrl;
+              }, function (hideSummaryCtrl) {
+                if(!hideSummaryCtrl){
+                  _loadDataFromServer();
+                }
+
+              });*/
 
               var today = new Date();
 
@@ -41,22 +46,6 @@
               var tickerOlderLocal = d3.scale.linear()
                 .domain([today.getTime(), _getNextDay().getTime()]);
 
-              //console.log(today.getTime() + ' - ' + _getNextDay().getTime())
-
-
-              $scope.$watch(function () {
-                  return ProfileService.active;
-              }, function (active) {
-                  if (active) {
-                      $scope.loading = 1;
-                      setTimeout(function () {
-                          $scope.loading = 0;
-                          $scope.isUpdated = true;
-                      }, 5000);
-                  } else {
-                      $scope.isUpdated = false;
-                  }
-              });
 
               $scope.calcWorldOlderNumber = function () {
                   if (!$scope.rankGlobal || !$scope.worldPopulation) {return 0}
@@ -89,14 +78,31 @@
                   return $filter('number')(Math.min(100, $scope.rankLocal / ($scope.countryPopulation / 100)), 0);
               };
 
-              var _update = function () {
+              var _initiateLoading = function(){
+                $rootScope.openConnectionsSummary = 6;
+                $rootScope.loadingDataSections += 1;
+                $rootScope.summaryLoadingStarted = true;
+              };
+              var _oneAjaxFinished = function(){
+                $rootScope.openConnectionsSummary -=1;
+                console.log("_oneAjaxFinished " + $rootScope.openConnectionsSummary);
 
+                if($rootScope.openConnectionsSummary === 0){
+                  $rootScope.loadingDataSections -=1;
+                  $rootScope.$emit('summaryLoaded');
+                  ProfileService.hideSummaryCtrl = false;
+                }
+              };
+
+              var _loadDataFromServer = function () {
+                _initiateLoading();
                   // Local rank for country of the user
                   PopulationIOService.loadWpRankToday({
                       dob: ProfileService.birthday.formatted,
                       sex: 'unisex',
                       country: ProfileService.country
                   }, function (rank) {
+                      _oneAjaxFinished();
                       $scope.rankLocal = rank;
                       //console.log('$scope.rankLocal', $scope.rankLocal)
                       $rootScope.$emit('rankLocalChanged', $scope.rankLocal);
@@ -108,6 +114,7 @@
                       sex: 'unisex',
                       country: 'World'
                   }, function (rank) {
+                      _oneAjaxFinished();
                       $scope.rankGlobal = rank;
                       //console.log('$scope.rankGlobal', $scope.rankGlobal)
                       $rootScope.$emit('rankGlobalChanged', $scope.rankGlobal);
@@ -120,6 +127,7 @@
                       country: ProfileService.country,
                       date: $filter('date')(_getNextDay(), 'yyyy-MM-dd')
                   }, function (rank) {
+                      _oneAjaxFinished();
                       $scope.rankLocalTomorrow = rank;
                   });
 
@@ -130,6 +138,7 @@
                       country: 'World',
                       date: $filter('date')(_getNextDay(), 'yyyy-MM-dd')
                   }, function (rank) {
+                      _oneAjaxFinished();
                       $scope.rankGlobalTomorrow = rank;
                       //console.log('$scope.rankGlobalTomorrow', $scope.rankGlobalTomorrow)
                   });
@@ -138,7 +147,7 @@
                       year: new Date().getFullYear(),
                       country: ProfileService.country
                   }, function (data) {
-                      $scope.loading -= 1;
+                      _oneAjaxFinished();
 
                       $scope.countryPopulationData = data;
                       $scope.countryPopulation = _(data).reduce(function (sum, num) {
@@ -153,13 +162,14 @@
                       year: new Date().getFullYear(),
                       country: 'World'
                   }, function (data) {
-                      $scope.loading -= 1;
+                      _oneAjaxFinished();
                       $scope.worldPopulationData = data;
                       if (data) {
                           $scope.$broadcast('worldPopulationDataChanged', data)
                       }
                   });
               };
+
               $scope.$watchGroup(['rankLocal', 'rankGlobal', 'rankLocalTomorrow', 'rankGlobalTomorrow', 'countryPopulation', 'worldPopulation'], function (newVals, oldVals) {
 
                   if (!_(newVals).contains(undefined) && !rangeLoaded) {
@@ -183,13 +193,8 @@
                       $scope.scaledRankOlderGlobal = $scope.worldPopulation - tickerYoungerGlobal(new Date().getTime())
 
                   }
-
-
               });
 
           }])
-
-      
-
           ;
 }());
