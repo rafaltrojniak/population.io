@@ -114,7 +114,6 @@
 
         $rootScope.$emit('loadSummary');
         $rootScope.dataProvidedByForm = true;
-        console.log($rootScope.loadingDataSections + " huhuh");
 
         $location.path([
           year,
@@ -122,7 +121,7 @@
           day,
           ProfileService.gender,
           ProfileService.country,
-          'summary'
+          'home'
         ].join('/'));
       };
 

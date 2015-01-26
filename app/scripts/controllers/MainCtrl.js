@@ -166,6 +166,8 @@
       $rootScope.$on('summaryLoaded', function() {
         if ($rootScope.dataProvidedByForm === true) {
           $rootScope.$emit('loadMilestones');
+          $scope.showSection('summary');
+
         } else {
           loadAll();
         }
