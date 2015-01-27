@@ -7,7 +7,7 @@
     birthdays-chart(continents-data="continentsData", world-data="worldData")
     .continents
       span Birthdays in:
-      .toggle()
+      .toggle(ng-disabled="continentDataBeingLoaded")
         label(ng-model="selectedContinental" btn-radio="'Asia'") Asia
         label(ng-model="selectedContinental" btn-radio="'Europe'") Europe
         label(ng-model="selectedContinental" btn-radio="'Africa'") Africa

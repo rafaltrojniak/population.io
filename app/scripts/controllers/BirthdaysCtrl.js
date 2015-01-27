@@ -37,17 +37,21 @@
             res.push(country);
           }
         }
+        console.log('returning in _getCountriesByContinent'+ res.length + '   '+res);
         return res;
       };
 
       $scope.$watch('selectedContinental', function(newValue, oldValue) {
-        if (ProfileService.active && oldValue !== newValue) {
+        if ( oldValue !== newValue) {
           _updateContinentalCountries();
         }
       });
 
       var _updateContinentalCountries = function() {
+        $scope.continentDataBeingLoaded = true;
+        console.log('startujemy z _updateContinentalCountries');
         //$rootScope.$emit('loadingOn');
+        $rootScope.loadingDataSections += 1;
         $scope.continentsData = [];
 
         var continentalCountries = _getCountriesByContinent($scope.selectedContinental),
@@ -65,13 +69,18 @@
           }
 
           responseCounter += 1;
+          console.log('responseCounter krajow w Kontynencie '+responseCounter + ' / '+ continentalCountries.length);
           //$scope.loading -= 1;
 
           if (continentalCountries.length === responseCounter) {
             $scope.$broadcast('continentsDataLoaded');
+            console.log('zajeto wszystkie kraje '+ responseCounter);
+            $rootScope.loadingDataSections -= 1;
+            $scope.continentDataBeingLoaded = false;
             //$rootScope.$emit('loadingOff')
           }
         });
+
       };
 
       var _updateCountriesAroundTheWorld = function() {
