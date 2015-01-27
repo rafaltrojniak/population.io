@@ -142,14 +142,14 @@
 
       $scope.$watch('selectedCountryRef', function(newVal, oldVal) {
         console.log('selectedCountryRef ' + newVal + ' ' + oldVal);
-        if (ProfileService.active && newVal && _getCountryObjectByFullName(newVal)) {
+        if (newVal && _getCountryObjectByFullName(newVal)) {
           _updateCountryRef(date);
         }
       }, true);
 
       $scope.$watch('selectedCountryRel', function(newVal, oldVal) {
         console.log('selectedCountryRel ' + newVal + ' ' + oldVal);
-        if (ProfileService.active && newVal && (_getCountryObjectByFullName(newVal) || typeof newVal !== 'string')) {
+        if (newVal && (_getCountryObjectByFullName(newVal) || typeof newVal !== 'string')) {
           _updateCountryRel(date);
         }
       }, true);
