@@ -155,7 +155,8 @@
       }, true);
 
       $rootScope.$on('countryRelChanged', function(e, country) {
-        if (ProfileService.active && country) {
+        console.log('expectancy ctrl countryRelChange');
+        if (country) {
           var foundCountry = _getCountryObject(country);
           if (foundCountry) {
             $scope.selectedCountryRel = foundCountry;
