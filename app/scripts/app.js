@@ -13,5 +13,6 @@ angular
     console.log('App is running...');
     $rootScope.loadingDataSections = 0;
     $rootScope.currentPage = 0;
+    $rootScope.dataLoadingFromServer = false;
   })
 ;

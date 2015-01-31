@@ -198,6 +198,8 @@
       $rootScope.$on('deathLoaded', function() {
         if ($rootScope.dataProvidedByForm !== true) {
           loadAll();
+        }else{
+          $rootScope.dataLoadingFromServer = false;
         }
       });
 

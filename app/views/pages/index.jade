@@ -43,3 +43,6 @@ block content
     section#death(ng-controller='DeathCtrl', du-scrollspy='death', data-index="5", offset='200', ng-class="{'hidden': profile.hideDeathCtrl }")
         include ../partials/death-area
     include ../partials/modals
+    #loaderPlaceHolder(ng-show='dataLoadingFromServer')
+        more content is loading. Please wait - it can take up to few minutes.
+        <span class="fa fa-refresh fa-5x"></span>

@@ -112,6 +112,8 @@
         $rootScope.deathLoadingStarted = false;
         $rootScope.birthdaysLoadingStarted = false;
 
+        $rootScope.dataLoadingFromServer = true;
+
         $rootScope.$emit('loadSummary');
         $rootScope.dataProvidedByForm = true;
 
