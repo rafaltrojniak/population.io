@@ -928,8 +928,20 @@
                   item.selected = true;
                   $scope.selectedYear = item.year;
 
+                  var selectedExacDate = item.date.split('-'); // 2020-07-28
+                  var yearsOnSelectedMilestone = selectedExacDate[0] - ProfileService.birthday.year;
+
+                  if(ProfileService.birthday.month > selectedExacDate[1]){
+                    yearsOnSelectedMilestone -= 1;
+                  }else if (ProfileService.birthday.month == selectedExacDate[1]) {
+                    if(ProfileService.birthday.day > selectedExacDate[2]){
+                      yearsOnSelectedMilestone -= 1;
+                    }
+                  }
+
                   $scope.loading += 2;
-                  $scope.age = $scope.selectedYear - ProfileService.birthday.year;
+                  //$scope.age = $scope.selectedYear - ProfileService.birthday.year;
+                  $scope.age = yearsOnSelectedMilestone;
                   PopulationIOService.loadPopulation({
                       year: $scope.selectedYear,
                       country: ProfileService.country
