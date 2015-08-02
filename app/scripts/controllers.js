@@ -392,7 +392,7 @@
                   //console.log(newVals)
                   //console.log('#########################')
                   $scope.countryYoungerPercentageSimple = $filter('number')(Math.min(100, $scope.rankLocal / ($scope.countryPopulation / 100)), 0);
-                  $scope.worldYoungerPercentageSimple = $filter('number')($scope.rankGlobal/($scope.worldPopulation/100))
+                  $scope.worldYoungerPercentageSimple = $filter('number')(Math.min(100, $scope.rankGlobal / ($scope.worldPopulation / 100)), 0);
 
                   if (!_(newVals).contains(undefined) && !rangeLoaded) {
                       //console.log('$$$$$$$$$$$$$$$$$$$$$$$$')
@@ -415,7 +415,7 @@
                       $scope.scaledRankYoungerGlobal = tickerYoungerGlobal(new Date().getTime())
 
                       $scope.scaledRankOlderLocal = $scope.localPopulationToday - tickerYoungerLocal(new Date().getTime())
-                      $scope.scaledRankOlderGlobal = $scope.worldPopulation - tickerYoungerGlobal(new Date().getTime())
+                      $scope.scaledRankOlderGlobal = $scope.worldPopulation - $scope.rankGlobal;//tickerYoungerGlobal(new Date().getTime())
 
                       //console.log('!!!!!! tickerYoungerGlobal ' + tickerYoungerGlobal(new Date().getTime()))
                       //console.log('!!!!!! tickerYoungerLocal ' + tickerYoungerLocal(new Date().getTime()))
