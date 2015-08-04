@@ -67,10 +67,6 @@
 
                   $scope.peopleBornPerSecond = Math.ceil((data.total_population[1].population - data.total_population[0].population) / (24 * 60 * 60));
               });
-              $scope.$watch('worldPopulation', function (newValue, oldValue) {
-                  $scope.rankGlobal += (newValue - oldValue);
-                  $rootScope.$broadcast('rankGlobalChanged', $scope.rankGlobal);
-              });
               $interval(function () {
                   $scope.worldPopulation += $scope.peopleBornPerSecond;
               }, 1000);
@@ -357,6 +353,7 @@
                       date: $filter('date')(_getNextDay(), 'yyyy-MM-dd')
                   }, function (rank) {
                       $scope.rankGlobalTomorrow = rank;
+                      $scope.deltaRankGlobal = Math.ceil(($scope.rankGlobalTomorrow - $scope.rankGlobal) / (24 * 60 * 60));
                       //console.log('$scope.rankGlobalTomorrow', $scope.rankGlobalTomorrow)
                   });
 
@@ -427,6 +424,10 @@
 
 
               });
+              $interval(function () {
+                  $scope.rankGlobal +=$scope.deltaRankGlobal;
+                  $rootScope.$broadcast('rankGlobalChanged', $scope.rankGlobal);
+              }, 1000);
               /*
                $interval(function () {
 
