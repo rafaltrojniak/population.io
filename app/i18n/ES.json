@@ -52,7 +52,7 @@
   "MILESTONES_INTRO": "¿Cuáles son los grandes momentos que puedes esperar en tu vida? ¡Tu próximo gran momento es <span>{{val1}}</span> cuando serás la persona número <span>{{val2}} millardos</span> en el mundo!",
   "MILESTONES_TITLE_AGE_DISTRIBUTION": "Distribución por edades",
   "MILESTONES_TIMELINE": "Cronología (proyección)",
-  "MILESTONES_MILESTONE_LIFE_EXPECTANCY" : "Tu expectativa de vida en {{country}}",
+  "MILESTONES_MILESTONE_LIFE_EXPECTANCY" : "Tu esperanza de vida al nacer en {{country}}",
   "MILESTONES_MILESTONE_1_BILLION": "Primer millardo de personas",
   "MILESTONES_MILESTONE_2_BILLION": "2 millardos de personas",
   "MILESTONES_MILESTONE_3_BILLION": "3 millardos de personas",
@@ -98,7 +98,7 @@
   "DEATH_EXPECTANCY_TXT_LONGER": "más tiempo",
 
   "FOOTER_SIGNUP_TITLE": "Mándame noticias",
-  "FOOTER_SIGNUP_TXT": "Envíame una actualización todos<br>los años en mi cumplaños",
+  "FOOTER_SIGNUP_TXT": "Suscríbase a nuestro boletín",
   "FOOTER_ADD_TO_CALENDAR_TITLE": "Añadir mi fecha de <br>muerte a mi calendario",
   "FOOTER_MORE_TITLE": "¿Quieres saber más?",
   "FOOTER_MORE_CONTACT": "Contacto",
