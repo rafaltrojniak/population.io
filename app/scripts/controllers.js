@@ -625,6 +625,11 @@
                   var year = moment().year(ProfileService.birthday.year).format('YYYY'),
                     month = moment().month(ProfileService.birthday.month).format('MM'),
                     day = moment().date(ProfileService.birthday.day).format('DD');
+
+                    if(ProfileService.birthday.month === 'agosto' && month != '08' ){
+                      month = '08' ;
+                    }
+                    
                   ProfileService.country = _.find(Countries, function (v) {
                       return v.POPIO_NAME.toLowerCase() == ProfileService.country.toLowerCase()
                   }).POPIO_NAME;
