@@ -76,9 +76,9 @@ var gulp = require('gulp'),
       ],
       celebs: 'assets/celebrities/**',
       translations: [
-        'app/i18n/DE.json',
         'app/i18n/EN.json',
-        'app/i18n/ES.json'
+        'app/i18n/ES.json',
+        'app/i18n/FR.json'
       ]
   },
   destinations = {

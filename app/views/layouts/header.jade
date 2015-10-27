@@ -12,7 +12,8 @@ header
                 select(ng-model="activeLangKey" ng-init="activeLangKey = 'EN'" ng-change="changeLanguage(activeLangKey)")
                     option(value="EN") English
                     option(value="ES") Español
-            
+                    option(value="FR") Français
+
         ul.link-list
             li
                 a(ng-click="showAbout()") {{ 'HEADER_MENU_ABOUT' | translate }}
@@ -20,6 +21,7 @@ header
                 a(ng-click="showDevelopers()") {{ 'HEADER_MENU_API' | translate }}
                 //- a(ng-click="changeLanguage('EN')") EN
                 //- a(ng-click="changeLanguage('ES')") ES
+                //- a(ng-click="changeLanguage('FR')") FR
         .profile.animate( ng-show="currentPage > 0", ng-click="showHomepage()", ng-cloak ) {{profile.birthday.formatted | date:'dd MMM yyyy' }}, {{profile.country}}
         .world-population.animate(ng-show="currentPage > 0", ng-cloak)
             span(ng-show="clockType === 'personal'") {{rankGlobal | number:0}}

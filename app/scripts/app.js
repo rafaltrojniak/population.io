@@ -30,10 +30,11 @@ angular
 
     var userLanguage = window.navigator.userLanguage || window.navigator.language;
     $rootScope.defaultLanguage = 'EN';
-    if(userLanguage.slice(0,2) == 'es'){
+    if (userLanguage.slice(0,2) == 'es'){
       $rootScope.defaultLanguage = 'ES';
+    } else if (userLanguage.slice(0,2) == 'fr'){
+      $rootScope.defaultLanguage = 'FR';
     }
-
     $rootScope.currentPage = 0;
   })
 ;
