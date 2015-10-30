@@ -3,7 +3,7 @@ header
         .logo
             a(ng-click="showHomepage()")
                 span.title Population.io
-                span.subtitle {{ 'HEADER_TITLE' | translate }}
+                span.subtitle(ng-bind="pageHeader.title") The World Population Project
                 span.icon-alpha
         .loader.fa.fa-refresh(ng-class="{'active': loading}")
 
@@ -16,12 +16,10 @@ header
 
         ul.link-list
             li
-                a(ng-click="showAbout()") {{ 'HEADER_MENU_ABOUT' | translate }}
-                a(ng-click="showMethodology()") {{ 'HEADER_MENU_METHODOLOGY' | translate }}
-                a(ng-click="showDevelopers()") {{ 'HEADER_MENU_API' | translate }}
-                //- a(ng-click="changeLanguage('EN')") EN
-                //- a(ng-click="changeLanguage('ES')") ES
-                //- a(ng-click="changeLanguage('FR')") FR
+                a(ng-click="showAbout()" ng-bind="pageHeader.menuAbout") About
+                a(ng-click="showMethodology()" ng-bind="pageHeader.menuMethodology") Methodology
+                a(ng-click="showDevelopers()" ng-bind="pageHeader.menuApi") API
+
         .profile.animate( ng-show="currentPage > 0", ng-click="showHomepage()", ng-cloak ) {{profile.birthday.formatted | date:'dd MMM yyyy' }}, {{profile.country}}
         .world-population.animate(ng-show="currentPage > 0", ng-cloak)
             span(ng-show="clockType === 'personal'") {{rankGlobal | number:0}}
