@@ -233,6 +233,12 @@
           'probability': 0.291
         },
         {
+          'abbreviation': 'GB',
+          'language': 'Channel Islands',
+          'greeting': 'Hello',
+          'probability': 0.001
+        },
+        {
           'abbreviation': 'CD',
           'language': 'Congo  The Democratic Republic of the',
           'greeting': 'Bonjour',
@@ -285,7 +291,7 @@
           'language': 'China',
           'greeting': '你好',
           'probability': 13.016
-        },
+        },       
         {
           'abbreviation': 'CO',
           'language': 'Colombia',
@@ -303,6 +309,18 @@
           'language': 'Cuba',
           'greeting': 'Hola',
           'probability': 0.075
+        },
+        {
+          'abbreviation': 'CW',
+          'language': 'Curacao',
+          'greeting': 'Con ta bai',
+          'probability': 0.001
+        },
+        {
+          'abbreviation': 'CY',
+          'language': 'Cyprus',
+          'greeting': 'γεια σας',
+          'probability': 0.010
         },
         {
           'abbreviation': 'CV',
@@ -345,6 +363,12 @@
           'language': 'Dominican Republic',
           'greeting': 'Hola',
           'probability': 0.154
+        },
+        {
+          'abbreviation': 'KP',
+          'language': 'Dem Peoples Rep of Korea',
+          'greeting': '안녕하세요',
+          'probability': 0.259
         },
         {
           'abbreviation': 'DZ',
@@ -413,6 +437,12 @@
           'probability': 0.000
         },
         {
+          'abbreviation': 'MKD',
+          'language': 'FYR Macedonia',
+          'greeting': 'Zdravo',
+          'probability': 0.016
+        },
+        {
           'abbreviation': 'FM',
           'language': 'Micronesia  Federated States of',
           'greeting': 'Hello',
@@ -448,6 +478,12 @@
           'greeting': 'Hello',
           'probability': 0.001
         },
+        {
+          'abbreviation': 'GR',
+          'language': 'Greece',
+          'greeting': 'γεια σας',
+          'probability': 0.076
+        },        
         {
           'abbreviation': 'GE',
           'language': 'Georgia',
@@ -557,6 +593,18 @@
           'probability': 0.070
         },
         {
+          'abbreviation': 'HK',
+          'language': 'Hong Kong SAR-China',
+          'greeting': '你好',
+          'probability': 0.049
+        },
+        {
+          'abbreviation': 'IN',
+          'language': 'India',
+          'greeting': 'नमस्ते',
+          'probability': 18.253
+        },
+        {
           'abbreviation': 'ID',
           'language': 'Indonesia',
           'greeting': 'Selamat',
@@ -621,6 +669,12 @@
           'language': 'Jamaica',
           'greeting': 'Hello',
           'probability': 0.036
+        },
+        {
+          'abbreviation': 'JP',
+          'language': 'Japan',
+          'greeting': 'こんにちは',
+          'probability': 0.748
         },
         {
           'abbreviation': 'JO',
@@ -747,6 +801,12 @@
           'language': 'Libyan Arab Jamahiriya',
           'greeting': 'Marhaba',
           'probability': 0.090
+        },
+        {
+          'abbreviation': 'MO',
+          'language': 'Macao SAR China',
+          'greeting': '你好',
+          'probability': 0.004
         },
         {
           'abbreviation': 'MA',
@@ -1037,6 +1097,12 @@
           'probability': 0.010
         },
         {
+          'abbreviation': 'KR',
+          'language': 'Rep of Korea',
+          'greeting': '안녕하세요',
+          'probability': 0.341
+        },        
+        {
           'abbreviation': 'RO',
           'language': 'Romania',
           'greeting': 'Salut',
@@ -1077,6 +1143,12 @@
           'language': 'Seychelles',
           'greeting': 'Hello',
           'probability': 0.001
+        },
+        {
+          'abbreviation': 'SS',
+          'language': 'South Sudan',
+          'greeting': 'Hello',
+          'probability': 0.306
         },
         {
           'abbreviation': 'SD',
@@ -1191,6 +1263,12 @@
           'language': 'Tajikistan',
           'greeting': 'Salom',
           'probability': 0.199
+        },
+        {
+          'abbreviation': 'TL',
+          'language': 'Timor-Leste',
+          'greeting': 'Ola',
+          'probability': 0.030
         },
         {
           'abbreviation': 'TK',
@@ -1329,6 +1407,18 @@
           'language': 'Wallis and Futuna',
           'greeting': 'Malo le kataki',
           'probability': 0.000
+        },
+        {
+          'abbreviation': 'EH',
+          'language': 'Western Sahara',
+          'greeting': 'Hola',
+          'probability': 0.009
+        },
+        {
+          'abbreviation': 'PS',
+          'language': 'West Bank and Gaza',
+          'greeting': 'Marhaba',
+          'probability': 0.098
         },
         {
           'abbreviation': 'WS',
