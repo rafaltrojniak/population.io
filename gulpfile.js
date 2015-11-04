@@ -78,7 +78,8 @@ var gulp = require('gulp'),
       translations: [
         'app/i18n/EN.json',
         'app/i18n/ES.json',
-        'app/i18n/FR.json'
+        'app/i18n/FR.json',
+        'app/i18n/DE.json'
       ]
   },
   destinations = {
