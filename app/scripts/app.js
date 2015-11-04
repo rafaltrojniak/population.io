@@ -34,6 +34,10 @@ angular
       $rootScope.defaultLanguage = 'ES';
     } else if (userLanguage.slice(0,2) == 'fr'){
       $rootScope.defaultLanguage = 'FR';
+    } else if (userLanguage.slice(0,2) == 'de'){
+      $rootScope.defaultLanguage = 'DE';
+    } else if (userLanguage.slice(0,2) == 'zh'){
+      $rootScope.defaultLanguage = 'ZH';
     }
     $rootScope.currentPage = 0;
   })
