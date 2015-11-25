@@ -9,7 +9,7 @@ header
 
         form.change-language
             label
-                select(ng-model="activeLangKey" ng-init="activeLangKey = 'EN'" ng-change="changeLanguage(activeLangKey)")
+                select(ng-model="activeLangKey" ng-init="activeLangKey" ng-change="changeLanguage(activeLangKey)")
                     option(value="EN") English
                     option(value="ES") Español
                     option(value="FR") Français

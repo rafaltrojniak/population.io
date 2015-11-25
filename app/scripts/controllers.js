@@ -16,7 +16,6 @@
             });
 
             $scope.changeLanguage = function (langKey) {
-              // console.log('changeLanguage', langKey);
               $translate.use(langKey).then(function (langKey) {
                 $scope.$broadcast('languageChange');
                 $scope.updatePlaceholders();
@@ -24,6 +23,8 @@
                 console.log("Something wrong with this language:", langKey);
               });
             };
+
+            $scope.activeLangKey = $rootScope.defaultLanguage;
 
             $scope.updatePlaceholders = function(){
               $("#inputBirthDay").attr("placeholder", $filter('translate')('LOCAL_DAY')); //LOCAL_DAY
