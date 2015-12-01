@@ -29,11 +29,18 @@ angular
     console.log('App is running...');
 
     var userLanguage = window.navigator.userLanguage || window.navigator.language;
-    $rootScope.defaultLanguage = 'EN';
-    if(userLanguage.slice(0,2) == 'es'){
-      $rootScope.defaultLanguage = 'ES';
-    }
+    userLanguage     = userLanguage.slice(0,2);
 
+    $rootScope.defaultLanguage = 'EN';
+    if (userLanguage === 'es'){
+      $rootScope.defaultLanguage = 'ES';
+    } else if (userLanguage === 'fr'){
+      $rootScope.defaultLanguage = 'FR';
+    } else if (userLanguage === 'de'){
+      $rootScope.defaultLanguage = 'DE';
+    } else if (userLanguage === 'zh'){
+      $rootScope.defaultLanguage = 'ZH';
+    }
     $rootScope.currentPage = 0;
   })
 ;

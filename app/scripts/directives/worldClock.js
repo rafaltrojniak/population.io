@@ -27,6 +27,18 @@
                             height: parentHeight
                         });
 
+
+                      var probabilityArray = [];
+                      var probabilityCount = 0;
+                      for (var c = 0; c < HelloWords.length; c ++) {
+                          probabilityCount = HelloWords[c].probability * 1000;
+                          if (probabilityCount > 0) {
+                              for (var p = 0; p < probabilityCount; p ++) {
+                                  probabilityArray.push(c);
+                              }
+                          }
+                      }
+
                       function updateWindow() {
                           var d = document,
                             e = d.documentElement,
@@ -179,7 +191,7 @@
                           });
                       }
 
-                      var _addHelloBubble = function (baby) {
+                      var _addHelloBubble = function (baby, helloText) {
                           var helloBubble = baby
                             .append('g')
                             .attr({
@@ -198,9 +210,11 @@
                                 'dominant-baseline': 'middle',
                                 transform: 'translate(49,45)'
                             });
+
                           helloBubble.select('text').text(function () {
-                              var randomItem = _.random(0, HelloWords.length - 1);
-                              return HelloWords[randomItem].greeting;
+                              //var randomItem = _.random(0, HelloWords.length - 1);
+                              //return HelloWords[randomItem].greeting;
+                              return helloText;
                           })
                             .each(function () {
                                 var bbox = this.getBBox();
@@ -301,7 +315,7 @@
                             }
                           );
 
-                          var randomItem = _.random(0, HelloWords.length - 1);
+                          var randomItem = probabilityArray[Math.floor(Math.random() * probabilityArray.length)];
                           var hello = HelloWords[randomItem].greeting;
                           var country = HelloWords[randomItem].language;
 
@@ -333,7 +347,7 @@
 
                           countryTitle.text(country);
 
-                          _addHelloBubble(newBaby);
+                          _addHelloBubble(newBaby, hello);
                           if (sayHello) {
                               _sayHello(newBaby);
                           }
@@ -354,7 +368,6 @@
                                 opacity: 0
                             });
                       }
-
                       _initWorldClock();
                       _initBabiesFlood();
                   }

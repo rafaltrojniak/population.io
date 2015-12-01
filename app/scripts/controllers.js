@@ -6,8 +6,16 @@
       .controller('MainCtrl', ['$translate', '$scope', '$timeout', '$http', '$interval', '$modal', '$state', '$location', '$document', '$rootScope', '$filter', 'ProfileService', 'PopulationIOService', 'BrowserService', 'Countries',
           function ($translate, $scope, $timeout, $http, $interval, $modal, $state, $location, $document, $rootScope, $filter, ProfileService, PopulationIOService, BrowserService, Countries) {
 
+            $rootScope.$on('$translateChangeSuccess', function () {
+                $scope.pageHeader = {
+                    title:           $filter('translate')('HEADER_TITLE'),
+                    menuAbout:       $filter('translate')('HEADER_MENU_ABOUT'),
+                    menuMethodology: $filter('translate')('HEADER_MENU_METHODOLOGY'),
+                    menuApi:         $filter('translate')('HEADER_MENU_API')
+                };
+            });
+
             $scope.changeLanguage = function (langKey) {
-              // console.log('changeLanguage', langKey);
               $translate.use(langKey).then(function (langKey) {
                 $scope.$broadcast('languageChange');
                 $scope.updatePlaceholders();
@@ -15,6 +23,8 @@
                 console.log("Something wrong with this language:", langKey);
               });
             };
+
+            $scope.activeLangKey = $rootScope.defaultLanguage;
 
             $scope.updatePlaceholders = function(){
               $("#inputBirthDay").attr("placeholder", $filter('translate')('LOCAL_DAY')); //LOCAL_DAY
@@ -629,7 +639,7 @@
                     if(ProfileService.birthday.month === 'agosto' && month != '08' ){
                       month = '08' ;
                     }
-                    
+
                   ProfileService.country = _.find(Countries, function (v) {
                       return v.POPIO_NAME.toLowerCase() == ProfileService.country.toLowerCase()
                   }).POPIO_NAME;
