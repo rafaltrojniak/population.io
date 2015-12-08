@@ -6,4 +6,6 @@ bower_components/
 .ftppass
 dist/*
 dist/assets/*
-
+id_rsa
+id_rsa.pub
+secrets.tar.gz
