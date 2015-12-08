@@ -255,7 +255,8 @@ gulp.task('upload', function () {
   return gulp.src('dist/**')
   .pipe(sftp({
     host: '162.209.106.29',
-    auth: 'keyMain',
+    user: 'populationio_front',
+    key: './id_rsa',
     remotePath: '/html/'
   }));
 });
