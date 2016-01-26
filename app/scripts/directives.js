@@ -24,6 +24,15 @@
                 case 'linkedin':
                   link = 'http://www.linkedin.com/shareArticle?mini=true&url=' + url + '&title=' + attrs.shareTitle;
                   break;
+                case 'qzone':
+                    link = 'http://sns.qzone.qq.com/cgi-bin/qzshare/cgi_qzshare_onekey?url=' + url + '&title=' + attrs.shareTitle;
+                    break;
+                case 'tencentWeibo':
+                    link = 'http://v.t.qq.com/share/share.php?url=' + url + '&title=' + attrs.shareTitle;
+                    break;
+                case 'sinaWeibo':
+                    link = 'http://service.weibo.com/share/share.php?url=' + url + '&title=' + attrs.shareTitle;
+                    break;                  
               }
               attrs.$set('href', link);
             }
