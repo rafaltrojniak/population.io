@@ -16,13 +16,7 @@ footer
                 ng-disabled="emailForm.$invalid || sending"
                 )
         .block
-            h2.icon.icon-calendar(compile-unsafe="'FOOTER_ADD_TO_CALENDAR_TITLE' | translate")
-            ul
-                li
-                    a(ng-click="downloadICal()", data-ref="1") iCalendar
-
-        .block.small
-            h2 {{ 'FOOTER_SHARE_TITLE' | translate }}
+            h2.fa.fa-share {{ 'FOOTER_SHARE_TITLE' | translate }}
             a(target="_blank", share="facebook", share-title="population.io") Facebook
                 span.fa.fa-facebook-square
             a(target="_blank", share="twitter", share-title="population.io") Twitter
