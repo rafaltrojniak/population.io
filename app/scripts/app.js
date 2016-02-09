@@ -40,7 +40,9 @@ angular
       $rootScope.defaultLanguage = 'DE';
     } else if (userLanguage === 'zh'){
       $rootScope.defaultLanguage = 'ZH';
-    }
+    } else if (userLanguage === 'id'){
+      $rootScope.defaultLanguage = 'ID';
+    }    
     $rootScope.currentPage = 0;
   })
 ;
