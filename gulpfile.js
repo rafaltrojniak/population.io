@@ -88,7 +88,8 @@ sources = {
     'app/i18n/ES.json',
     'app/i18n/FR.json',
     'app/i18n/DE.json',
-    'app/i18n/ZH.json'
+    'app/i18n/ZH.json',
+    'app/i18n/ID.json'
   ]
 };
 
