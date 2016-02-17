@@ -1,0 +1,60 @@
+
+/*--------------------------------------
+
+Responsive For Health Population
+
+--------------------------------------*/
+
+@media (max-width: 992px) {
+    .data-info ul input[type="radio"]:checked + label {
+        width: 320px;
+    }
+}
+@media (max-width: 768px) {
+    .logo-wrap {
+        float: none;
+        max-width: 320px;
+        margin: 0 auto;
+    }
+    .go-back {
+        float: left;
+        margin: 16px 0 7px;
+    }
+    .logo-wrap .title {
+        font-size: 28px;
+    }
+    .header-beta {
+        right: -72px;
+    }
+    h1 {
+        font-size: 38px;
+    }
+    .number-data-info .number-info {
+        display: block;
+        margin-bottom: 20px;
+    }
+    .share-wrap a {
+        float: none;
+        margin: 15px auto;
+    }
+    .data-info ul input[type="radio"]:checked + label {
+        width: 190px;
+    }
+}
+@media (max-width: 480px) {
+    .header-beta {
+        display: none !important;
+    }
+    .data-info ul input[type="radio"]:checked + label {
+        width: auto;
+    }
+    .data-info ul {
+        margin: 50px 0 80px;
+    }
+    .data-info li label span {
+        right: 0;
+        text-align: left;
+        top: -45px;
+        color: #666 !important;
+    }
+}

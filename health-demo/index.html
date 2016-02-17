@@ -1,0 +1,193 @@
+<!DOCTYPE HTML>
+<html lang="en">
+    <head>
+        <title>Population.io</title>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <link rel="stylesheet" type="text/css" href="css/bootstrap.css">
+        <link rel="stylesheet" type="text/css" href="css/fonts.css">
+        <link rel="stylesheet" type="text/css" href="css/responsive.css">
+        <link rel="stylesheet" type="text/css" href="css/typeaheadjs.css">        
+        <link rel="stylesheet" type="text/css" href="css/main.css">        
+    </head>
+    <body>
+        <header>
+            <div class="container">
+                <div class="box-border">
+                    <div class="row">
+                        <div class="col-sm-6 col-xs-12">
+                            <!-- Logo Wrap -->
+                            <div class="logo-wrap">
+                                <a href="#">
+                                    <img class="logo" src="img/header-logo.png" alt="Logo">
+                                    <span class="title">health.Population.io</span>
+                                    <span>The World Population Project</span>
+                                    <span class="header-beta"><img src="img/beta.png" alt="Beta"></span>
+                                </a>
+                            </div>
+                            <!-- /Logo Wrap -->
+                        </div>
+                        <div class="col-sm-6 col-xs-12">
+                            <select class="form-control">
+                                <option>English</option>
+                                <option>Español</option>
+                                <option>Français</option>
+                                <option>Deutsch</option>
+                                <option>汉语</option>
+                            </select>
+                            <!-- Go Back -->
+                            <a class="go-back" href="#"><img class="img-circle" src="img/arrow-back.png" alt="Go Back">Go back to population.io</a>
+                            <!-- /Go Back -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </header>
+        <!-- Basic Info -->
+        <section class="basic-info">
+            <div class="container">
+                <div class="row">
+                    <div class="col-sm-12">
+                        <div class="box-border">
+                            <h1>What is your life expectancy based on your living conditions?</h1>
+                            <!-- Form -->
+                            <form id="user-form" class="form-inline">
+                                <p>Please enter your date of birth, country of birth and sex at birth:</p>
+                                <div class="form-group">
+                                    <input type="text" class="form-control typeahead field-day" id="day" placeholder="Day">
+                                </div>
+                                <div class="form-group">
+                                    <input type="text" class="form-control typeahead field-month" id="month" placeholder="Month">
+                                </div>
+                                <div class="form-group">
+                                    <input type="text" class="form-control typeahead field-year" id="year" placeholder="Year">
+                                </div>
+                                <div class="form-group">
+                                    <input type="text" class="form-control typeahead filed-country" id="country" placeholder="Country">
+                                </div>
+                                <div class="form-group">
+                                    <ul class="list-inline">
+                                        <li>
+                                            <input type="radio" id="female" checked="checked" name="sex" value="female" />
+                                            <label for="female">Female</label>
+                                        </li>
+                                        <li>
+                                            <input type="radio" id="male" name="sex" value="male" />
+                                            <label for="male">Male</label>
+                                        </li>
+                                    </ul>
+                                </div>
+                                <!--
+                                <p>Please enter your length and weight:</p>
+                                <div class="form-group">
+                                    <input type="email" class="form-control field-length" id="length" placeholder="Length (cm)">
+                                </div>
+                                <div class="form-group">
+                                    <input type="email" class="form-control field-weight" id="weight" placeholder="Weight (kg)">
+                                </div>
+                                -->
+                                <button type="submit" class="btn">go</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <!-- /Basic Info -->
+        <!-- Data Info -->
+        <section id="living-info" class="data-info text-center">
+            <div class="container">
+                <div class="row">
+                    <div class="col-sm-12">
+                        <div class="box-border">
+                            <h2>What are your living conditions?</h2>
+                            <p>Do you smoke?</p>
+                            <ul class="list-inline">
+                                <li class="no-bg">
+                                    <input type="radio" id="smoking1" name="smoking" value="yes" />
+                                    <label for="smoking1" id="question-smoking-modifier"><span>- 0 years</span>Yes</label>
+                                </li>
+                                <li class="gray-bg">
+                                    <input type="radio" id="smoking2" name="smoking" value="na" />
+                                    <label for="smoking2">n/a</label>
+                                </li>
+                                <li class="yes-bg">
+                                    <input type="radio" id="smoking3" name="smoking" value="no" />
+                                    <label for="smoking3">No <span>Great !!!</span></label>
+                                </li>
+                            </ul>                            
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <!-- /Data Info -->
+        <!-- Number Data Info -->
+        <section id="result-info" class="number-data-info text-center">
+            <input type="hidden" id="life-expectancy-world" value="0" />
+            <input type="hidden" id="life-expectancy-country" value="0" />
+            <input type="hidden" id="pc-mean-country" value="0" />
+            <div class="container">
+                <div class="box-border">
+                    <div class="row">
+                        <div class="col-sm-4">
+                            <p>Life expectancy for an average person of your age and sex around the world is:</p>
+                            <span id="result-life-expectancy-world" class="number-info num-gray">0 years</span>
+                        </div>
+                        <div class="col-sm-4">
+                            <p>Life expectancy for an average person of your age and sex in your country is:</p>
+                            <span id="result-life-expectancy-country" class="number-info">0 years</span>
+                        </div>
+                        <div class="col-sm-4">
+                            <p>The number of years an average person in your country of your age and sex will lose due to smoking:</p>
+                            <span id="result-smoking" class="number-info num-green">0 years</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <!-- /Number Data Info -->
+        <!-- Share Wrap -->
+        <section id="social-info" class="share-wrap text-center">
+            <div class="container">
+                <div class="row">
+                    <div class="col-sm-6 col-xs-12">
+                        <a class="share-facebook" href="javascript:;"><span>share on Facebook</span></a>
+                    </div>
+                    <div class="col-sm-6 col-xs-12">
+                        <a class="share-tvitter" href="javascript:;"><span>share on Twitter</span></a>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <!--
+        <section id="test">
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-12" id="test">
+
+                    </div>
+                </div>
+            </div>
+        </section>
+        -->
+        <!-- /Share Wrap -->
+        <footer>
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-12">
+                        <p>© Copyright: Wolfgang Fengler, together with K.C. Samir and Benedikt Groß</p>
+                    </div>
+                </div>
+            </div>
+        </footer>
+        <script src="http://code.jquery.com/jquery-1.11.0.min.js"></script>
+        <script src="http://code.jquery.com/jquery-migrate-1.2.1.min.js"></script>
+        <script src="js/bootstrap.js"></script>
+        <script src="js/jquery.csv.min.js"></script>
+        <script src="js/typeahead.jquery.js"></script>
+        <script src="data/countries.js"></script>
+        <script src="js/main.js"></script>
+    </body>
+</html>
