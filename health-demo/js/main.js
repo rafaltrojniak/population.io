@@ -100,7 +100,6 @@ var app = {
                         };
                         self.smokingRiskData.push(obj);
                     }
-                    //if (i > 100) break;
                 }
             },
             error: function() {
@@ -302,38 +301,4 @@ var app = {
 
 jQuery(document).ready(function() {
     app.init();
-    
-    setTimeout(function() { 
-        
-//        var ageStr = app.getAgeString(1979, 9, 10);
-//        console.log(ageStr);
-//
-//        var ageStr = app.getAgeString('1979', '12', '10');
-//        console.log(ageStr);       
-        
-        //console.log(app.getPcMeanFactor(app.getPeopleInfo('China', 'Males', app.getAgeGroup(73))));
-        //console.log(countries);
-        
-        //var ageStr = app.getAgeString(1979, 12, 10);
-        
-        //console.log(app.getAgeString());
-        
-        //app.getLifeExpectancy('male', 'Serbia', app.getAgeString('1979', '03', '15'));
-        
-        
-        
-        //console.log(nowStr);
-        // + '-' + now.getMonth() + '-' + now.getDay()
-        //console.log(ageStr);
-        
-        //var str = '';
-        //for (i = 1; i < countries.length; i ++) {
-        //    //console.log('"' + countries[i].language + '"');
-        //    str += '\'' + countries[i].language + '\',<br />';
-        //}
-        //$('#test').html(str);
-    }, 300);
-    
-    
-    
 });
