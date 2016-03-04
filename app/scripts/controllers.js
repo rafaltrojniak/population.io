@@ -775,271 +775,274 @@
          */
 
       .controller('MilestonesCtrl', ['$scope', '$rootScope', '$state', '$filter', '$sce', 'ProfileService', 'PopulationIOService',
-          function ($scope, $rootScope, $state, $filter, $sce, ProfileService, PopulationIOService) {
+        function ($scope, $rootScope, $state, $filter, $sce, ProfileService, PopulationIOService) {
+          var translate = $filter('translate');
+          var getMilestoneTitle = function(title){
+            switch(title){
+              case 'lifeExpWorld':
+                return translate('MILESTONES_MILESTONE_LIFE_EXPECTANCY') + translate('LOCAL_WORLD');
+                break;
+              case 'lifeExpCountry':
+                return translate('MILESTONES_MILESTONE_LIFE_EXPECTANCY') + ProfileService.country;
+                break;
+              case 'ORDINAL_NUMBER_1':
+                return translate('MILESTONES_MILESTONE_1_BILLION');
+                break;
+              case 'ORDINAL_NUMBER_2':
+                return translate('MILESTONES_MILESTONE_2_BILLION');
+                break;
+              case 'ORDINAL_NUMBER_3':
+                return translate('MILESTONES_MILESTONE_3_BILLION');
+                break;
+              case 'ORDINAL_NUMBER_4':
+                return translate('MILESTONES_MILESTONE_4_BILLION');
+                break;
+              case 'ORDINAL_NUMBER_5':
+                return translate('MILESTONES_MILESTONE_5_BILLION');
+                break;
+              case 'ORDINAL_NUMBER_6':
+                return translate('MILESTONES_MILESTONE_6_BILLION');
+                break;
+              case 'ORDINAL_NUMBER_7':
+                return translate('MILESTONES_MILESTONE_7_BILLION');
+                break;
+              case 'ORDINAL_NUMBER_8':
+                return translate('MILESTONES_MILESTONE_8_BILLION');
+                break;
+              case 'ORDINAL_NUMBER_9':
+                return translate('MILESTONES_MILESTONE_9_BILLION');
+                break;
+              case 'ORDINAL_NUMBER_10':
+                return translate('MILESTONES_MILESTONE_10_BILLION');
+                break;
+              case 'ORDINAL_NUMBER_11':
+                return translate('MILESTONES_MILESTONE_11_BILLION');
+                break;
+              default:
+                return translate(title);
+                break;
+            }
+          };
 
-              $rootScope.$on('ready', function () {
-                  _update();
+          $rootScope.$on('ready', function() {
+            _update();
+          });
+          $scope.$on('languageChange', function() {
+            $scope.milestoneCounter = translate($scope.atomicNumber);
+            if ($scope.milestonesData) {
+              for (var i = 0; i < $scope.milestonesData.length; i += 1) {
+                $scope.milestonesData[i].title = getMilestoneTitle($scope.milestonesData[i].titleType);
+              }
+            }
+          });
+          var _getDateWithOffset = function (date, offset) {
+            var year = parseInt($filter('date')(date, 'yyyy'), 0),
+              month = parseInt($filter('date')(date, 'M'), 0) - 1,
+              day = $filter('date')(date, 'dd');
+
+            return new Date(parseInt(year + offset, 0), month, day);
+          };
+
+          var _loadLifeExpectancyRemaining = function (country, onSuccess) {
+            $scope.loading += 1;
+
+            PopulationIOService.loadLifeExpectancyRemaining({
+                sex: ProfileService.gender,
+                country: country,
+                date: $filter('date')(new Date(), 'yyyy-MM-dd'),
+                age: ProfileService.getAgeString()
+            }, function (remainingLife) {
+              var today = new Date();
+              var date = today.setDate(today.getDate() + (remainingLife * 365));
+
+              $scope.milestonesData.push({
+                date: $filter('date')(date, 'yyyy-MM-dd'),
+                year: $filter('date')(date, 'yyyy'),
+                titleType: (country === 'World' ? 'lifeExpWorld' : 'lifeExpCountry'),
+                title: translate('MILESTONES_MILESTONE_LIFE_EXPECTANCY') + (country === 'World' ? translate('LOCAL_WORLD') : country)
               });
-              $scope.$on('languageChange', function () {
-                $scope.milestoneCounter = $filter('translate')($scope.atomicNumber);
-                if($scope.milestonesData){
-                  for (var i = 0; i < $scope.milestonesData.length; i += 1) {
 
-                    if($scope.milestonesData[i].titleType === 'lifeExpWorld'){
-                      $scope.milestonesData[i].title = $filter('translate')('MILESTONES_MILESTONE_LIFE_EXPECTANCY') + $filter('translate')('LOCAL_WORLD') ;
-                    }else if($scope.milestonesData[i].titleType === 'lifeExpCountry'){
-                      $scope.milestonesData[i].title = $filter('translate')('MILESTONES_MILESTONE_LIFE_EXPECTANCY') + ProfileService.country;
-                    }else if($scope.milestonesData[i].titleType === 'MILESTONES_MILESTONE_NOW' ){
-                      $scope.milestonesData[i].title = $filter('translate')('MILESTONES_MILESTONE_NOW');
-                    }else if($scope.milestonesData[i].titleType === 'MILESTONES_MILESTONE_18' ){
-                      $scope.milestonesData[i].title = $filter('translate')('MILESTONES_MILESTONE_18');
-                    }else if($scope.milestonesData[i].titleType === 'MILESTONES_MILESTONE_BORN' ){
-                      $scope.milestonesData[i].title = $filter('translate')('MILESTONES_MILESTONE_BORN');
-                    }else if($scope.milestonesData[i].titleType === 'ORDINAL_NUMBER_1' ){
-                      $scope.milestonesData[i].title = $filter('translate')('MILESTONES_MILESTONE_1_BILLION');
-                    }else if($scope.milestonesData[i].titleType === 'ORDINAL_NUMBER_2' ){
-                      $scope.milestonesData[i].title = $filter('translate')('MILESTONES_MILESTONE_2_BILLION');
-                    }else if($scope.milestonesData[i].titleType === 'ORDINAL_NUMBER_3' ){
-                      $scope.milestonesData[i].title = $filter('translate')('MILESTONES_MILESTONE_3_BILLION');
-                    }else if($scope.milestonesData[i].titleType === 'ORDINAL_NUMBER_4' ){
-                      $scope.milestonesData[i].title = $filter('translate')('MILESTONES_MILESTONE_4_BILLION');
-                    }else if($scope.milestonesData[i].titleType === 'ORDINAL_NUMBER_5' ){
-                      $scope.milestonesData[i].title = $filter('translate')('MILESTONES_MILESTONE_5_BILLION');
-                    }else if($scope.milestonesData[i].titleType === 'ORDINAL_NUMBER_6' ){
-                      $scope.milestonesData[i].title = $filter('translate')('MILESTONES_MILESTONE_6_BILLION');
-                    }else if($scope.milestonesData[i].titleType === 'ORDINAL_NUMBER_7' ){
-                      $scope.milestonesData[i].title = $filter('translate')('MILESTONES_MILESTONE_7_BILLION');
-                    }
+              if (onSuccess) {
+                onSuccess(remainingLife);
+              }
 
+              $scope.loading -= 1;
+            }, function () {
+              $scope.loading -= 1;
+            });
+          };
+
+          var _loadWpRankRanked = function (rank, atomicNumber) {
+            $scope.atomicNumber = atomicNumber;
+              var _isDateGreaterThenToday = function (date) {
+                return new Date(date) >= new Date();
+              };
+
+              var _updateTitleAlive = function (date, atomicNumber) {
+                $scope.milestoneDate = $filter('date')(date, 'd MMM, yyyy');
+                $scope.milestoneCounter = translate(atomicNumber);
+              };
+
+              $scope.loading += 1;
+
+              PopulationIOService.loadWpRankRanked({
+                dob: ProfileService.birthday.formatted,
+                sex: 'unisex',
+                country: 'World',
+                rank: rank
+              },
+              function(date) {
+                if (_isDateGreaterThenToday(date)) {
+                  if (new Date(date) < $scope.nextYear || !$scope.nextYear) {
+                    _updateTitleAlive(date, atomicNumber);
+                    $scope.nextYear = new Date(date);
                   }
                 }
 
+                $scope.milestonesData.push({
+                  date: date,
+                  rank: true,
+                  titleType: atomicNumber,
+                  year: $filter('date')(date, 'yyyy'),
+                  title: getMilestoneTitle(atomicNumber)
+                });
 
+                $scope.loading -= 1;
+              }, function() {
+                $scope.loading -= 1;
               });
-              var _getDateWithOffset = function (date, offset) {
-                  var year = parseInt($filter('date')(date, 'yyyy'), 0),
-                    month = parseInt($filter('date')(date, 'M'), 0) - 1,
-                    day = $filter('date')(date, 'dd');
+          };
 
-                  return new Date(parseInt(year + offset, 0), month, day);
-              };
+          var _getInitialMilestonesData = function () {
+            var milestoneNow = translate('MILESTONES_MILESTONE_NOW');
+            var milestoneBorn = translate('MILESTONES_MILESTONE_BORN');
+            var milestone18 = translate('MILESTONES_MILESTONE_18');
+              return [
+                {
+                  date: $filter('date')(Date.now(), 'yyyy-MM-dd'),
+                  year: $filter('date')(Date.now(), 'yyyy'),
+                  title: milestoneNow,
+                  titleType:'MILESTONES_MILESTONE_NOW',
+                  selected: true,
+                  now: true
+                },
+                {
+                  date: ProfileService.birthday.formatted,
+                  year: ProfileService.birthday.year,
+                  title: milestoneBorn,
+                  titleType:'MILESTONES_MILESTONE_BORN',
+                  born: true
+                },
+                {
+                  date: _getDateWithOffset(new Date(ProfileService.birthday.formatted), 18),
+                  year: $filter('date')(_getDateWithOffset(
+                    new Date(ProfileService.birthday.formatted),
+                    18
+                  ), 'yyyy'),
+                  title: milestone18,
+                  titleType:'MILESTONES_MILESTONE_18',
+                }
+              ];
+          };
 
-              var _loadLifeExpectancyRemaining = function (country, onSuccess) {
-
-                  $scope.loading += 1;
-
-                  PopulationIOService.loadLifeExpectancyRemaining({
-                      sex: ProfileService.gender,
-                      country: country,
-                      date: $filter('date')(new Date(), 'yyyy-MM-dd'),
-                      age: ProfileService.getAgeString()
-                  }, function (remainingLife) {
-
-                      var today = new Date();
-                      var date = today.setDate(today.getDate() + (remainingLife * 365));
-
-                      $scope.milestonesData.push({
-                          date: $filter('date')(date, 'yyyy-MM-dd'),
-                          year: $filter('date')(date, 'yyyy'),
-                          titleType: (country === 'World' ? 'lifeExpWorld' : 'lifeExpCountry'),
-                          title: $filter('translate')('MILESTONES_MILESTONE_LIFE_EXPECTANCY') + (country === 'World' ? $filter('translate')('LOCAL_WORLD') : country)
-                      });
-
-                      if (onSuccess) {
-                          onSuccess(remainingLife);
-                      }
-
-                      $scope.loading -= 1;
-                  }, function () {
-                      $scope.loading -= 1;
-                  });
-              };
-
-              var _loadWpRankRanked = function (rank, atomicNumber) {
-                $scope.atomicNumber = atomicNumber;
-                  var _isDateGreaterThenToday = function (date) {
-                      return new Date(date) >= new Date();
-                  };
-
-                  var _updateTitleAlive = function (date, atomicNumber) {
-                    $scope.milestoneDate = $filter('date')(date, 'd MMM, yyyy');
-
-                    $scope.milestoneCounter = $filter('translate')(atomicNumber);
-                      $scope.titleAlive = $sce.trustAsHtml([
-                          'Your next milestone is <span>' + $filter('ordinal')($filter('date')(date, 'd')) + ' ',
-                          $filter('date')(date, 'MMM, yyyy') + '</span>, then you’ll be <span>',
-                          $filter('translate')(atomicNumber) + ' billionth</span> person to be alive in the world.'
-                      ].join(''));
-                  };
-
-                  $scope.loading += 1;
-
-                  PopulationIOService.loadWpRankRanked({
-                      dob: ProfileService.birthday.formatted,
-                      sex: 'unisex',
-                      country: 'World',
-                      rank: rank
-                  }, function (date) {
-
-                      if (_isDateGreaterThenToday(date)) {
-                          if (new Date(date) < $scope.nextYear || !$scope.nextYear) {
-                              _updateTitleAlive(date, atomicNumber);
-                              $scope.nextYear = new Date(date);
-                          }
-                      }
-
-                      $scope.milestonesData.push({
-                          date: date,
-                          rank: true,
-                          titleType: atomicNumber,
-                          year: $filter('date')(date, 'yyyy'),
-                          title: $filter('translate')(atomicNumber) + ' billion person'
-                      });
-
-                      $scope.loading -= 1;
-                  }, function () {
-                      $scope.loading -= 1;
-                  });
-              };
-
-              var _getInitialMilestonesData = function () {
-                var milestoneNow = $filter('translate')('MILESTONES_MILESTONE_NOW');
-                var milestoneBorn = $filter('translate')('MILESTONES_MILESTONE_BORN');
-                var milestone18 = $filter('translate')('MILESTONES_MILESTONE_18');
-                  return [
-                      {
-                          date: $filter('date')(Date.now(), 'yyyy-MM-dd'),
-                          year: $filter('date')(Date.now(), 'yyyy'),
-                          title: milestoneNow,
-                          titleType:'MILESTONES_MILESTONE_NOW',
-                          selected: true,
-                          now: true
-                      },
-                      {
-                          date: ProfileService.birthday.formatted,
-                          year: ProfileService.birthday.year,
-                          title: milestoneBorn,
-                          titleType:'MILESTONES_MILESTONE_BORN',
-                          born: true
-                      },
-                      {
-                          date: _getDateWithOffset(new Date(ProfileService.birthday.formatted), 18),
-                          year: $filter('date')(_getDateWithOffset(
-                            new Date(ProfileService.birthday.formatted),
-                            18
-                          ), 'yyyy'),
-                          title: milestone18,
-                          titleType:'MILESTONES_MILESTONE_18',
-                      }
-                  ];
-              };
-
-              $scope.highlightMilestone = function (item) {
-                  if ($scope.milestonesData) {
-                      _($scope.milestonesData).each(function (milestone) {
-                          milestone.selected = false;
-                      });
-
-                  }
-                  item.selected = true;
-                  $scope.selectedYear = item.year;
-
-                  var selectedExacDate = item.date.split('-'); // 2020-07-28
-                  var yearsOnSelectedMilestone = selectedExacDate[0] - ProfileService.birthday.year;
-
-                  if(ProfileService.birthday.month > selectedExacDate[1]){
-                    yearsOnSelectedMilestone -= 1;
-                  }else if (ProfileService.birthday.month == selectedExacDate[1]) {
-                    if(ProfileService.birthday.day > selectedExacDate[2]){
-                      yearsOnSelectedMilestone -= 1;
-                    }
-                  }
-
-                  $scope.loading += 2;
-                  //$scope.age = $scope.selectedYear - ProfileService.birthday.year;
-                  $scope.age = yearsOnSelectedMilestone;
-                  PopulationIOService.loadPopulation({
-                      year: $scope.selectedYear,
-                      country: ProfileService.country
-                  }, function (data) {
-                      $scope.loading -= 1;
-                      $scope.localRankData = data;
-                  });
-
-                  PopulationIOService.loadPopulation({
-                      year: $scope.selectedYear,
-                      country: 'World'
-                  }, function (data) {
-                      $scope.loading -= 1;
-                      $scope.globalRankData = data;
-                  });
-              };
-              $scope.dateOrder = function (item) {
-                  return (new Date(item.date)).getTime();
-              };
-
-              $rootScope.$on('selectedYearChanged', function ($event, item) {
-                  $scope.highlightMilestone(item);
+          $scope.highlightMilestone = function (item) {
+            if ($scope.milestonesData) {
+              _($scope.milestonesData).each(function (milestone) {
+                milestone.selected = false;
               });
+            }
+            item.selected = true;
+            $scope.selectedYear = item.year;
 
-              $scope.$watch(function () {
-                  return $scope.loading;
-              }, function (loading) {
-                  if (loading === 0) {
-                      ProfileService.active = true;
-                  }
-              });
+            var selectedExactDate = item.date.split('-'); // 2020-07-28
+            var yearsOnSelectedMilestone = selectedExactDate[0] - ProfileService.birthday.year;
 
-              var _update = function () {
+            if (ProfileService.birthday.month > selectedExactDate[1]) {
+              yearsOnSelectedMilestone -= 1;
+            } else if (ProfileService.birthday.month == selectedExactDate[1] && ProfileService.birthday.day > selectedExactDate[2]) {
+              yearsOnSelectedMilestone -= 1;
+            }
 
-                  $scope.age = ProfileService.getAge();
-                  $scope.loading = 0;
-                  $scope.year = $filter('date')(new Date(), 'yyyy');
-                  $scope.milestonesData = _getInitialMilestonesData();
-                  $scope.titleAlive = null;
-                  $scope.titleDie = null;
-                  $scope.localRankData = null;
-                  $scope.globalRankData = null;
-                  $scope.nextYear = null;
+            $scope.loading += 2;
+            $scope.age = yearsOnSelectedMilestone;
+            PopulationIOService.loadPopulation({
+              year: $scope.selectedYear,
+              country: ProfileService.country
+            }, function (data) {
+              $scope.loading -= 1;
+              $scope.localRankData = data;
+            });
 
-                  $scope.$on('rankGlobalChanged', function (e, rankGlobal) {
-                      $scope.rankGlobal = rankGlobal;
-                  });
+            PopulationIOService.loadPopulation({
+              year: $scope.selectedYear,
+              country: 'World'
+            }, function (data) {
+              $scope.loading -= 1;
+              $scope.globalRankData = data;
+            });
+          };
+          $scope.dateOrder = function (item) {
+            return (new Date(item.date)).getTime();
+          };
 
-                  $scope.$on('rankLocalChanged', function (e, rankLocal) {
-                      $scope.rankLocal = rankLocal;
-                  });
+          $rootScope.$on('selectedYearChanged', function ($event, item) {
+            $scope.highlightMilestone(item);
+          });
 
-                  _loadWpRankRanked(3000000000, 'ORDINAL_NUMBER_3');
-                  _loadWpRankRanked(4000000000, 'ORDINAL_NUMBER_4');
-                  _loadWpRankRanked(5000000000, 'ORDINAL_NUMBER_5');
+          $scope.$watch(function () {
+            return $scope.loading;
+          }, function (loading) {
+            if (loading === 0) {
+              ProfileService.active = true;
+            }
+          });
 
-                  if (ProfileService.getAge() > 30) {
-                      _loadWpRankRanked(6000000000, 'ORDINAL_NUMBER_6');
-                      _loadWpRankRanked(7000000000, 'ORDINAL_NUMBER_7');
-                  } else {
-                      _loadWpRankRanked(1000000000, 'ORDINAL_NUMBER_1');
-                      _loadWpRankRanked(2000000000, 'ORDINAL_NUMBER_2');
-                  }
+          var _update = function () {
+            $scope.age = ProfileService.getAge();
+            $scope.loading = 0;
+            $scope.year = $filter('date')(new Date(), 'yyyy');
+            $scope.milestonesData = _getInitialMilestonesData();
+            $scope.titleDie = null;
+            $scope.localRankData = null;
+            $scope.globalRankData = null;
+            $scope.nextYear = null;
 
-                  _loadLifeExpectancyRemaining(ProfileService.country, function (remainingLife) {
+            $scope.$on('rankGlobalChanged', function (e, rankGlobal) {
+              $scope.rankGlobal = rankGlobal;
+            });
 
-                      var today = new Date();
-                      var date = today.setDate(today.getDate() + (remainingLife * 365));
+            $scope.$on('rankLocalChanged', function (e, rankLocal) {
+              $scope.rankLocal = rankLocal;
+            });
 
-                      ProfileService.dod = date;
+            _loadWpRankRanked(3000000000, 'ORDINAL_NUMBER_3');
+            _loadWpRankRanked(4000000000, 'ORDINAL_NUMBER_4');
+            _loadWpRankRanked(5000000000, 'ORDINAL_NUMBER_5');
 
-                      $scope.titleDie = $sce.trustAsHtml([
-                          'You are expected to die on <span>',
-                          $filter('ordinal')($filter('date')(date, 'd')) + ' ',
-                          $filter('date')(date, 'MMM, yyyy') + '</span>'
-                      ].join(''));
-                  });
-                  _loadLifeExpectancyRemaining('World');
+            if (ProfileService.getAge() > 30) {
+              _loadWpRankRanked(6000000000, 'ORDINAL_NUMBER_6');
+              _loadWpRankRanked(7000000000, 'ORDINAL_NUMBER_7');
+            } else {
+              _loadWpRankRanked(1000000000, 'ORDINAL_NUMBER_1');
+              _loadWpRankRanked(2000000000, 'ORDINAL_NUMBER_2');
+            }
 
-                  $scope.country = ProfileService.country;
-              };
-          }])
+            _loadLifeExpectancyRemaining(ProfileService.country, function (remainingLife) {
+              var today = new Date();
+              var date = today.setDate(today.getDate() + (remainingLife * 365));
+
+              ProfileService.dod = date;
+              $scope.titleDie = $sce.trustAsHtml([
+                'You are expected to die on <span>',
+                $filter('ordinal')($filter('date')(date, 'd')) + ' ',
+                $filter('date')(date, 'MMM, yyyy') + '</span>'
+              ].join(''));
+            });
+            _loadLifeExpectancyRemaining('World');
+
+            $scope.country = ProfileService.country;
+          };
+        }])
 
       .controller('BirthdaysCtrl', ['$scope', '$state', '$sce', '$filter', '$rootScope', 'PopulationIOService', 'ProfileService',
           function ($scope, $state, $sce, $filter, $rootScope, PopulationIOService, ProfileService) {
