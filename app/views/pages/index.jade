@@ -12,7 +12,8 @@ block content
             include ../../../assets/milestones.svg
 
     .share.animate(ng-class="{'expanded': !expanded}")
-        span
+        .find-facebook
+            a(href='https://www.facebook.com/populationio') {{ 'FIND_FACEBOOK' | translate }}
         .tedtalk
             a(href='https://www.youtube.com/watch?v=87DDL6PiV2g') {{ 'SHARE_TED_TALK' | translate }}
 
