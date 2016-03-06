@@ -874,43 +874,50 @@
 
           var _loadWpRankRanked = function (rank, atomicNumber) {
             $scope.atomicNumber = atomicNumber;
-              var _isDateGreaterThenToday = function (date) {
-                return new Date(date) >= new Date();
-              };
+            var _isDateGreaterThenToday = function (date) {
+              return new Date(date) >= new Date();
+            };
 
-              var _updateTitleAlive = function (date, atomicNumber) {
-                $scope.milestoneDate = $filter('date')(date, 'd MMM, yyyy');
-                $scope.milestoneCounter = translate(atomicNumber);
-              };
+            var _updateTitleAlive = function (date, atomicNumber) {
+              $scope.milestoneDate = $filter('date')(date, 'd MMM, yyyy');
+              $scope.milestoneCounter = translate(atomicNumber);
+            };
 
-              $scope.loading += 1;
+            $scope.loading += 1;
+            var dayOfDeath = new Date(ProfileService.dod);
 
-              PopulationIOService.loadWpRankRanked({
-                dob: ProfileService.birthday.formatted,
-                sex: 'unisex',
-                country: 'World',
-                rank: rank
-              },
-              function(date) {
-                if (_isDateGreaterThenToday(date)) {
-                  if (new Date(date) < $scope.nextYear || !$scope.nextYear) {
-                    _updateTitleAlive(date, atomicNumber);
-                    $scope.nextYear = new Date(date);
-                  }
+            PopulationIOService.loadWpRankRanked({
+              dob: ProfileService.birthday.formatted,
+              sex: 'unisex',
+              country: 'World',
+              rank: rank
+            }, function(date) {
+              var loadedDate = new Date(date);
+              // Show only milestones that are expected to be during ones life.
+              if (dayOfDeath < loadedDate) {
+                $scope.loading -= 1;
+                return;
+              }
+
+              if (_isDateGreaterThenToday(date)) {
+                if (loadedDate < $scope.nextYear || !$scope.nextYear) {
+                  _updateTitleAlive(date, atomicNumber);
+                  $scope.nextYear = loadedDate;
                 }
+              }
 
-                $scope.milestonesData.push({
-                  date: date,
-                  rank: true,
-                  titleType: atomicNumber,
-                  year: $filter('date')(date, 'yyyy'),
-                  title: getMilestoneTitle(atomicNumber)
-                });
-
-                $scope.loading -= 1;
-              }, function() {
-                $scope.loading -= 1;
+              $scope.milestonesData.push({
+                date: date,
+                rank: true,
+                titleType: atomicNumber,
+                year: $filter('date')(date, 'yyyy'),
+                title: getMilestoneTitle(atomicNumber)
               });
+
+              $scope.loading -= 1;
+            }, function() {
+              $scope.loading -= 1;
+            });
           };
 
           var _getInitialMilestonesData = function () {
@@ -1015,23 +1022,23 @@
               $scope.rankLocal = rankLocal;
             });
 
-            _loadWpRankRanked(3000000000, 'ORDINAL_NUMBER_3');
-            _loadWpRankRanked(4000000000, 'ORDINAL_NUMBER_4');
-            _loadWpRankRanked(5000000000, 'ORDINAL_NUMBER_5');
-
-            if (ProfileService.getAge() > 30) {
-              _loadWpRankRanked(6000000000, 'ORDINAL_NUMBER_6');
-              _loadWpRankRanked(7000000000, 'ORDINAL_NUMBER_7');
-            } else {
-              _loadWpRankRanked(1000000000, 'ORDINAL_NUMBER_1');
-              _loadWpRankRanked(2000000000, 'ORDINAL_NUMBER_2');
-            }
-
             _loadLifeExpectancyRemaining(ProfileService.country, function (remainingLife) {
               var today = new Date();
               var date = today.setDate(today.getDate() + (remainingLife * 365));
 
               ProfileService.dod = date;
+
+              _loadWpRankRanked(10000000000, 'ORDINAL_NUMBER_10');
+              _loadWpRankRanked(9000000000, 'ORDINAL_NUMBER_9');
+              _loadWpRankRanked(8000000000, 'ORDINAL_NUMBER_8');
+              _loadWpRankRanked(7000000000, 'ORDINAL_NUMBER_7');
+              _loadWpRankRanked(6000000000, 'ORDINAL_NUMBER_6');
+              _loadWpRankRanked(5000000000, 'ORDINAL_NUMBER_5');
+              _loadWpRankRanked(4000000000, 'ORDINAL_NUMBER_4');
+              _loadWpRankRanked(3000000000, 'ORDINAL_NUMBER_3');
+              _loadWpRankRanked(2000000000, 'ORDINAL_NUMBER_2');
+              _loadWpRankRanked(1000000000, 'ORDINAL_NUMBER_1');
+
               $scope.titleDie = $sce.trustAsHtml([
                 'You are expected to die on <span>',
                 $filter('ordinal')($filter('date')(date, 'd')) + ' ',
