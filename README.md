@@ -17,6 +17,11 @@
         $ npm install
         $ bower install
 
+* Install required `nib` module for `gulp-stylus`
+
+        $ cd node_modules/gulp-stylus
+        $ npm install nib
+
 ## Prepare
 
 1. Create a `dist` folder
