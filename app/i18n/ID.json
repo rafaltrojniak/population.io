@@ -21,6 +21,7 @@
   "HEADER_MENU_ABOUT": "Tentang Proyek",
   "HEADER_MENU_METHODOLOGY": "Metodologi",
   "HEADER_MENU_API": "API",
+  "FIND_FACEBOOK": "",
 
   "SHARE_TED_TALK": "Watch the TED talk!",
   "SHARE_TEXT": "Share!",
@@ -136,5 +137,8 @@
   "ORDINAL_NUMBER_4":"Keempat",
   "ORDINAL_NUMBER_5":"Kelima",
   "ORDINAL_NUMBER_6":"Keenam",
-  "ORDINAL_NUMBER_7":"Ketujuh"
+  "ORDINAL_NUMBER_7":"Ketujuh",
+  "ORDINAL_NUMBER_8":"",
+  "ORDINAL_NUMBER_9":"",
+  "ORDINAL_NUMBER_10":""
 }
