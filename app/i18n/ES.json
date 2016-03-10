@@ -22,7 +22,7 @@
   "HEADER_MENU_METHODOLOGY": "Metodología",
   "HEADER_MENU_API": "API",
 
-  "FIND_FACEBOOK": "",
+  "FIND_FACEBOOK": "Facebook",
   "SHARE_TED_TALK": "¡Mira la TED Talk!",
   "SHARE_TEXT": "Compartir",
 
@@ -132,7 +132,7 @@
   "ORDINAL_NUMBER_5":"quinto",
   "ORDINAL_NUMBER_6":"sexto",
   "ORDINAL_NUMBER_7":"séptimo",
-  "ORDINAL_NUMBER_8":"",
-  "ORDINAL_NUMBER_9":"",
-  "ORDINAL_NUMBER_10":""
+  "ORDINAL_NUMBER_8":"octavo",
+  "ORDINAL_NUMBER_9":"noveno",
+  "ORDINAL_NUMBER_10":"décimo"
 }

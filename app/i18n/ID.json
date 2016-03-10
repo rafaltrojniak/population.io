@@ -22,7 +22,7 @@
   "HEADER_MENU_METHODOLOGY": "Metodologi",
   "HEADER_MENU_API": "API",
 
-  "FIND_FACEBOOK": "",
+  "FIND_FACEBOOK": "Facebook",
 
   "SHARE_TED_TALK": "Watch the TED talk!",
   "SHARE_TEXT": "Share!",
@@ -139,7 +139,7 @@
   "ORDINAL_NUMBER_5":"Kelima",
   "ORDINAL_NUMBER_6":"Keenam",
   "ORDINAL_NUMBER_7":"Ketujuh",
-  "ORDINAL_NUMBER_8":"",
-  "ORDINAL_NUMBER_9":"",
-  "ORDINAL_NUMBER_10":""
+  "ORDINAL_NUMBER_8":"Kedelapan",
+  "ORDINAL_NUMBER_9":"Kesembilan",
+  "ORDINAL_NUMBER_10":"Kesepuluh"
 }
