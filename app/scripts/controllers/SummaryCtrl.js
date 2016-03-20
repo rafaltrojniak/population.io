@@ -1,13 +1,10 @@
 angular.module('populationioApp').controller('SummaryCtrl', [
-	'$scope', '$rootScope', '$interval', '$filter', 'PopulationIOService', 'ProfileService',
-	function($scope, $rootScope, $interval, $filter, PopulationIOService, ProfileService){
+	'$scope', '$interval', '$filter', 'PopulationIOService', 'ProfileService',
+	function($scope, $interval, $filter, PopulationIOService, ProfileService){
 		'use strict';
 		var rangeLoaded = false;
 		$scope.region = 'World';
 		$scope.age = new Date().getFullYear() - ProfileService.birthday.year;
-		$rootScope.$on('ready', function(){
-			_update();
-		});
 		var today = new Date();
 		var _getNextDay = function(){
 			var tomorrow = new Date();
@@ -18,19 +15,7 @@ angular.module('populationioApp').controller('SummaryCtrl', [
 		var tickerYoungerLocal = d3.scale.linear().domain([today.getTime(), _getNextDay().getTime()]);
 		var tickerOlderGlobal = d3.scale.linear().domain([today.getTime(), _getNextDay().getTime()]);
 		var tickerOlderLocal = d3.scale.linear().domain([today.getTime(), _getNextDay().getTime()]);
-		$scope.$watch(function(){
-			return ProfileService.active;
-		}, function(active){
-			if(active){
-				$scope.loading = 1;
-				setTimeout(function(){
-					$scope.loading = 0;
-					$scope.isUpdated = true;
-				}, 5000);
-			} else {
-				$scope.isUpdated = false;
-			}
-		});
+		
 		$scope.calcWorldOlderNumber = function(){
 			if(!$scope.rankGlobal || !$scope.worldPopulation){
 				return 0;
@@ -59,70 +44,31 @@ angular.module('populationioApp').controller('SummaryCtrl', [
 		$scope.calcCountryYoungerPercentageSimple = function(){
 			return $filter('number')(Math.min(100, $scope.rankLocal / ($scope.countryPopulation / 100)), 0);
 		};
-		var _update = function(){
-			// Local rank for country of the user
-			PopulationIOService.loadWpRankToday({
-				dob: ProfileService.birthday.formatted,
-				sex: 'unisex',
-				country: ProfileService.country
-			}, function(rank){
-				$scope.rankLocal = rank;
-				$rootScope.$broadcast('rankLocalChanged', $scope.rankLocal);
+		$scope.$on('rankLocalChanged', function(event, rank){
+			$scope.rankLocal = rank;
+		});
+		$scope.$on('rankGlobalChanged', function(event, rank){
+			$scope.rankGlobal = rank;
+		});
+		$scope.$on('rankDateLocalChanged', function(event, rank){
+			$scope.rankLocalTomorrow = rank;
+		});
+		$scope.$on('rankDateLocalChanged', function(event, rank){
+			$scope.rankGlobalTomorrow = rank;
+			$scope.deltaRankGlobal = Math.ceil(($scope.rankGlobalTomorrow - $scope.rankGlobal) / (24 * 60 * 60));
+		});
+		$scope.$on('countryPopulationDataChanged', function(event, data){
+			$scope.countryPopulationData = data;
+			$scope.countryPopulation = _(data).reduce(function(sum, num){
+				sum = sum | 0;
+				return sum + num.total;
 			});
-			// Global rank for world of the user
-			PopulationIOService.loadWpRankToday({
-				dob: ProfileService.birthday.formatted,
-				sex: 'unisex',
-				country: 'World'
-			}, function(rank){
-				$scope.rankGlobal = rank;
-				$rootScope.$broadcast('rankGlobalChanged', $scope.rankGlobal);
-			});
-			// Local rank for country of the user
-			PopulationIOService.loadWpRankOnDate({
-				dob: ProfileService.birthday.formatted,
-				sex: 'unisex',
-				country: ProfileService.country,
-				date: $filter('date')(_getNextDay(), 'yyyy-MM-dd')
-			}, function(rank){
-				$scope.rankLocalTomorrow = rank;
-			});
-			// Global rank for world of the user
-			PopulationIOService.loadWpRankOnDate({
-				dob: ProfileService.birthday.formatted,
-				sex: 'unisex',
-				country: 'World',
-				date: $filter('date')(_getNextDay(), 'yyyy-MM-dd')
-			}, function(rank){
-				$scope.rankGlobalTomorrow = rank;
-				$scope.deltaRankGlobal = Math.ceil(($scope.rankGlobalTomorrow - $scope.rankGlobal) / (24 * 60 * 60));
-			});
-			PopulationIOService.loadPopulation({
-				year: new Date().getFullYear(),
-				country: ProfileService.country
-			}, function(data){
-				$scope.loading -= 1;
-				$scope.countryPopulationData = data;
-				$scope.countryPopulation = _(data).reduce(function(sum, num){
-					sum = sum | 0;
-					return sum + num.total;
-				});
-				if(data){
-					$scope.$broadcast('countryPopulationDataChanged', data);
-				}
-			});
-			PopulationIOService.loadPopulation({
-				year: new Date().getFullYear(),
-				country: 'World'
-			}, function(data){
-				$scope.loading -= 1;
-				$scope.worldPopulationData = data;
-				if(data){
-					$scope.$broadcast('worldPopulationDataChanged', data);
-				}
-			});
-		};
-		$scope.$watchGroup(['rankLocal', 'rankGlobal', 'rankLocalTomorrow', 'rankGlobalTomorrow', 'countryPopulation', 'worldPopulation'],
+		});
+		$scope.$on('worldPopulationDataChanged', function(event, data){
+			$scope.worldPopulationData = data;
+		});
+		$scope.$watchGroup(
+			['rankLocal', 'rankGlobal', 'rankLocalTomorrow', 'rankGlobalTomorrow', 'countryPopulation', 'worldPopulation'],
 			function(newVals){
 				$scope.countryYoungerPercentageSimple = $filter('number')(Math.min(100, $scope.rankLocal / ($scope.countryPopulation / 100)), 0);
 				$scope.worldYoungerPercentageSimple = $filter('number')(Math.min(100, $scope.rankGlobal / ($scope.worldPopulation / 100)), 0);
@@ -136,10 +82,11 @@ angular.module('populationioApp').controller('SummaryCtrl', [
 					$scope.scaledRankOlderLocal = $scope.localPopulationToday - tickerYoungerLocal(new Date().getTime());
 					$scope.scaledRankOlderGlobal = $scope.worldPopulation - $scope.rankGlobal;
 				}
-			});
+			}
+		);
 		$interval(function(){
 			$scope.rankGlobal += $scope.deltaRankGlobal;
-			$rootScope.$broadcast('rankGlobalChanged', $scope.rankGlobal);
+			$scope.$root.$broadcast('rankGlobalChanged', $scope.rankGlobal);
 		}, 1000);
 	}
 ]);

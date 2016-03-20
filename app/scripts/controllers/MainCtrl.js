@@ -1,10 +1,11 @@
 angular.module('populationioApp').controller('MainCtrl', [
-	'$translate', '$scope', '$timeout', '$http', '$interval', '$modal', '$state', '$location', '$document', '$rootScope', '$filter',
+	'$translate', '$scope', '$timeout', '$http', '$interval', '$modal', '$location', '$document', '$filter',
 	'ProfileService', 'PopulationIOService', 'BrowserService', 'Countries',
-	function($translate, $scope, $timeout, $http, $interval, $modal, $state, $location, $document, $rootScope, $filter, ProfileService,
-	         PopulationIOService, BrowserService, Countries){
+	function($translate, $scope, $timeout, $http, $interval, $modal, $location, $document, $filter,
+	         ProfileService, PopulationIOService, BrowserService, Countries){
 		'use strict';
-		$rootScope.$on('$translateChangeSuccess', function(){
+		$scope.$root.loading = 0;
+		$scope.$root.$on('$translateChangeSuccess', function(){
 			$scope.pageHeader = {
 				title: $filter('translate')('HEADER_TITLE'),
 				menuAbout: $filter('translate')('HEADER_MENU_ABOUT'),
@@ -14,21 +15,21 @@ angular.module('populationioApp').controller('MainCtrl', [
 		});
 		$scope.changeLanguage = function(langKey){
 			$translate.use(langKey).then(function(){
-				$scope.$broadcast('languageChange');
+				$scope.$root.$broadcast('languageChange');
 				$scope.updatePlaceholders();
 			}, function(langKey){
 				console.log('Something wrong with this language:', langKey);
 			});
 		};
-		$scope.activeLangKey = $rootScope.defaultLanguage;
+		$scope.activeLangKey = $scope.$root.defaultLanguage;
 		$scope.updatePlaceholders = function(){
 			$('#inputBirthDay').attr('placeholder', $filter('translate')('LOCAL_DAY')); //LOCAL_DAY
 			$('#inputBirthMonth').attr('placeholder', $filter('translate')('LOCAL_MONTH')); //LOCAL_MONTH
 			$('#inputBirthYear').attr('placeholder', $filter('translate')('LOCAL_YEAR')); //LOCAL_YEAR
 			$('#inputBirthCountry').attr('placeholder', $filter('translate')('LOCAL_COUNTRY')); //LOCAL_COUNTRY
 		};
-		$scope.changeLanguage($rootScope.defaultLanguage);
-		$rootScope.countriesList = function(newVal){
+		$scope.changeLanguage($scope.$root.defaultLanguage);
+		$scope.$root.countriesList = function(newVal){
 			var alternativeName = newVal;
 			var aliases = [
 					{alias: 'Great Britain', country: 'United Kingdom'},
@@ -87,75 +88,49 @@ angular.module('populationioApp').controller('MainCtrl', [
 			$scope.worldPopulationTomorrow = data.total_population[1].population;
 			$scope.peopleBornPerSecond = Math.ceil((data.total_population[1].population - data.total_population[0].population) / (24 * 60 * 60));
 		});
+
 		$interval(function(){
 			$scope.worldPopulation += $scope.peopleBornPerSecond;
 		}, 1000);
-		$scope.$watch(function(){
-			return ProfileService.active;
-		}, function(active){
-			if(active){
-				PopulationIOService.loadWpRankToday({
-					dob: ProfileService.birthday.formatted,
-					sex: 'unisex',
-					country: 'World'
-				}, function(rank){
-					$scope.rankGlobal = rank;
-					$rootScope.$broadcast('rankGlobalChanged', $scope.rankGlobal);
-				});
-				//console.log(ProfileService.country)
-				PopulationIOService.getLocalPopulation(ProfileService.country, function(data){
-					$scope.localPopulationToday = data.total_population[0].population;
-					$scope.localPopulationTomorrow = data.total_population[1].population;
-				});
-				$timeout(function(){
-					$scope.showSection($rootScope.target);
-				}, 700);
+
+		$scope.$on('$locationChangeSuccess', function (e, newValue) {
+			var hashPosition = newValue.indexOf('#/');
+			var hash = newValue.substr(hashPosition+1, newValue.length);
+			var newLocation = hash.split('/');
+
+			var year = newLocation[1];
+			var month = newLocation[2];
+			var day = newLocation[3];
+			var gender = newLocation[4];
+			var country = newLocation[5];
+
+			if (
+				['female', 'male'].indexOf(gender) > -1 &&
+				(
+					ProfileService.birthday.year !== year ||
+					ProfileService.birthday.month !== month ||
+					ProfileService.birthday.day !== day ||
+					ProfileService.gender !== gender ||
+					ProfileService.country !== country
+				)
+			) {
+				$scope.showSection('home');
+				ProfileService.gender = gender;
+				ProfileService.country = country;
+				ProfileService.birthday = {
+					year: year,
+					month: month,
+					day: day
+				};
+				ProfileService.update();
 			}
 		});
-		$rootScope.$on('$locationChangeSuccess', function(){
-			var path = $location.$$path.replace(/.+[/](.*)$/g, '$1');
-			if($location.preventReload){
-				$location.preventReload = false;
-				return;
-			}
-			// TODO: check the url path for date and section
-			if(path && !ProfileService.active){
-				$rootScope.expanded = true;
-				var pathItems = $location.$$path.split('/'),
-					year = pathItems[1],
-					month = pathItems[2],
-					day = pathItems[3],
-					gender = pathItems[4],
-					country = pathItems[5];
-				if(['female', 'male'].indexOf(gender) > -1 &&
-					country && year && month && day){
-					ProfileService.gender = gender;
-					ProfileService.country = country;
-					//if ((new Date()).getFullYear() - parseInt(year) < 5) {
-					//    alert('You are too young!');
-					//    return;
-					//}
-					ProfileService.birthday = {year: year, month: month, day: day, formatted: [year, month, day].join('-')};
-					$rootScope.target = path;
-					$rootScope.$broadcast('ready');
-					$scope.$broadcast('languageChange');
-				}
-			}
-			if(path && ProfileService.active){
-				$scope.showSection(path);
+		$scope.$root.$watch('loading', function(value){
+			if (value === 0 && ProfileService.active === true) {
+				$scope.showSection('summary');
 			}
 		});
-		$rootScope.$on('ready', function(){
-			$scope.showSection('home');
-			$scope.loading = 1;
-		});
-		$rootScope.$on('loadingOn', function(){
-			$scope.loading = 1;
-		});
-		$rootScope.$on('loadingOff', function(){
-			$scope.loading = 0;
-		});
-		$rootScope.$on('duScrollspy:becameActive', function($event, $element){
+		$scope.$root.$on('duScrollspy:becameActive', function($event, $element){
 			var section = $element.prop('id');
 			if(section){
 				var path = $location.$$path.replace(/[^/]*$/g, ''),
@@ -163,8 +138,8 @@ angular.module('populationioApp').controller('MainCtrl', [
 				if(pathItems.length > 4){
 					$location.preventReload = true;
 					$location.path(path + section).replace();
-					$rootScope.currentPage = $element.attr('data-index');
-					$rootScope.$apply();
+					$scope.$root.currentPage = $element.attr('data-index');
+					$scope.$root.$apply();
 				}
 			}
 		});
@@ -179,7 +154,7 @@ angular.module('populationioApp').controller('MainCtrl', [
 			var cal = ics(),
 				dstart = $filter('date')(ProfileService.dod, 'yyyy-MM-dd'),
 				dend = $filter('date')(ProfileService.dod, 'yyyy-MM-dd'),
-				dob = ProfileService.birthday.formatted,
+				dob = ProfileService.getFormattedBirthday(),
 				dod = $filter('date')(ProfileService.dod, 'yyyy-MM-dd'),
 				dsum = 'Your Date of Death',
 				url = 'http://population.io',

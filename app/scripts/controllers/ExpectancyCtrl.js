@@ -4,25 +4,18 @@ angular.module('populationioApp').controller('ExpectancyCtrl', [
 		'use strict';
 		$scope.countries = Countries;
 		var date = $filter('date')(new Date(), 'yyyy-MM-dd');
-		$rootScope.$on('ready', function(){
-			$scope.selectedCountryRel = null;
-			$scope.countryRel = null;
-			$scope.activeCountryRel = null;
-			_update();
-		});
-		$scope.loading = 0;
-		$scope.$on('languageChange', function(){
-			$('#countryRel').attr('placeholder', $filter('translate')('LOCAL_COUNTRY'));
-			$('#countryRef').attr('placeholder', $filter('translate')('LOCAL_COUNTRY'));
-		});
-		var _update = function(){
+		$rootScope.$on('profileUpdated', function(){
 			$('#countryRel').attr('placeholder', $filter('translate')('LOCAL_COUNTRY'));
 			$('#countryRef').attr('placeholder', $filter('translate')('LOCAL_COUNTRY'));
 			$scope.selectedCountryRef = _getCountryObjectByFullName(ProfileService.country);
 			_updateCountryRef(date);
-		};
+		});
+		$scope.$on('languageChange', function(){
+			$('#countryRel').attr('placeholder', $filter('translate')('LOCAL_COUNTRY'));
+			$('#countryRef').attr('placeholder', $filter('translate')('LOCAL_COUNTRY'));
+		});
 		var _updateCountryRef = function(date){
-			$scope.loading += 1;
+			$scope.$root.loading += 1;
 			var countryName;
 			countryName = typeof $scope.selectedCountryRef !== 'string' ? $scope.selectedCountryRef.POPIO_NAME : $scope.selectedCountryRef;
 			PopulationIOService.loadLifeExpectancyRemaining({
@@ -31,7 +24,7 @@ angular.module('populationioApp').controller('ExpectancyCtrl', [
 				date: date,
 				age: ProfileService.getAgeString()
 			}, function(remainingLife){
-				var ageDate = new Date(Date.now() - (new Date(ProfileService.birthday.formatted)).getTime());
+				var ageDate = new Date(Date.now() - (new Date(ProfileService.getFormattedBirthday())).getTime());
 				var lifeExpectancy = ProfileService.getAge() + remainingLife + (ageDate.getMonth() / 11);
 				$rootScope.totalLifeLengthLocal = ProfileService.getAge() + remainingLife + (ageDate.getMonth() / 11);
 				$scope.activeCountryRef = {
@@ -43,23 +36,21 @@ angular.module('populationioApp').controller('ExpectancyCtrl', [
 						return today.setDate(today.getDate() + (remainingLife * 365));
 					})()
 				};
-				$scope.loading -= 1;
-				if(!$scope.$$phase){
-					$scope.$apply();
-				}
+				$scope.$root.loading -= 1;
+				$scope.$applyAsync();
 			}, function(){
-				$scope.loading -= 1;
+				$scope.$root.loading -= 1;
 			});
 		};
 		var _updateCountryRel = function(date){
-			$scope.loading += 1;
+			$scope.$root.loading += 1;
 			PopulationIOService.loadLifeExpectancyRemaining({
 				sex: ProfileService.gender,
 				country: _getCountryObject($scope.selectedCountryRel).POPIO_NAME,
 				date: date,
 				age: ProfileService.getAgeString()
 			}, function(remainingLife){
-				var ageDate = new Date(Date.now() - (new Date(ProfileService.birthday.formatted)).getTime());
+				var ageDate = new Date(Date.now() - (new Date(ProfileService.getFormattedBirthday())).getTime());
 				var lifeExpectancy = ProfileService.getAge() + remainingLife + (ageDate.getMonth() / 11);
 				$rootScope.totalLifeLengthLocal = ProfileService.getAge() + remainingLife + (ageDate.getMonth() / 11);
 				$scope.activeCountryRel = {
@@ -71,12 +62,10 @@ angular.module('populationioApp').controller('ExpectancyCtrl', [
 						return today.setDate(today.getDate() + (remainingLife * 365));
 					})()
 				};
-				$scope.loading -= 1;
-				if(!$scope.$$phase){
-					$scope.$apply();
-				}
+				$scope.$root.loading -= 1;
+				$scope.$applyAsync();
 			}, function(){
-				$scope.loading -= 1;
+				$scope.$root.loading -= 1;
 			});
 		};
 		var _getCountryObject = function(country){

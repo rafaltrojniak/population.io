@@ -26,7 +26,6 @@ angular.module('populationioApp', [
 .run(function($rootScope){
 	var userLanguage = window.navigator.userLanguage || window.navigator.language;
 	userLanguage = userLanguage.slice(0, 2);
-	console.log('user language', userLanguage);
 
 	$rootScope.defaultLanguage = 'EN';
 	if(userLanguage === 'es'){

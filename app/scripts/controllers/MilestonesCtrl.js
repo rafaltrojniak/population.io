@@ -35,9 +35,6 @@ angular.module('populationioApp').controller('MilestonesCtrl', [
 					return translate(title);
 			}
 		};
-		$rootScope.$on('ready', function(){
-			_update();
-		});
 		$scope.$on('languageChange', function(){
 			$scope.milestoneCounter = translate($scope.atomicNumber);
 			if($scope.milestonesData){
@@ -53,7 +50,7 @@ angular.module('populationioApp').controller('MilestonesCtrl', [
 			return new Date(parseInt(year + offset, 0), month, day);
 		};
 		var _loadLifeExpectancyRemaining = function(country, onSuccess){
-			$scope.loading += 1;
+			$scope.$root.loading += 1;
 			PopulationIOService.loadLifeExpectancyRemaining({
 				sex: ProfileService.gender,
 				country: country,
@@ -71,9 +68,9 @@ angular.module('populationioApp').controller('MilestonesCtrl', [
 				if(onSuccess){
 					onSuccess(remainingLife);
 				}
-				$scope.loading -= 1;
+				$scope.$root.loading -= 1;
 			}, function(){
-				$scope.loading -= 1;
+				$scope.$root.loading -= 1;
 			});
 		};
 		var _loadWpRankRanked = function(rank, atomicNumber){
@@ -85,18 +82,19 @@ angular.module('populationioApp').controller('MilestonesCtrl', [
 				$scope.milestoneDate = $filter('date')(date, 'd MMM, yyyy');
 				$scope.milestoneCounter = translate(atomicNumber);
 			};
-			$scope.loading += 1;
+			$scope.$root.loading += 1;
 			var dayOfDeath = new Date(ProfileService.dod);
+			var formatted = ProfileService.getFormattedBirthday();
 			PopulationIOService.loadWpRankRanked({
-				dob: ProfileService.birthday.formatted,
+				dob: formatted,
 				sex: 'unisex',
 				country: 'World',
 				rank: rank
 			}, function(date){
+				$scope.$root.loading -= 1;
 				var loadedDate = new Date(date);
 				// Show only milestones that are expected to be during ones life.
 				if(dayOfDeath < loadedDate){
-					$scope.loading -= 1;
 					return;
 				}
 				if(_isDateGreaterThenToday(date)){
@@ -112,9 +110,8 @@ angular.module('populationioApp').controller('MilestonesCtrl', [
 					year: $filter('date')(date, 'yyyy'),
 					title: getMilestoneTitle(atomicNumber)
 				});
-				$scope.loading -= 1;
 			}, function(){
-				$scope.loading -= 1;
+				$scope.$root.loading -= 1;
 			});
 		};
 		var _getInitialMilestonesData = function(){
@@ -131,16 +128,16 @@ angular.module('populationioApp').controller('MilestonesCtrl', [
 					now: true
 				},
 				{
-					date: ProfileService.birthday.formatted,
+					date: ProfileService.getFormattedBirthday(),
 					year: ProfileService.birthday.year,
 					title: milestoneBorn,
 					titleType: 'MILESTONES_MILESTONE_BORN',
 					born: true
 				},
 				{
-					date: _getDateWithOffset(new Date(ProfileService.birthday.formatted), 18),
+					date: _getDateWithOffset(new Date(ProfileService.getFormattedBirthday()), 18),
 					year: $filter('date')(_getDateWithOffset(
-						new Date(ProfileService.birthday.formatted),
+						new Date(ProfileService.getFormattedBirthday()),
 						18
 					), 'yyyy'),
 					title: milestone18,
@@ -163,51 +160,41 @@ angular.module('populationioApp').controller('MilestonesCtrl', [
 			} else if(ProfileService.birthday.month === selectedExactDate[1] && ProfileService.birthday.day > selectedExactDate[2]){
 				yearsOnSelectedMilestone -= 1;
 			}
-			$scope.loading += 2;
+			$scope.$root.loading += 2;
 			$scope.age = yearsOnSelectedMilestone;
 			PopulationIOService.loadPopulation({
 				year: $scope.selectedYear,
 				country: ProfileService.country
 			}, function(data){
-				$scope.loading -= 1;
+				$scope.$root.loading -= 1;
 				$scope.localRankData = data;
 			});
 			PopulationIOService.loadPopulation({
 				year: $scope.selectedYear,
 				country: 'World'
 			}, function(data){
-				$scope.loading -= 1;
+				$scope.$root.loading -= 1;
 				$scope.globalRankData = data;
 			});
 		};
 		$scope.dateOrder = function(item){
 			return (new Date(item.date)).getTime();
 		};
-		$rootScope.$on('selectedYearChanged', function($event, item){
+		$scope.$root.$on('selectedYearChanged', function($event, item){
 			$scope.highlightMilestone(item);
 		});
-		$scope.$watch(function(){
-			return $scope.loading;
-		}, function(loading){
-			if(loading === 0){
-				ProfileService.active = true;
-			}
+		$scope.$on('rankGlobalChanged', function(e, rankGlobal){
+			$scope.rankGlobal = rankGlobal;
 		});
-		var _update = function(){
+		$scope.$on('rankLocalChanged', function(e, rankLocal){
+			$scope.rankLocal = rankLocal;
+		});
+		$scope.$on('profileUpdated', function(){
 			$scope.age = ProfileService.getAge();
-			$scope.loading = 0;
 			$scope.year = $filter('date')(new Date(), 'yyyy');
+			$scope.country = ProfileService.country;
 			$scope.milestonesData = _getInitialMilestonesData();
-			$scope.titleDie = null;
-			$scope.localRankData = null;
-			$scope.globalRankData = null;
-			$scope.nextYear = null;
-			$scope.$on('rankGlobalChanged', function(e, rankGlobal){
-				$scope.rankGlobal = rankGlobal;
-			});
-			$scope.$on('rankLocalChanged', function(e, rankLocal){
-				$scope.rankLocal = rankLocal;
-			});
+
 			_loadLifeExpectancyRemaining(ProfileService.country, function(remainingLife){
 				var today = new Date();
 				var date = today.setDate(today.getDate() + (remainingLife * 365));
@@ -229,7 +216,6 @@ angular.module('populationioApp').controller('MilestonesCtrl', [
 				].join(''));
 			});
 			_loadLifeExpectancyRemaining('World');
-			$scope.country = ProfileService.country;
-		};
+		});
 	}
 ]);

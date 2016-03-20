@@ -3,11 +3,20 @@ angular.module('populationioApp').controller('BirthdaysCtrl', [
 	function($scope, $state, $sce, $filter, $rootScope, PopulationIOService, ProfileService){
 		'use strict';
 		var countries = [];
-		$rootScope.$on('ready', function(){
-			d3.csv('data/countries.csv', function(data){
-				countries = data;
-				_update();
-			});
+		var dataLoaded = false;
+		var profileUpdated = false;
+		d3.csv('data/countries.csv', function(data){
+			countries = data;
+			dataLoaded = true;
+			if (profileUpdated) {
+				update();
+			}
+		});
+		$scope.$on('profileUpdated', function(){
+			profileUpdated = true;
+			if (dataLoaded) {
+				update();
+			}
 		});
 		var _getCountry = function(name){
 			for(var i = 0; i < countries.length; i += 1){
@@ -34,11 +43,10 @@ angular.module('populationioApp').controller('BirthdaysCtrl', [
 			}
 		});
 		var _updateContinentalCountries = function(){
-			$rootScope.$broadcast('loadingOn');
 			$scope.continentsData = [];
 			var continentalCountries = _getCountriesByContinent($scope.selectedContinental),
 				responseCounter = 0;
-			$scope.loading += continentalCountries.length;
+			$scope.$root.loading += continentalCountries.length;
 			_loadAllCountryBirthdays(continentalCountries, function(country, birthdays){
 				if(country && birthdays && parseInt(birthdays, 0) > 0){
 					$scope.continentsData.push({
@@ -48,10 +56,9 @@ angular.module('populationioApp').controller('BirthdaysCtrl', [
 					});
 				}
 				responseCounter += 1;
-				$scope.loading -= 1;
+				$scope.$root.loading -= 1;
 				if(continentalCountries.length === responseCounter){
 					$scope.$broadcast('continentsDataLoaded');
-					$rootScope.$broadcast('loadingOff');
 				}
 			});
 		};
@@ -63,7 +70,7 @@ angular.module('populationioApp').controller('BirthdaysCtrl', [
 					'Bangladesh', 'Mexico'
 				],
 				responseCounter = 0;
-			$scope.loading += countriesAroundTheWorld.length;
+			$scope.$root.loading += countriesAroundTheWorld.length;
 			_loadAllCountryBirthdays(countriesAroundTheWorld, function(country, birthdays){
 				if(country && birthdays){
 					$scope.worldData.push({
@@ -73,7 +80,7 @@ angular.module('populationioApp').controller('BirthdaysCtrl', [
 					});
 				}
 				responseCounter += 1;
-				$scope.loading -= 1;
+				$scope.$root.loading -= 1;
 				if(countriesAroundTheWorld.length === responseCounter){
 					$scope.$broadcast('worldDataLoaded');
 				}
@@ -97,15 +104,9 @@ angular.module('populationioApp').controller('BirthdaysCtrl', [
 				_loadCountryBirthdays(countries[j].POPIO_NAME || countries[j]);
 			}
 		};
-		var _update = function(){
-			$scope.loading = 1;
-			$scope.continentsData = [];
-			$scope.worldData = [];
+		var update = function(){
 			$scope.selectedContinental = 'Asia';
-			$scope.birthdayShare = null;
-			$scope.$apply();
-			$scope.$broadcast('continentsDataLoaded');
-			$scope.$broadcast('worldDataLoaded');
+			$scope.$root.loading += 1;
 			PopulationIOService.loadPopulationByAge({
 				year: $filter('date')(Date.now(), 'yyyy'),
 				country: 'World',
@@ -113,9 +114,9 @@ angular.module('populationioApp').controller('BirthdaysCtrl', [
 			}, function(data){
 				$scope.sharedDay = $filter('number')(parseInt(data[0].total / 365, 0), 0);
 				$scope.sharedHour = $filter('number')(parseInt(data[0].total / 365 / 24, 0), 0);
-				$scope.loading -= 1;
+				$scope.$root.loading -= 1;
 			}, function(){
-				$scope.loading -= 1;
+				$scope.$root.loading -= 1;
 			});
 			_updateCountriesAroundTheWorld();
 			_updateContinentalCountries();

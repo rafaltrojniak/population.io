@@ -39,11 +39,6 @@ angular.module('populationioApp').controller('HomeCtrl', [
 		$scope.$on('languageChange', function(){
 			months = getMonths();
 		});
-		$scope.$watch('goForm.$invalid', function(invalid){
-			if(invalid){
-				ProfileService.active = false;
-			}
-		});
 		$scope.birthdays = function(newVal, type){
 			switch(type){
 				case 'd':
@@ -73,11 +68,8 @@ angular.module('populationioApp').controller('HomeCtrl', [
 					});
 			}
 		};
-		$scope.$watch('profile.birthday', function(){
-			ProfileService.active = false;
-		}, true);
-		$scope.$watch('profile.gender', function(){
-			ProfileService.active = false;
+		$scope.$on('profileUpdated', function(){
+			$rootScope.expanded = true;
 		});
 		$scope.goGoGadget = function(){
 			if($scope.goForm.$invalid){
@@ -88,36 +80,17 @@ angular.module('populationioApp').controller('HomeCtrl', [
 				}, 2000);
 				return;
 			}
-			$rootScope.expanded = true;
-			var year = moment().year(ProfileService.birthday.year).format('YYYY'),
-				month = moment().month(ProfileService.birthday.month).format('MM'),
-				day = moment().date(ProfileService.birthday.day).format('DD');
-			if(ProfileService.birthday.month === 'agosto' && month !== '08'){
-				month = '08';
-			}
-			ProfileService.country = _.find(Countries, function(v){
-				return v.POPIO_NAME.toLowerCase() === ProfileService.country.toLowerCase();
-			}).POPIO_NAME;
-			$scope.country = ProfileService.country;
+			var year = moment().year(ProfileService.birthday.year).format('YYYY');
+			var month = moment().month(ProfileService.birthday.month).format('MM');
+			var day = moment().date(ProfileService.birthday.day).format('DD');
 			$location.path([
 				year,
 				month,
 				day,
 				ProfileService.gender,
-				ProfileService.country,
-				'summary'
+				ProfileService.country
 			].join('/'));
 		};
-		$rootScope.$on('ready', function(){
-			$scope.loading = 1;
-		});
-		$scope.$watch(function(){
-			return ProfileService.active;
-		}, function(active){
-			if(active){
-				$scope.loading = 0;
-			}
-		});
 		$scope.showDatepicker = function($event){
 			$event.preventDefault();
 			$event.stopPropagation();
