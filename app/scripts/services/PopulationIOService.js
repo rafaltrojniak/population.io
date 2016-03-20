@@ -1,7 +1,7 @@
-'use strict';
 angular.module('populationioApp').service('PopulationIOService', [
 	'$rootScope', '$http',
 	function($rootScope, $http){
+		'use strict';
 		var baseUrl = ' http://api.population.io/1.0';
 		return {
 			getWorldPopulation: function(onSuccess, onError){
@@ -70,10 +70,10 @@ angular.module('populationioApp').service('PopulationIOService', [
 							worldDistribution = data.mortality_distribution;
 							var worldChancesPure = _.reduce(worldDistribution, function(acc, n){
 								acc.push((acc.length > 0 ? acc[acc.length - 1] : 0) + n.mortality_percent);
-								return acc
+								return acc;
 							}, []);
 							_.each(worldDistribution, function(item, index){
-								worldChances.push({age: item.age, mortality_percent: worldChancesPure[index]})
+								worldChances.push({age: item.age, mortality_percent: worldChancesPure[index]});
 							});
 							$http({
 								method: 'get',
@@ -84,10 +84,10 @@ angular.module('populationioApp').service('PopulationIOService', [
 										countryDistribution = data.mortality_distribution;
 										var countryChancesPure = _.reduce(countryDistribution, function(acc, n){
 											acc.push((acc.length > 0 ? acc[acc.length - 1] : 0) + n.mortality_percent);
-											return acc
+											return acc;
 										}, []);
 										_.each(countryDistribution, function(item, index){
-											countryChances.push({age: item.age, mortality_percent: countryChancesPure[index]})
+											countryChances.push({age: item.age, mortality_percent: countryChancesPure[index]});
 										});
 										onSuccess({
 											worldDistribution: worldDistribution,

@@ -1,9 +1,9 @@
-'use strict';
 angular.module('populationioApp').controller('MainCtrl', [
 	'$translate', '$scope', '$timeout', '$http', '$interval', '$modal', '$state', '$location', '$document', '$rootScope', '$filter',
 	'ProfileService', 'PopulationIOService', 'BrowserService', 'Countries',
 	function($translate, $scope, $timeout, $http, $interval, $modal, $state, $location, $document, $rootScope, $filter, ProfileService,
 	         PopulationIOService, BrowserService, Countries){
+		'use strict';
 		$rootScope.$on('$translateChangeSuccess', function(){
 			$scope.pageHeader = {
 				title: $filter('translate')('HEADER_TITLE'),
@@ -17,15 +17,15 @@ angular.module('populationioApp').controller('MainCtrl', [
 				$scope.$broadcast('languageChange');
 				$scope.updatePlaceholders();
 			}, function(langKey){
-				console.log("Something wrong with this language:", langKey);
+				console.log('Something wrong with this language:', langKey);
 			});
 		};
 		$scope.activeLangKey = $rootScope.defaultLanguage;
 		$scope.updatePlaceholders = function(){
-			$("#inputBirthDay").attr("placeholder", $filter('translate')('LOCAL_DAY')); //LOCAL_DAY
-			$("#inputBirthMonth").attr("placeholder", $filter('translate')('LOCAL_MONTH')); //LOCAL_MONTH
-			$("#inputBirthYear").attr("placeholder", $filter('translate')('LOCAL_YEAR')); //LOCAL_YEAR
-			$("#inputBirthCountry").attr("placeholder", $filter('translate')('LOCAL_COUNTRY')); //LOCAL_COUNTRY
+			$('#inputBirthDay').attr('placeholder', $filter('translate')('LOCAL_DAY')); //LOCAL_DAY
+			$('#inputBirthMonth').attr('placeholder', $filter('translate')('LOCAL_MONTH')); //LOCAL_MONTH
+			$('#inputBirthYear').attr('placeholder', $filter('translate')('LOCAL_YEAR')); //LOCAL_YEAR
+			$('#inputBirthCountry').attr('placeholder', $filter('translate')('LOCAL_COUNTRY')); //LOCAL_COUNTRY
 		};
 		$scope.changeLanguage($rootScope.defaultLanguage);
 		$rootScope.countriesList = function(newVal){
@@ -42,16 +42,15 @@ angular.module('populationioApp').controller('MainCtrl', [
 				]
 				;
 			var foundAlias = _.find(aliases, function(item){
-				return item.alias.toLowerCase().indexOf(newVal.toLowerCase()) > -1
+				return item.alias.toLowerCase().indexOf(newVal.toLowerCase()) > -1;
 			});
 			if(foundAlias){
-				alternativeName = foundAlias.country
+				alternativeName = foundAlias.country;
 			}
 			var getCountryName = function(value){
 				switch($scope.activeLangKey){
 					case 'ES':
 						return value.POPIO_NAME_ES;
-						break;
 					default:
 						return value.POPIO_NAME;
 				}
@@ -151,10 +150,10 @@ angular.module('populationioApp').controller('MainCtrl', [
 			$scope.loading = 1;
 		});
 		$rootScope.$on('loadingOn', function(){
-			$scope.loading = 1
+			$scope.loading = 1;
 		});
 		$rootScope.$on('loadingOff', function(){
-			$scope.loading = 0
+			$scope.loading = 0;
 		});
 		$rootScope.$on('duScrollspy:becameActive', function($event, $element){
 			var section = $element.prop('id');

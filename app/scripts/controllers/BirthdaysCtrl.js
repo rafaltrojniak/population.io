@@ -1,7 +1,7 @@
-'use strict';
 angular.module('populationioApp').controller('BirthdaysCtrl', [
 	'$scope', '$state', '$sce', '$filter', '$rootScope', 'PopulationIOService', 'ProfileService',
 	function($scope, $state, $sce, $filter, $rootScope, PopulationIOService, ProfileService){
+		'use strict';
 		var countries = [];
 		$rootScope.$on('ready', function(){
 			d3.csv('data/countries.csv', function(data){
@@ -51,7 +51,7 @@ angular.module('populationioApp').controller('BirthdaysCtrl', [
 				$scope.loading -= 1;
 				if(continentalCountries.length === responseCounter){
 					$scope.$broadcast('continentsDataLoaded');
-					$rootScope.$broadcast('loadingOff')
+					$rootScope.$broadcast('loadingOff');
 				}
 			});
 		};

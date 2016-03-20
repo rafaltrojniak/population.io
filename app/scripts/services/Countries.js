@@ -1,6 +1,6 @@
-'use strict';
 angular.module('populationioApp').service('Countries',
 	function(){
+		'use strict';
 		return [
 			{
 				'GMI_CNTRY': 'AFG',

@@ -1,52 +1,38 @@
-'use strict';
 angular.module('populationioApp').controller('MilestonesCtrl', [
 	'$scope', '$rootScope', '$state', '$filter', '$sce', 'ProfileService', 'PopulationIOService',
 	function($scope, $rootScope, $state, $filter, $sce, ProfileService, PopulationIOService){
+		'use strict';
 		var translate = $filter('translate');
 		var getMilestoneTitle = function(title){
 			switch(title){
 				case 'lifeExpWorld':
 					return translate('MILESTONES_MILESTONE_LIFE_EXPECTANCY') + translate('LOCAL_WORLD');
-					break;
 				case 'lifeExpCountry':
 					return translate('MILESTONES_MILESTONE_LIFE_EXPECTANCY') + ProfileService.country;
-					break;
 				case 'ORDINAL_NUMBER_1':
 					return translate('MILESTONES_MILESTONE_1_BILLION');
-					break;
 				case 'ORDINAL_NUMBER_2':
 					return translate('MILESTONES_MILESTONE_2_BILLION');
-					break;
 				case 'ORDINAL_NUMBER_3':
 					return translate('MILESTONES_MILESTONE_3_BILLION');
-					break;
 				case 'ORDINAL_NUMBER_4':
 					return translate('MILESTONES_MILESTONE_4_BILLION');
-					break;
 				case 'ORDINAL_NUMBER_5':
 					return translate('MILESTONES_MILESTONE_5_BILLION');
-					break;
 				case 'ORDINAL_NUMBER_6':
 					return translate('MILESTONES_MILESTONE_6_BILLION');
-					break;
 				case 'ORDINAL_NUMBER_7':
 					return translate('MILESTONES_MILESTONE_7_BILLION');
-					break;
 				case 'ORDINAL_NUMBER_8':
 					return translate('MILESTONES_MILESTONE_8_BILLION');
-					break;
 				case 'ORDINAL_NUMBER_9':
 					return translate('MILESTONES_MILESTONE_9_BILLION');
-					break;
 				case 'ORDINAL_NUMBER_10':
 					return translate('MILESTONES_MILESTONE_10_BILLION');
-					break;
 				case 'ORDINAL_NUMBER_11':
 					return translate('MILESTONES_MILESTONE_11_BILLION');
-					break;
 				default:
 					return translate(title);
-					break;
 			}
 		};
 		$rootScope.$on('ready', function(){
@@ -174,7 +160,7 @@ angular.module('populationioApp').controller('MilestonesCtrl', [
 			var yearsOnSelectedMilestone = selectedExactDate[0] - ProfileService.birthday.year;
 			if(ProfileService.birthday.month > selectedExactDate[1]){
 				yearsOnSelectedMilestone -= 1;
-			} else if(ProfileService.birthday.month == selectedExactDate[1] && ProfileService.birthday.day > selectedExactDate[2]){
+			} else if(ProfileService.birthday.month === selectedExactDate[1] && ProfileService.birthday.day > selectedExactDate[2]){
 				yearsOnSelectedMilestone -= 1;
 			}
 			$scope.loading += 2;

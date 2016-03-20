@@ -1,6 +1,6 @@
-'use strict';
 angular.module('populationioApp').service('HelloWords',
 	function(){
+		'use strict';
 		return [
 			{
 				'abbreviation': 'AD',

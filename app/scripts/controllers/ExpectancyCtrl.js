@@ -1,7 +1,7 @@
-'use strict';
 angular.module('populationioApp').controller('ExpectancyCtrl', [
 	'$scope', '$rootScope', '$filter', 'ProfileService', 'PopulationIOService', 'Countries',
 	function($scope, $rootScope, $filter, ProfileService, PopulationIOService, Countries){
+		'use strict';
 		$scope.countries = Countries;
 		var date = $filter('date')(new Date(), 'yyyy-MM-dd');
 		$rootScope.$on('ready', function(){
@@ -12,12 +12,12 @@ angular.module('populationioApp').controller('ExpectancyCtrl', [
 		});
 		$scope.loading = 0;
 		$scope.$on('languageChange', function(){
-			$("#countryRel").attr("placeholder", $filter('translate')('LOCAL_COUNTRY'));
-			$("#countryRef").attr("placeholder", $filter('translate')('LOCAL_COUNTRY'));
+			$('#countryRel').attr('placeholder', $filter('translate')('LOCAL_COUNTRY'));
+			$('#countryRef').attr('placeholder', $filter('translate')('LOCAL_COUNTRY'));
 		});
 		var _update = function(){
-			$("#countryRel").attr("placeholder", $filter('translate')('LOCAL_COUNTRY'));
-			$("#countryRef").attr("placeholder", $filter('translate')('LOCAL_COUNTRY'));
+			$('#countryRel').attr('placeholder', $filter('translate')('LOCAL_COUNTRY'));
+			$('#countryRef').attr('placeholder', $filter('translate')('LOCAL_COUNTRY'));
 			$scope.selectedCountryRef = _getCountryObjectByFullName(ProfileService.country);
 			_updateCountryRef(date);
 		};
@@ -38,10 +38,10 @@ angular.module('populationioApp').controller('ExpectancyCtrl', [
 					country: $scope.selectedCountryRef,
 					yearsLeft: remainingLife,
 					lifeExpectancy: lifeExpectancy,
-					dod: function(){
+					dod: (function(){
 						var today = new Date();
 						return today.setDate(today.getDate() + (remainingLife * 365));
-					}()
+					})()
 				};
 				$scope.loading -= 1;
 				if(!$scope.$$phase){
@@ -66,10 +66,10 @@ angular.module('populationioApp').controller('ExpectancyCtrl', [
 					country: $scope.selectedCountryRel,
 					yearsLeft: remainingLife,
 					lifeExpectancy: lifeExpectancy,
-					dod: function(){
+					dod: (function(){
 						var today = new Date();
 						return today.setDate(today.getDate() + (remainingLife * 365));
-					}()
+					})()
 				};
 				$scope.loading -= 1;
 				if(!$scope.$$phase){
@@ -81,15 +81,15 @@ angular.module('populationioApp').controller('ExpectancyCtrl', [
 		};
 		var _getCountryObject = function(country){
 			if(typeof country === 'object'){
-				return country
+				return country;
 			}
 			return _.find($scope.countries, function(item){
-				return item.GMI_CNTRY == country || item.POPIO_NAME == country
+				return item.GMI_CNTRY === country || item.POPIO_NAME === country;
 			});
 		};
 		var _getCountryObjectByFullName = function(country){
 			return _.find($scope.countries, function(item){
-				return item.POPIO_NAME == country
+				return item.POPIO_NAME === country;
 			});
 		};
 		$scope.$on('timesliderChanged', function(e, year){

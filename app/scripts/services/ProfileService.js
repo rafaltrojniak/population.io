@@ -1,6 +1,6 @@
-'use strict';
 angular.module('populationioApp').service('ProfileService',
 	function(){
+		'use strict';
 		return {
 			gender: 'female',
 			birthday: {year: null, month: null, day: null, formatted: ''},
