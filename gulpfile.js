@@ -3,7 +3,6 @@ var jade = require('gulp-jade');
 var jshint = require('gulp-jshint');
 var connect = require('gulp-connect');
 var plumber = require('gulp-plumber');
-var watch = require('gulp-watch');
 var stylus = require('gulp-stylus');
 var concat = require('gulp-concat');
 var sourcemaps = require('gulp-sourcemaps');
