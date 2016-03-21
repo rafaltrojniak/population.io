@@ -95,14 +95,19 @@ angular.module('populationioApp').controller('MainCtrl', [
 
 		$scope.$on('$locationChangeSuccess', function (e, newValue) {
 			var hashPosition = newValue.indexOf('#/');
-			var hash = newValue.substr(hashPosition+1, newValue.length);
+			var hash = newValue.substr(hashPosition+2, newValue.length);
 			var newLocation = hash.split('/');
 
-			var year = newLocation[1];
-			var month = newLocation[2];
-			var day = newLocation[3];
-			var gender = newLocation[4];
-			var country = newLocation[5];
+			if (newLocation.length !== 6) {
+				alert('Invalid address, unable to load proper data.');
+				return;
+			}
+
+			var year = newLocation[0];
+			var month = newLocation[1];
+			var day = newLocation[2];
+			var gender = newLocation[3];
+			var country = newLocation[4];
 
 			if (
 				['female', 'male'].indexOf(gender) > -1 &&
@@ -114,7 +119,6 @@ angular.module('populationioApp').controller('MainCtrl', [
 					ProfileService.country !== country
 				)
 			) {
-				$scope.showSection('home');
 				ProfileService.gender = gender;
 				ProfileService.country = country;
 				ProfileService.birthday = {

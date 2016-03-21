@@ -194,6 +194,7 @@ angular.module('populationioApp').controller('MilestonesCtrl', [
 			$scope.year = $filter('date')(new Date(), 'yyyy');
 			$scope.country = ProfileService.country;
 			$scope.milestonesData = _getInitialMilestonesData();
+			$scope.nextYear = null; // This is required for next milestone to reload properly
 
 			_loadLifeExpectancyRemaining(ProfileService.country, function(remainingLife){
 				var today = new Date();
