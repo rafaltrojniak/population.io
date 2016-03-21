@@ -11,11 +11,11 @@
     "gulp-plumber": "~0.6.3",
     "gulp-watch": "0.6.6",
     "gulp-stylus": "1.0.2",
-    "gulp-clean": "0.3.0",
     "gulp-jshint": "1.6.2",
     "gulp-concat": "2.4.1",
     "gulp-sftp": "0.0.15",
     "gulp-sourcemaps": "1.2.7",
-    "gulp-uglify": "^1.0.1"
+    "gulp-uglify": "^1.0.1",
+    "run-sequence": "^1.1.5"
   }
 }
