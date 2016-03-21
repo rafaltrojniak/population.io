@@ -136,8 +136,7 @@
                             });
                       }
 
-                      function _updateWorldClock(newVal, oldVal) {
-                          //var timeDelta = newVal - oldVal;
+                      function _updateWorldClock(newVal) {
                           var timeDelta = 3;
 
                           currentValue = newVal;
