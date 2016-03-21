@@ -88,7 +88,8 @@ angular.module('populationioApp').controller('HomeCtrl', [
 				month,
 				day,
 				ProfileService.gender,
-				ProfileService.country
+				ProfileService.country,
+				'home'
 			].join('/'));
 		};
 		$scope.showDatepicker = function($event){
