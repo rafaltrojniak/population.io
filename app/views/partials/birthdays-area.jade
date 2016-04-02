@@ -1,10 +1,10 @@
 .container
   .birthdays-area
     header
-      h1(translate="BIRTHDAYS_INTRO" translate-values="{sharedDay: sharedDay, sharedHour: sharedHour }") <i ng-bind-html="birthdayShare"></i>
+      h1(translate="BIRTHDAYS_INTRO" translate-values="{sharedDay: sharedDay, sharedHour: sharedHour }")
     h2.continental(compile-unsafe="'BIRTHDAYS_TITLE_CONTINENTAL' | translate")
     h2.world(compile-unsafe="'BIRTHDAYS_TITLE_WORLD' | translate")
-    birthdays-chart(continents-data="continentsData", world-data="worldData")
+    birthdays-chart(continents-data="continentsData", world-data="worldData", country="country")
     .continents
       span {{ 'BIRTHDAYS_SWITCH_LABEL' | translate }}
       .toggle(ng-disabled="loading")

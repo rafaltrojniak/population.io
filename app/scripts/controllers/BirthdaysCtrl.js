@@ -27,12 +27,21 @@ angular.module('populationioApp').controller('BirthdaysCtrl', [
 			}
 			return null;
 		};
+		var _getContinentByCountry = function(name){
+			for(var i = 0; i < countries.length; i += 1){
+				var country = countries[i];
+				if(country.POPIO_NAME === name){
+					return country.CONTINENT;
+				}
+			}
+			return null;
+		};
 		var _getCountriesByContinent = function(continent){
 			var res = [];
 			for(var i = 0; i < countries.length; i += 1){
 				var country = countries[i];
 				if(country.CONTINENT === continent){
-					res.push(country);
+					res.push(country.POPIO_NAME);
 				}
 			}
 			return res;
@@ -96,16 +105,15 @@ angular.module('populationioApp').controller('BirthdaysCtrl', [
 					if(_getCountry(country).GMI_CNTRY){
 						callback(country, data[0].total / 365);
 					}
-				}, function(){
-					callback();
 				});
 			};
 			for(var j = 0; j < countries.length; j += 1){
-				_loadCountryBirthdays(countries[j].POPIO_NAME || countries[j]);
+				_loadCountryBirthdays(countries[j]);
 			}
 		};
 		var update = function(){
-			$scope.selectedContinental = 'Asia';
+			$scope.selectedContinental = _getContinentByCountry(ProfileService.country);
+			$scope.country = ProfileService.country;
 			$scope.$root.loading += 1;
 			PopulationIOService.loadPopulationByAge({
 				year: $filter('date')(Date.now(), 'yyyy'),
@@ -119,7 +127,6 @@ angular.module('populationioApp').controller('BirthdaysCtrl', [
 				$scope.$root.loading -= 1;
 			});
 			_updateCountriesAroundTheWorld();
-			_updateContinentalCountries();
 		};
 	}
 ]);
