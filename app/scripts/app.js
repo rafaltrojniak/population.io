@@ -38,6 +38,8 @@ angular.module('populationioApp', [
 		$rootScope.defaultLanguage = 'ZH';
 	} else if(userLanguage === 'id'){
 		$rootScope.defaultLanguage = 'ID';
+	} else if(userLanguage === 'ru'){
+		$rootScope.defaultLanguage = 'RU';
 	}
 	$rootScope.currentPage = 0;
 });
