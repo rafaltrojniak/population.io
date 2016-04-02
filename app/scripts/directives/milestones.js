@@ -9,8 +9,8 @@
                   scope: {
                       data: '=',
                       selectedYear: '=',
-                      rankGlobal: "=",
-                      rankGlobalTotal: "="
+                      rankGlobal: '=',
+                      rankGlobalTotal: '='
                   },
                   link: function ($scope, element) {
                       var width = 460,
@@ -44,7 +44,7 @@
                           var dot = d3.select(node);
                           //node.parentNode.appendChild(node);
                           dot.classed('highlight', true);
-                          dot.select('circle').transition().attr({r: 10})
+                          dot.select('circle').transition().attr({r: 10});
                       };
 
                       var _removeAllHighlights = function () {
@@ -172,12 +172,12 @@
                             .on('click', function (d) {
                                 $rootScope.$emit('selectedYearChanged', d);
                             })
-                            .on('mouseenter', function (d) {
-                                d3.select(this).select('circle').transition().attr({r: 10})
+                            .on('mouseenter', function () {
+                                d3.select(this).select('circle').transition().attr({r: 10});
                             })
-                            .on('mouseleave', function (d) {
+                            .on('mouseleave', function () {
                                 if (!d3.select(this).classed('highlight')) {
-                                    d3.select(this).select('circle').transition().attr({r: 6})
+                                    d3.select(this).select('circle').transition().attr({r: 6});
                                 }
 
                             });
@@ -190,11 +190,11 @@
                                 'class': function (d) {
                                     return d.color ? d.color : '';
                                 },
-                                r: function (d, i) {return d.now ? 10 : 6}
+                                r: function (d) { return d.now ? 10 : 6; }
                             });
-                          var nowItem = _(data).find(function (item) { return item.now });
+                          var nowItem = _(data).find(function (item) { return item.now; });
                           if (nowItem && firstRun) {
-                              $rootScope.$emit('selectedYearChanged', nowItem)
+                              $rootScope.$emit('selectedYearChanged', nowItem);
                               firstRun = false;
                           }
                       };
