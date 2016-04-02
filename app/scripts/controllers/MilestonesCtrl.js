@@ -160,20 +160,17 @@ angular.module('populationioApp').controller('MilestonesCtrl', [
 			} else if(ProfileService.birthday.month === selectedExactDate[1] && ProfileService.birthday.day > selectedExactDate[2]){
 				yearsOnSelectedMilestone -= 1;
 			}
-			$scope.$root.loading += 2;
 			$scope.age = yearsOnSelectedMilestone;
 			PopulationIOService.loadPopulation({
 				year: $scope.selectedYear,
 				country: ProfileService.country
 			}, function(data){
-				$scope.$root.loading -= 1;
 				$scope.localRankData = data;
 			});
 			PopulationIOService.loadPopulation({
 				year: $scope.selectedYear,
 				country: 'World'
 			}, function(data){
-				$scope.$root.loading -= 1;
 				$scope.globalRankData = data;
 			});
 		};

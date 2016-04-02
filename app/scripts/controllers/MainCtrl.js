@@ -99,7 +99,6 @@ angular.module('populationioApp').controller('MainCtrl', [
 			var newLocation = hash.split('/');
 
 			if (newLocation.length !== 6) {
-				alert('Invalid address, unable to load proper data.');
 				return;
 			}
 

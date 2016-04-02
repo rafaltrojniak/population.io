@@ -14,7 +14,13 @@
         .timeline
             h2 {{ 'MILESTONES_TIMELINE' | translate }}
             ul
-                li(ng-repeat="item in milestonesData | orderBy:dateOrder:true", data-id="item.year", class="{{item.color}}", ng-class="{'is-rank': item.rank, 'now': item.now, 'past': item.year < year, 'selected': item.selected}", ng-click="highlightMilestone(item)" )
+                li(
+                ng-repeat="item in milestonesData | orderBy:dateOrder:true"
+                data-id="item.year"
+                class="{{item.color}}"
+                ng-class="{'is-rank': item.rank, 'now': item.now, 'past': item.year < year, 'selected': item.selected}"
+                ng-click="highlightMilestone(item)"
+                )
                     span.time
                         span.date {{item.date | date: 'dd MMM' }}
                         span.year {{item.date | date: 'yyyy' }}
