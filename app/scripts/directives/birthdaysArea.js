@@ -8,7 +8,8 @@
                   restrict: 'E',
                   scope: {
                       continentsData: '=',
-                      worldData: '='
+                      worldData: '=',
+                      country: '='
                   },
                   link: function ($scope, element) {
                       var parentWidth = 1200,
@@ -44,11 +45,10 @@
                         if(label2){
                           label2.text($filter('translate')('BIRTHDAY_SHARED'));
                         }
-                        
+
                       });
 
                       function _buildContinentsChart(continentsData) {
-
                           var radius = d3.scale.sqrt()
                             .domain([
                                 d3.min(continentsData, function (d) { return d.value; }),
@@ -248,14 +248,17 @@
                           countryElement.append('circle')
                             .attr({
                                 r: function (d) { return d.radius - 5; }
-
                             })
                             .style({
-                                fill: function () { return 'rgba(0,0,0,0.05)'; },
+                                fill: function (d) {
+                                  if (d.countryTitle === $scope.country){
+                                    return '#98EC79';
+                                  }
+                                  return 'rgba(0,0,0,0.05)';
+                                },
                                 stroke: function () { return 'rgba(0,0,0,0.3)'; },
                                 'stroke-width': 0.3
                             });
-                          //            .style('fill', function (d, i) { return color(i % 3); });
                           countryTooltip.moveToFront();
                           tooltipElement.moveToFront();
 
@@ -269,9 +272,13 @@
                                     return d.countryTitle;
                                 }
                             })
-                            .attr(
-                            {
-                                'class': 'country-title',
+                            .attr({
+                                'class': function(d){
+                                  if (d.countryTitle === $scope.country){
+                                    return 'country-title current-country';
+                                  }
+                                  return 'country-title';
+                                },
                                 y: function (d, i) {
                                     return labelSize(d.value) / 2;
                                 }
