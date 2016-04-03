@@ -30,23 +30,23 @@ angular.module('populationioApp').controller('MainCtrl', [
 		};
 		$scope.changeLanguage($scope.$root.defaultLanguage);
 		$scope.$root.countriesList = function(newVal){
+			newVal = newVal.toLowerCase();
 			var alternativeName = newVal;
 			var aliases = [
-					{alias: 'Great Britain', country: 'United Kingdom'},
-					{alias: 'Britain', country: 'United Kingdom'},
-					{alias: 'England', country: 'United Kingdom'},
-					{alias: 'United States of America', country: 'United States'},
-					{alias: 'USA', country: 'United States'},
-					{alias: 'Egypt', country: 'Arab Rep of Egypt'},
-					{alias: 'North Korea', country: 'Dem Peoples Rep of Korea'},
-					{alias: 'South Korea', country: 'Rep of Korea'}
-				]
-				;
+				{alias: 'Great Britain', country: 'United Kingdom'},
+				{alias: 'Britain', country: 'United Kingdom'},
+				{alias: 'England', country: 'United Kingdom'},
+				{alias: 'United States of America', country: 'United States'},
+				{alias: 'USA', country: 'United States'},
+				{alias: 'Egypt', country: 'Arab Rep of Egypt'},
+				{alias: 'North Korea', country: 'Dem Peoples Rep of Korea'},
+				{alias: 'South Korea', country: 'Rep of Korea'}
+			];
 			var foundAlias = _.find(aliases, function(item){
 				return item.alias.toLowerCase().indexOf(newVal.toLowerCase()) > -1;
 			});
 			if(foundAlias){
-				alternativeName = foundAlias.country;
+				alternativeName = foundAlias.country.toLowerCase();
 			}
 			var getCountryName = function(value){
 				switch($scope.activeLangKey){
@@ -60,7 +60,8 @@ angular.module('populationioApp').controller('MainCtrl', [
 				_.filter(
 					Countries,
 					function(v) {
-						return v.POPIO_NAME.toLowerCase().indexOf(alternativeName.toLowerCase()) > -1;
+						var name = v.POPIO_NAME.toLowerCase();
+						return name.indexOf(alternativeName) > -1 || name.indexOf(newVal) > -1;
 					}
 				),
 				function(v) {
@@ -95,7 +96,7 @@ angular.module('populationioApp').controller('MainCtrl', [
 
 		$scope.$on('$locationChangeSuccess', function (e, newValue) {
 			var hashPosition = newValue.indexOf('#/');
-			var hash = newValue.substr(hashPosition+2, newValue.length);
+			var hash = decodeURIComponent(newValue.substr(hashPosition+2, newValue.length));
 			var newLocation = hash.split('/');
 
 			if (newLocation.length !== 6) {
