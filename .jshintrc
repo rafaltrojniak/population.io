@@ -20,7 +20,7 @@
   "trailing": true,
   "maxparams": 24,
   "maxdepth": 2,
-  "maxlen": 90,
+  "maxlen": 140,
   "evil": true,
   "eqnull": true,
   "browser": true,

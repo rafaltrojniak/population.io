@@ -43,7 +43,10 @@
             margin 0
             border-radius 12px
             &.ng-dirty.ng-invalid
+                invalid = mix(highlight-yellow, lightness(red, 90%), 30%)
                 box-shadow 0 0 8px rgba(red, 1)
+                border-color invalid
+                background-color invalid
             &.day-field
                 width 90px
                 margin-right 10px
