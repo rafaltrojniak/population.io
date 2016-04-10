@@ -22,6 +22,14 @@ angular.module('populationioApp').controller('HomeCtrl', [
 			$scope.$root.expanded = true;
 			$scope.profile = $.extend(true, {}, ProfileService);
 		});
+		$scope.$on('languageChange', function(){
+			// This part is required to properly update (and translate) month
+			var month = $scope.profile.birthday.month;
+			$scope.profile.birthday.month = '';
+			$scope.$applyAsync(function(){
+				$scope.profile.birthday.month = month;
+			});
+		});
 		$scope.goGoGadget = function(){
 			if($scope.goForm.$invalid){
 				$scope.highlightErrors = true;
@@ -40,12 +48,6 @@ angular.module('populationioApp').controller('HomeCtrl', [
 				'summary'
 			].join('/'));
 		};
-		$scope.showDatepicker = function($event){
-			$event.preventDefault();
-			$event.stopPropagation();
-			$scope.isDatepickerVisible = true;
-		};
-		$scope.isDatepickerVisible = false;
 		$scope.countries = Countries;
 		$scope.profile = {
 			birthday: {
