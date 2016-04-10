@@ -21,6 +21,7 @@ angular.module('populationioApp').controller('MainCtrl', [
 				console.log('Something wrong with this language:', langKey);
 			});
 		};
+		$scope.profile = ProfileService;
 		$scope.activeLangKey = $scope.$root.defaultLanguage;
 		$scope.updatePlaceholders = function(){
 			$('#inputBirthDay').attr('placeholder', $filter('translate')('LOCAL_DAY')); //LOCAL_DAY
@@ -81,7 +82,6 @@ angular.module('populationioApp').controller('MainCtrl', [
 		}
 
 		$scope.clockType = 'world';
-		$scope.profile = ProfileService;
 		$scope.worldPopulation = 0;
 		PopulationIOService.getWorldPopulation(function(data){
 			$scope.worldPopulation = data.total_population[1].population;
@@ -93,7 +93,6 @@ angular.module('populationioApp').controller('MainCtrl', [
 		$interval(function(){
 			$scope.worldPopulation += $scope.peopleBornPerSecond;
 		}, 1000);
-
 		$scope.$on('$locationChangeSuccess', function (e, newValue) {
 			var hashPosition = newValue.indexOf('#/');
 			var hash = decodeURIComponent(newValue.substr(hashPosition+2, newValue.length));
@@ -129,10 +128,8 @@ angular.module('populationioApp').controller('MainCtrl', [
 				ProfileService.update();
 			}
 		});
-		$scope.$root.$watch('loading', function(value){
-			if (value === 0 && ProfileService.active === true) {
-				$scope.showSection('summary');
-			}
+		$scope.$on('profileUpdated', function(){
+			$scope.showSection('summary');
 		});
 		$scope.$root.$on('duScrollspy:becameActive', function($event, $element){
 			var section = $element.prop('id');

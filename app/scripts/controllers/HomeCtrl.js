@@ -70,6 +70,7 @@ angular.module('populationioApp').controller('HomeCtrl', [
 		};
 		$scope.$on('profileUpdated', function(){
 			$scope.$root.expanded = true;
+			$scope.profile = $.extend(true, {}, ProfileService);
 		});
 		$scope.goGoGadget = function(){
 			if($scope.goForm.$invalid){
@@ -80,16 +81,16 @@ angular.module('populationioApp').controller('HomeCtrl', [
 				}, 2000);
 				return;
 			}
-			var year = moment().year(ProfileService.birthday.year).format('YYYY');
-			var month = moment().month(ProfileService.birthday.month).format('MM');
-			var day = moment().date(ProfileService.birthday.day).format('DD');
+			var year = moment().year($scope.profile.birthday.year).format('YYYY');
+			var month = moment().month($scope.profile.birthday.month).format('MM');
+			var day = moment().date($scope.profile.birthday.day).format('DD');
 			$location.path([
 				year,
 				month,
 				day,
-				ProfileService.gender,
-				ProfileService.country,
-				'home'
+				$scope.profile.gender,
+				$scope.profile.country,
+				'summary'
 			].join('/'));
 		};
 		$scope.showDatepicker = function($event){
@@ -99,5 +100,14 @@ angular.module('populationioApp').controller('HomeCtrl', [
 		};
 		$scope.isDatepickerVisible = false;
 		$scope.countries = Countries;
+		$scope.profile = {
+			birthday: {
+				year: '',
+				month: '',
+				day: ''
+			},
+			gender: 'female',
+			country: ''
+		};
 	}
 ]);

@@ -96,8 +96,15 @@ angular.module('populationioApp').service('ProfileService', [
 					$rootScope.loading -= 1;
 					$rootScope.$broadcast('worldPopulationDataChanged', data);
 				});
-				this.active = true;
-				$rootScope.$broadcast('profileUpdated');
+
+				var self = this;
+				var deregisterWatcher = $rootScope.$watch('loading', function(newValue){
+					if (!newValue){
+						deregisterWatcher();
+						self.active = true;
+						$rootScope.$broadcast('profileUpdated');
+					}
+				});
 			}
 		};
 	}

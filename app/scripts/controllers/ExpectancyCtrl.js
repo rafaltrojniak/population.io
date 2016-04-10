@@ -7,7 +7,7 @@ angular.module('populationioApp').controller('ExpectancyCtrl', [
 		$scope.$root.$on('profileUpdated', function(){
 			$('#countryRel').attr('placeholder', $filter('translate')('LOCAL_COUNTRY'));
 			$('#countryRef').attr('placeholder', $filter('translate')('LOCAL_COUNTRY'));
-			$scope.selectedCountryRef = _getCountryObjectByFullName(ProfileService.country);
+			$scope.selectedCountryRef = ProfileService.country;
 			_updateCountryRef(date);
 		});
 		$scope.$on('languageChange', function(){
