@@ -1,42 +1,41 @@
 angular.module('populationioApp').controller('MilestonesCtrl', [
-	'$scope', '$rootScope', '$state', '$filter', '$sce', 'ProfileService', 'PopulationIOService',
-	function($scope, $rootScope, $state, $filter, $sce, ProfileService, PopulationIOService){
+	'$scope', '$filter', '$translate', '$sce', 'ProfileService', 'PopulationIOService',
+	function($scope, $filter, $translate, $sce, ProfileService, PopulationIOService){
 		'use strict';
-		var translate = $filter('translate');
 		var getMilestoneTitle = function(title){
 			switch(title){
 				case 'lifeExpWorld':
-					return translate('MILESTONES_MILESTONE_LIFE_EXPECTANCY') + translate('LOCAL_WORLD');
+					return $translate.instant('MILESTONES_MILESTONE_LIFE_EXPECTANCY') + $translate.instant('LOCAL_WORLD');
 				case 'lifeExpCountry':
-					return translate('MILESTONES_MILESTONE_LIFE_EXPECTANCY') + ProfileService.country;
+					return $translate.instant('MILESTONES_MILESTONE_LIFE_EXPECTANCY') + ProfileService.country;
 				case 'ORDINAL_NUMBER_1':
-					return translate('MILESTONES_MILESTONE_1_BILLION');
+					return $translate.instant('MILESTONES_MILESTONE_1_BILLION');
 				case 'ORDINAL_NUMBER_2':
-					return translate('MILESTONES_MILESTONE_2_BILLION');
+					return $translate.instant('MILESTONES_MILESTONE_2_BILLION');
 				case 'ORDINAL_NUMBER_3':
-					return translate('MILESTONES_MILESTONE_3_BILLION');
+					return $translate.instant('MILESTONES_MILESTONE_3_BILLION');
 				case 'ORDINAL_NUMBER_4':
-					return translate('MILESTONES_MILESTONE_4_BILLION');
+					return $translate.instant('MILESTONES_MILESTONE_4_BILLION');
 				case 'ORDINAL_NUMBER_5':
-					return translate('MILESTONES_MILESTONE_5_BILLION');
+					return $translate.instant('MILESTONES_MILESTONE_5_BILLION');
 				case 'ORDINAL_NUMBER_6':
-					return translate('MILESTONES_MILESTONE_6_BILLION');
+					return $translate.instant('MILESTONES_MILESTONE_6_BILLION');
 				case 'ORDINAL_NUMBER_7':
-					return translate('MILESTONES_MILESTONE_7_BILLION');
+					return $translate.instant('MILESTONES_MILESTONE_7_BILLION');
 				case 'ORDINAL_NUMBER_8':
-					return translate('MILESTONES_MILESTONE_8_BILLION');
+					return $translate.instant('MILESTONES_MILESTONE_8_BILLION');
 				case 'ORDINAL_NUMBER_9':
-					return translate('MILESTONES_MILESTONE_9_BILLION');
+					return $translate.instant('MILESTONES_MILESTONE_9_BILLION');
 				case 'ORDINAL_NUMBER_10':
-					return translate('MILESTONES_MILESTONE_10_BILLION');
+					return $translate.instant('MILESTONES_MILESTONE_10_BILLION');
 				case 'ORDINAL_NUMBER_11':
-					return translate('MILESTONES_MILESTONE_11_BILLION');
+					return $translate.instant('MILESTONES_MILESTONE_11_BILLION');
 				default:
-					return translate(title);
+					return $translate.instant(title);
 			}
 		};
 		$scope.$on('languageChange', function(){
-			$scope.milestoneCounter = translate($scope.atomicNumber);
+			$scope.milestoneCounter = $translate.instant($scope.atomicNumber);
 			if($scope.milestonesData){
 				for(var i = 0; i < $scope.milestonesData.length; i += 1){
 					$scope.milestonesData[i].title = getMilestoneTitle($scope.milestonesData[i].titleType);
@@ -59,11 +58,12 @@ angular.module('populationioApp').controller('MilestonesCtrl', [
 			}, function(remainingLife){
 				var today = new Date();
 				var date = today.setDate(today.getDate() + (remainingLife * 365));
+				var countryTitle = country === 'World' ? $translate.instant('LOCAL_WORLD') : country;
 				$scope.milestonesData.push({
 					date: $filter('date')(date, 'yyyy-MM-dd'),
 					year: $filter('date')(date, 'yyyy'),
 					titleType: (country === 'World' ? 'lifeExpWorld' : 'lifeExpCountry'),
-					title: translate('MILESTONES_MILESTONE_LIFE_EXPECTANCY') + (country === 'World' ? translate('LOCAL_WORLD') : country)
+					title: $translate.instant('MILESTONES_MILESTONE_LIFE_EXPECTANCY') + countryTitle
 				});
 				if(onSuccess){
 					onSuccess(remainingLife);
@@ -80,7 +80,7 @@ angular.module('populationioApp').controller('MilestonesCtrl', [
 			};
 			var _updateTitleAlive = function(date, atomicNumber){
 				$scope.milestoneDate = $filter('date')(date, 'd MMM, yyyy');
-				$scope.milestoneCounter = translate(atomicNumber);
+				$scope.milestoneCounter = $translate.instant(atomicNumber);
 			};
 			$scope.$root.loading += 1;
 			var dayOfDeath = new Date(ProfileService.dod);
@@ -115,9 +115,9 @@ angular.module('populationioApp').controller('MilestonesCtrl', [
 			});
 		};
 		var _getInitialMilestonesData = function(){
-			var milestoneNow = translate('MILESTONES_MILESTONE_NOW');
-			var milestoneBorn = translate('MILESTONES_MILESTONE_BORN');
-			var milestone18 = translate('MILESTONES_MILESTONE_18');
+			var milestoneNow = $translate.instant('MILESTONES_MILESTONE_NOW');
+			var milestoneBorn = $translate.instant('MILESTONES_MILESTONE_BORN');
+			var milestone18 = $translate.instant('MILESTONES_MILESTONE_18');
 			return [
 				{
 					date: $filter('date')(Date.now(), 'yyyy-MM-dd'),

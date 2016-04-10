@@ -1,8 +1,6 @@
 angular.module('populationioApp').controller('DeathCtrl', [
-	'$scope', '$interpolate', '$timeout', '$http', '$interval', '$modal', '$state', '$location', '$document', '$rootScope', '$filter',
-	'ProfileService', 'PopulationIOService',
-	function($scope, $interpolate, $timeout, $http, $interval, $modal, $state, $location, $document, $rootScope, $filter, ProfileService,
-	         PopulationIOService){
+	'$scope', '$filter', 'ProfileService', 'PopulationIOService',
+	function($scope, $filter, ProfileService, PopulationIOService){
 		'use strict';
 		var translate = $filter('translate');
 		$scope.type = 'distribution';
@@ -32,7 +30,7 @@ angular.module('populationioApp').controller('DeathCtrl', [
 				$scope.$root.loading -= 1;
 				$scope.dodWorld = $filter('date')(today.setDate(today.getDate() + (remainingLife * 365)), 'd MMM, yyyy');
 				$scope.remainingLifeWorldInYears = parseFloat(remainingLife).toFixed(1);
-				$scope.totalLifeWorldInYears = moment(today).diff(moment(ProfileService.birthday.year), 'years', true);
+				$scope.totalLifeWorldInYears = moment(today).diff(moment(ProfileService.birthday.year, 'YYYY'), 'years', true);
 			});
 
 			$scope.$root.loading += 1;
@@ -46,12 +44,12 @@ angular.module('populationioApp').controller('DeathCtrl', [
 				$scope.$root.loading -= 1;
 				$scope.dodCountry = $filter('date')(today.setDate(today.getDate() + (remainingLife * 365)), 'd MMM, yyyy');
 				$scope.remainingLifeCountryInYears = parseFloat(remainingLife).toFixed(1);
-				$scope.totalLifeCountryInYears = moment(today).diff(moment(ProfileService.birthday.year), 'years', true);
+				$scope.totalLifeCountryInYears = moment(today).diff(moment(ProfileService.birthday.year, 'YYYY'), 'years', true);
 			});
 
 			var updateValues = function(){
-				var c = moment($scope.dodCountry);
-				var w = moment($scope.dodWorld);
+				var c = moment($scope.dodCountry, 'DD MMM, YYYY');
+				var w = moment($scope.dodWorld, 'DD MMM, YYYY');
 				var diffDays = c.diff(w, 'days');
 				var diffYears = c.diff(w, 'years');
 				$scope.differenceInDays = diffDays < 0 ? '- ' + (-1 * diffDays) + ' days' : '+ ' + diffDays + ' days';

@@ -52,7 +52,7 @@
                       $scope.$on('mortalityDistributionDataChanged', function (e, data) {
                           fullData = data;
                           $timeout(function () {
-                              age = $scope.profile.getAge();
+                              age = ProfileService.getAge();
                               _updateChart({world: data.worldDistribution, country: data.countryDistribution})
                           }, 0);
                       });

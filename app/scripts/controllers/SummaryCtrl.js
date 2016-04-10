@@ -4,6 +4,7 @@ angular.module('populationioApp').controller('SummaryCtrl', [
 		'use strict';
 		var rangeLoaded = false;
 		$scope.region = 'World';
+		$scope.profile = ProfileService;
 		$scope.age = new Date().getFullYear() - ProfileService.birthday.year;
 		var today = new Date();
 		var _getNextDay = function(){
@@ -15,7 +16,7 @@ angular.module('populationioApp').controller('SummaryCtrl', [
 		var tickerYoungerLocal = d3.scale.linear().domain([today.getTime(), _getNextDay().getTime()]);
 		var tickerOlderGlobal = d3.scale.linear().domain([today.getTime(), _getNextDay().getTime()]);
 		var tickerOlderLocal = d3.scale.linear().domain([today.getTime(), _getNextDay().getTime()]);
-		
+
 		$scope.calcWorldOlderNumber = function(){
 			if(!$scope.rankGlobal || !$scope.worldPopulation){
 				return 0;

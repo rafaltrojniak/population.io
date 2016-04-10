@@ -34,6 +34,7 @@
     "topojson": true,
     "Bloodhound": true,
     "ics": true,
-    "_": true
+    "_": true,
+    "moment": true
   }
 }

@@ -2,8 +2,8 @@
     'use strict';
 
     angular.module('populationioApp')
-      .directive('summaryChart', ['$filter', 'PopulationIOService', 'HelloWords', '$timeout',
-          function ($filter, PopulationIOService, HelloWords, $timeout) {
+      .directive('summaryChart', ['$filter', 'ProfileService', 'PopulationIOService', 'HelloWords', '$timeout',
+          function ($filter, ProfileService, PopulationIOService, HelloWords, $timeout) {
               return {
                   restrict: 'E',
                   link: function ($scope, element) {
@@ -38,8 +38,8 @@
 
                       $scope.$on('worldPopulationDataChanged', function (e, population) {
                           $timeout(function () {
-                              age = $scope.profile.getAge();
-                              _updateChart(population)
+                              age = ProfileService.getAge();
+                              _updateChart(population);
                           }, 2000);
                       });
                       $scope.$on('rankGlobalChanged', function (e, rank) {
@@ -54,8 +54,8 @@
 
                       });
                       $scope.$on('countryPopulationDataChanged', function (e, population) {
-                          age = $scope.profile.getAge();
-                          _updateChart(population)
+                          age = ProfileService.getAge();
+                          _updateChart(population);
                       });
 
                       function _initChart() {

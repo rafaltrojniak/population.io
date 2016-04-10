@@ -33,14 +33,14 @@ block content
 
     section#home(ng-controller='HomeCtrl', du-scrollspy='home', data-index="0")
         include views/partials/home-area
-    section#summary(ng-controller='SummaryCtrl', du-scrollspy='summary', data-index="1", offset='200', ng-class="{'hidden': !profile.active || loading > 0}")
+    section#summary(ng-controller='SummaryCtrl', du-scrollspy='summary', data-index="1", offset='200', ng-class="{'hidden': !profile.active}")
         include views/partials/summary-area
-    section#milestones(ng-controller='MilestonesCtrl', du-scrollspy='milestones', offset='200', data-index="2", ng-class="{'hidden': !profile.active || loading > 0}")
+    section#milestones(ng-controller='MilestonesCtrl', du-scrollspy='milestones', offset='200', data-index="2", ng-class="{'hidden': !profile.active}")
         include views/partials/milestones-area
-    section#birthdays(ng-controller='BirthdaysCtrl', du-scrollspy='birthdays', data-index="3", offset='200', ng-class="{'hidden': !profile.active || loading > 0}")
+    section#birthdays(ng-controller='BirthdaysCtrl', du-scrollspy='birthdays', data-index="3", offset='200', ng-class="{'hidden': !profile.active}")
         include views/partials/birthdays-area
-    section#expectancy(ng-controller='ExpectancyCtrl', du-scrollspy='expectancy', data-index="4", offset='200', ng-class="{'hidden': !profile.active || loading > 0}")
+    section#expectancy(ng-controller='ExpectancyCtrl', du-scrollspy='expectancy', data-index="4", offset='200', ng-class="{'hidden': !profile.active}")
         include views/partials/expectancy-area
-    section#death(ng-controller='DeathCtrl', du-scrollspy='death', data-index="5", offset='200', ng-class="{'hidden': !profile.active || loading > 0}")
+    section#death(ng-controller='DeathCtrl', du-scrollspy='death', data-index="5", offset='200', ng-class="{'hidden': !profile.active}")
         include views/partials/death-area
     include views/partials/modals

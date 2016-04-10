@@ -1,18 +1,12 @@
 angular.module('populationioApp').controller('ExpectancyCtrl', [
-	'$scope', '$rootScope', '$filter', 'ProfileService', 'PopulationIOService', 'Countries',
-	function($scope, $rootScope, $filter, ProfileService, PopulationIOService, Countries){
+	'$scope', '$filter', 'ProfileService', 'PopulationIOService', 'Countries',
+	function($scope, $filter, ProfileService, PopulationIOService, Countries){
 		'use strict';
 		$scope.countries = Countries;
 		var date = $filter('date')(new Date(), 'yyyy-MM-dd');
-		$rootScope.$on('profileUpdated', function(){
-			$('#countryRel').attr('placeholder', $filter('translate')('LOCAL_COUNTRY'));
-			$('#countryRef').attr('placeholder', $filter('translate')('LOCAL_COUNTRY'));
-			$scope.selectedCountryRef = _getCountryObjectByFullName(ProfileService.country);
+		$scope.$root.$on('profileUpdated', function(){
+			$scope.selectedCountryRef = ProfileService.country;
 			_updateCountryRef(date);
-		});
-		$scope.$on('languageChange', function(){
-			$('#countryRel').attr('placeholder', $filter('translate')('LOCAL_COUNTRY'));
-			$('#countryRef').attr('placeholder', $filter('translate')('LOCAL_COUNTRY'));
 		});
 		var _updateCountryRef = function(date){
 			$scope.$root.loading += 1;
@@ -26,7 +20,7 @@ angular.module('populationioApp').controller('ExpectancyCtrl', [
 			}, function(remainingLife){
 				var ageDate = new Date(Date.now() - (new Date(ProfileService.getFormattedBirthday())).getTime());
 				var lifeExpectancy = ProfileService.getAge() + remainingLife + (ageDate.getMonth() / 11);
-				$rootScope.totalLifeLengthLocal = ProfileService.getAge() + remainingLife + (ageDate.getMonth() / 11);
+				$scope.$root.totalLifeLengthLocal = ProfileService.getAge() + remainingLife + (ageDate.getMonth() / 11);
 				$scope.activeCountryRef = {
 					country: $scope.selectedCountryRef,
 					yearsLeft: remainingLife,
@@ -52,7 +46,7 @@ angular.module('populationioApp').controller('ExpectancyCtrl', [
 			}, function(remainingLife){
 				var ageDate = new Date(Date.now() - (new Date(ProfileService.getFormattedBirthday())).getTime());
 				var lifeExpectancy = ProfileService.getAge() + remainingLife + (ageDate.getMonth() / 11);
-				$rootScope.totalLifeLengthLocal = ProfileService.getAge() + remainingLife + (ageDate.getMonth() / 11);
+				$scope.$root.totalLifeLengthLocal = ProfileService.getAge() + remainingLife + (ageDate.getMonth() / 11);
 				$scope.activeCountryRel = {
 					country: $scope.selectedCountryRel,
 					yearsLeft: remainingLife,
@@ -100,7 +94,7 @@ angular.module('populationioApp').controller('ExpectancyCtrl', [
 				_updateCountryRel(date);
 			}
 		}, true);
-		$rootScope.$on('countryRelChanged', function(e, country){
+		$scope.$root.$on('countryRelChanged', function(e, country){
 			if(ProfileService.active && country){
 				var foundCountry = _getCountryObject(country);
 				if(foundCountry){
