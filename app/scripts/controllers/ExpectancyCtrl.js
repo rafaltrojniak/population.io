@@ -5,14 +5,8 @@ angular.module('populationioApp').controller('ExpectancyCtrl', [
 		$scope.countries = Countries;
 		var date = $filter('date')(new Date(), 'yyyy-MM-dd');
 		$scope.$root.$on('profileUpdated', function(){
-			$('#countryRel').attr('placeholder', $filter('translate')('LOCAL_COUNTRY'));
-			$('#countryRef').attr('placeholder', $filter('translate')('LOCAL_COUNTRY'));
 			$scope.selectedCountryRef = ProfileService.country;
 			_updateCountryRef(date);
-		});
-		$scope.$on('languageChange', function(){
-			$('#countryRel').attr('placeholder', $filter('translate')('LOCAL_COUNTRY'));
-			$('#countryRef').attr('placeholder', $filter('translate')('LOCAL_COUNTRY'));
 		});
 		var _updateCountryRef = function(date){
 			$scope.$root.loading += 1;

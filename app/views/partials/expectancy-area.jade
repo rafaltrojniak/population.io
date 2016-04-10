@@ -5,10 +5,24 @@
     .toolbar
         .country-selection
           .typeahead.ref
-            input(id="countryRef",  type="text", ng-model="selectedCountryRef", uib-typeahead="country.POPIO_NAME for country in countriesList($viewValue)", typeahead-wait-ms="100", typeahead-editable="false" )
+            input(
+            placeholder="{{ 'LOCAL_COUNTRY' | translate }}"
+            type="text"
+            ng-model="selectedCountryRef"
+            uib-typeahead="country.value as country.label for country in countriesList($viewValue)"
+            typeahead-wait-ms="100"
+            typeahead-editable="false"
+            )
           .icon.icon-vs
           .typeahead.rel
-            input(id="countryRel", type="text", ng-model="selectedCountryRel", uib-typeahead="country.POPIO_NAME for country in countriesList($viewValue)", typeahead-wait-ms="100", typeahead-editable="false" )
+            input(
+            placeholder="{{ 'LOCAL_COUNTRY' | translate }}"
+            type="text"
+            ng-model="selectedCountryRel"
+            uib-typeahead="country.value as country.label for country in countriesList($viewValue)"
+            typeahead-wait-ms="100"
+            typeahead-editable="false"
+            )
         .time-slider
           time-slider
 

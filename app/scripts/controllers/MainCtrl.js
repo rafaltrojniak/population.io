@@ -7,28 +7,21 @@ angular.module('populationioApp').controller('MainCtrl', [
 		$scope.$root.loading = 0;
 		$scope.$root.$on('$translateChangeSuccess', function(){
 			$scope.pageHeader = {
-				title: $filter('translate')('HEADER_TITLE'),
-				menuAbout: $filter('translate')('HEADER_MENU_ABOUT'),
-				menuMethodology: $filter('translate')('HEADER_MENU_METHODOLOGY'),
-				menuApi: $filter('translate')('HEADER_MENU_API')
+				title: $translate.instant('HEADER_TITLE'),
+				menuAbout: $translate.instant('HEADER_MENU_ABOUT'),
+				menuMethodology: $translate.instant('HEADER_MENU_METHODOLOGY'),
+				menuApi: $translate.instant('HEADER_MENU_API')
 			};
 		});
 		$scope.changeLanguage = function(langKey){
 			$translate.use(langKey).then(function(){
 				$scope.$root.$broadcast('languageChange');
-				$scope.updatePlaceholders();
 			}, function(langKey){
 				console.log('Something wrong with this language:', langKey);
 			});
 		};
 		$scope.profile = ProfileService;
 		$scope.activeLangKey = $scope.$root.defaultLanguage;
-		$scope.updatePlaceholders = function(){
-			$('#inputBirthDay').attr('placeholder', $filter('translate')('LOCAL_DAY')); //LOCAL_DAY
-			$('#inputBirthMonth').attr('placeholder', $filter('translate')('LOCAL_MONTH')); //LOCAL_MONTH
-			$('#inputBirthYear').attr('placeholder', $filter('translate')('LOCAL_YEAR')); //LOCAL_YEAR
-			$('#inputBirthCountry').attr('placeholder', $filter('translate')('LOCAL_COUNTRY')); //LOCAL_COUNTRY
-		};
 		$scope.changeLanguage($scope.$root.defaultLanguage);
 		$scope.$root.countriesList = function(newVal){
 			newVal = newVal.toLowerCase();
