@@ -1,7 +1,7 @@
 angular.module('populationioApp').controller('MainCtrl', [
-	'$translate', '$scope', '$timeout', '$http', '$interval', '$modal', '$location', '$document', '$filter',
+	'$translate', '$scope', '$http', '$interval', '$uibModal', '$location', '$document', '$filter',
 	'ProfileService', 'PopulationIOService', 'BrowserService', 'Countries',
-	function($translate, $scope, $timeout, $http, $interval, $modal, $location, $document, $filter,
+	function($translate, $scope, $http, $interval, $uibModal, $location, $document, $filter,
 	         ProfileService, PopulationIOService, BrowserService, Countries){
 		'use strict';
 		$scope.$root.loading = 0;
@@ -75,7 +75,7 @@ angular.module('populationioApp').controller('MainCtrl', [
 
 		$scope.rankGlobal = 0;
 		if(!BrowserService.isSupported()){
-			$modal.open({
+			$uibModal.open({
 				templateUrl: 'browser-warning.html'
 			});
 		}
@@ -199,17 +199,17 @@ angular.module('populationioApp').controller('MainCtrl', [
 				});
 		};
 		$scope.showAbout = function(){
-			$modal.open({
+			$uibModal.open({
 				templateUrl: 'about.html'
 			});
 		};
 		$scope.showMethodology = function(){
-			$modal.open({
+			$uibModal.open({
 				templateUrl: 'methodology.html'
 			});
 		};
 		$scope.showDevelopers = function(){
-			$modal.open({
+			$uibModal.open({
 				templateUrl: 'developers.html'
 			});
 		};

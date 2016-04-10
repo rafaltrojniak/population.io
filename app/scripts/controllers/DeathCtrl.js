@@ -1,8 +1,6 @@
 angular.module('populationioApp').controller('DeathCtrl', [
-	'$scope', '$interpolate', '$timeout', '$http', '$interval', '$modal', '$state', '$location', '$document', '$rootScope', '$filter',
-	'ProfileService', 'PopulationIOService',
-	function($scope, $interpolate, $timeout, $http, $interval, $modal, $state, $location, $document, $rootScope, $filter, ProfileService,
-	         PopulationIOService){
+	'$scope', '$filter', 'ProfileService', 'PopulationIOService',
+	function($scope, $filter, ProfileService, PopulationIOService){
 		'use strict';
 		var translate = $filter('translate');
 		$scope.type = 'distribution';

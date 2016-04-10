@@ -1,6 +1,6 @@
 angular.module('populationioApp').controller('HomeCtrl', [
-	'$scope', '$document', '$timeout', '$filter', '$location', '$rootScope', 'ProfileService', 'PopulationIOService', 'Countries',
-	function($scope, $document, $timeout, $filter, $location, $rootScope, ProfileService, PopulationIOService, Countries){
+	'$scope', '$timeout', '$location', '$filter', 'ProfileService', 'Countries',
+	function($scope, $timeout, $location, $filter, ProfileService, Countries){
 		'use strict';
 		var getMonths = function(){
 			var month1 = $filter('translate')('MONTH1');
@@ -69,7 +69,7 @@ angular.module('populationioApp').controller('HomeCtrl', [
 			}
 		};
 		$scope.$on('profileUpdated', function(){
-			$rootScope.expanded = true;
+			$scope.$root.expanded = true;
 		});
 		$scope.goGoGadget = function(){
 			if($scope.goForm.$invalid){

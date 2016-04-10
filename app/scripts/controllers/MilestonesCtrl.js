@@ -1,6 +1,6 @@
 angular.module('populationioApp').controller('MilestonesCtrl', [
-	'$scope', '$rootScope', '$state', '$filter', '$sce', 'ProfileService', 'PopulationIOService',
-	function($scope, $rootScope, $state, $filter, $sce, ProfileService, PopulationIOService){
+	'$scope', '$filter', '$translate', '$sce', 'ProfileService', 'PopulationIOService',
+	function($scope, $filter, $translate, $sce, ProfileService, PopulationIOService){
 		'use strict';
 		var translate = $filter('translate');
 		var getMilestoneTitle = function(title){
