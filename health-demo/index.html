@@ -90,6 +90,8 @@
                                 <button type="submit" class="btn">go</button>
                             </form>
                         </div>
+                        <div id="skara"></div>
+                       
                     </div>
                 </div>
             </div>
@@ -106,7 +108,7 @@
                             <ul class="list-inline">
                                 <li class="no-bg">
                                     <input type="radio" id="smoking1" name="smoking" value="yes" />
-                                    <label for="smoking1" id="question-smoking-modifier"><span>- 0 years</span>Yes</label>
+                                    <label for="smoking1"><span id="question-smoking-modifier-yes">0</span>Yes</label>
                                 </li>
                                 <li class="gray-bg">
                                     <input type="radio" id="smoking2" name="smoking" value="na" />
@@ -114,7 +116,7 @@
                                 </li>
                                 <li class="yes-bg">
                                     <input type="radio" id="smoking3" name="smoking" value="no" />
-                                    <label for="smoking3">No <span>Great !!!</span></label>
+                                    <label for="smoking3">No <span id="question-smoking-modifier-no">0</span></label>
                                 </li>
                             </ul>                            
                         </div>
@@ -128,19 +130,20 @@
             <input type="hidden" id="life-expectancy-world" value="0" />
             <input type="hidden" id="life-expectancy-country" value="0" />
             <input type="hidden" id="pc-mean-country" value="0" />
+            <input type="hidden" id="smoking-prevalence" value="0" />
             <div class="container">
                 <div class="box-border">
                     <div class="row">
                         <div class="col-sm-4">
-                            <p>Life expectancy for an average person of your age and sex around the world is:</p>
+                            <p>Life expectancy for an average person of your age and sex around the world is:<br /><br /></p>
                             <span id="result-life-expectancy-world" class="number-info num-gray">0 years</span>
                         </div>
                         <div class="col-sm-4">
-                            <p>Life expectancy for an average person of your age and sex in your country is:</p>
+                            <p>Life expectancy for an average person of your age and sex in your country is:<br /><br /></p>
                             <span id="result-life-expectancy-country" class="number-info">0 years</span>
                         </div>
                         <div class="col-sm-4">
-                            <p>The number of years an average person in your country of your age and sex will lose due to smoking:</p>
+                            <p>The number of years an average person in your country of your age and sex will live with your living conditions:</p>
                             <span id="result-smoking" class="number-info num-green">0 years</span>
                         </div>
                     </div>
