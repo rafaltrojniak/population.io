@@ -93,10 +93,11 @@ var app = {
                     if (allLines[i][0] && allLines[i][1] && allLines[i][2] && allLines[i][3] && allLines[i][4] && allLines[i][5]) {
                         if (allLines[i][0] === 'country_popio') continue;
                         var obj = {
-                            country:  allLines[i][0],
-                            sex:      allLines[i][3],
-                            ageGroup: allLines[i][5],
-                            pcMean:   allLines[i][4]
+                            country:           allLines[i][0],
+                            sex:               allLines[i][3],
+                            ageGroup:          allLines[i][5],
+                            pcMean:            allLines[i][4],
+                            smokingPrevalence: allLines[i][6]
                         };
                         self.smokingRiskData.push(obj);
                     }
@@ -132,7 +133,7 @@ var app = {
         } else if (age >= 80) {
             return 80;            
         } else {
-            return 0;
+            return 30;
         }
     },
     
@@ -177,6 +178,14 @@ var app = {
         
         return false;
     },
+
+    getSmokingPrevalenceFactor: function(rows) {
+        if (typeof rows[0] !== 'undefined' && typeof rows[0].smokingPrevalence !== 'undefined') {
+            return rows[0].smokingPrevalence;
+        }
+        
+        return false;
+    },    
     
     getLifeExpectancy: function(sex, country, ageStr) {
         var self   = this;
@@ -273,22 +282,45 @@ var app = {
         var month   = this.getMonthNumber(jQuery('#month').val());
         var day     = jQuery('#day').val();
         var ageStr  = this.getAgeString(year, month, day);
-        var pcMean  = this.getPcMeanFactor(this.getPeopleInfo(country, sex, this.getAgeGroup(Math.floor(this.getAgeInDays(year, month, day) / 365))));
+        var info    = this.getPeopleInfo(country, sex, this.getAgeGroup(Math.floor(this.getAgeInDays(year, month, day) / 365)));
+        var pcMean  = this.getPcMeanFactor(info);
         jQuery('#pc-mean-country').val(pcMean);
         this.getLifeExpectancy(sex, country, ageStr);
+        
+        var smokingPrevalenceFactor = parseFloat(this.getSmokingPrevalenceFactor(info));
+        if (smokingPrevalenceFactor) {
+            smokingPrevalenceFactor = smokingPrevalenceFactor / 100;
+        } else {
+            if (sex === 'male') smokingPrevalenceFactor = 0.36; // global male smoking prevalence factor 36%;
+            else                smokingPrevalenceFactor = 0.07; // global female smoking prevalence factor 7%;
+        }
+        jQuery('#smoking-prevalence').val(smokingPrevalenceFactor);
     },
     
     recalculate: function() {
-        var lifeExpectancyWorld          = parseFloat(jQuery('#life-expectancy-world').val()).toFixed(1);
-        var lifeExpectancyCountry        = parseFloat(jQuery('#life-expectancy-country').val()).toFixed(1);
-        var lifeDifferenceCountrySmoking = parseFloat(jQuery('#life-expectancy-country').val() * jQuery('#pc-mean-country').val()).toFixed(1);
-
-        if (jQuery('input[name="smoking"]:checked').val() === 'yes') lifeExpectancyCountry -= lifeDifferenceCountrySmoking;
-
-        jQuery('#question-smoking-modifier').html('<span>- ' + lifeDifferenceCountrySmoking + ' years</span>Yes');
-        jQuery('#result-life-expectancy-world').html(lifeExpectancyWorld + ' years');
-        jQuery('#result-life-expectancy-country').html(lifeExpectancyCountry + ' years');
-        jQuery('#result-smoking').html(lifeDifferenceCountrySmoking + ' years');
+        var lifeExpectancyWorld          = parseFloat(jQuery('#life-expectancy-world').val());
+        var lifeExpectancyCountry        = parseFloat(jQuery('#life-expectancy-country').val());
+        var pcMean                       = parseFloat(jQuery('#pc-mean-country').val());
+        var smokingPrevalenceFactor      = parseFloat(jQuery('#smoking-prevalence').val());
+        var lifeDifferenceCountrySmoking = 0;
+        
+        var smokingLoss = lifeExpectancyCountry * pcMean * (1 - smokingPrevalenceFactor);
+        var smokingGain = lifeExpectancyCountry * pcMean * smokingPrevalenceFactor;
+        
+        jQuery('#question-smoking-modifier-yes').html('-' + smokingLoss.toFixed(1) + ' years');
+        jQuery('#question-smoking-modifier-no').html('+' + smokingGain.toFixed(1) + ' years');
+        
+        if (jQuery('input[name="smoking"]:checked').val() === 'yes') {
+            lifeDifferenceCountrySmoking = lifeExpectancyCountry - smokingLoss;
+        } else if (jQuery('input[name="smoking"]:checked').val() === 'no') {
+            lifeDifferenceCountrySmoking = lifeExpectancyCountry + smokingGain;
+        } else {
+            lifeDifferenceCountrySmoking = lifeExpectancyCountry;
+        }
+        
+        jQuery('#result-life-expectancy-world').html(lifeExpectancyWorld.toFixed(1) + ' years');
+        jQuery('#result-life-expectancy-country').html(lifeExpectancyCountry.toFixed(1) + ' years');
+        jQuery('#result-smoking').html(lifeDifferenceCountrySmoking.toFixed(1) + ' years');        
     },
     
     init: function() {
