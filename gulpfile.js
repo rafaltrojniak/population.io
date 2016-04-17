@@ -1,7 +1,9 @@
+/* jshint node: true */
 var gulp = require('gulp');
 var jade = require('gulp-jade');
 var jshint = require('gulp-jshint');
 var connect = require('gulp-connect');
+var clean = require('gulp-clean');
 var plumber = require('gulp-plumber');
 var stylus = require('gulp-stylus');
 var concat = require('gulp-concat');
@@ -118,13 +120,13 @@ gulp.task('fonts', function(){
 		.pipe(gulp.dest('dist/css/webfonts/'))
 		.pipe(connect.reload());
 });
-// jshint task
+// lint task
 gulp.task('lint', function(){
 	return gulp.src(['app/scripts/**/*.js', '!app/scripts/libs/**/*.js'])
 		.pipe(jshint())
 		.pipe(jshint.reporter('default'));
 });
-// jshint watch task for development
+// lint watch task for development
 gulp.task('lint:watch', function(){
 	gulp.watch('app/scripts/**/*.js', ['lint']);
 });
