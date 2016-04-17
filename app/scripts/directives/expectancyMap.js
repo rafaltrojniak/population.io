@@ -124,7 +124,8 @@ angular.module('populationioApp').controller('ExpectancyMapComponentCtrl', [
 			// remove previous lines and highlights
 			d3.selectAll('.desc-' + type).remove();
 			d3.select('.country-active.country-' + type).classed('country-active', false);
-			node.attr('class', 'country country-active country-' + type);
+			node.classed('country-active', true);
+			node.classed('country-' + type, true);
 			var desc = root.append('g')
 				.attr({
 					'class': 'desc desc-' + type,
