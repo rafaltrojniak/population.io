@@ -8,7 +8,7 @@
             input(
             placeholder="{{ 'LOCAL_COUNTRY' | translate }}"
             type="text"
-            ng-model="selectedCountryRef"
+            ng-model="currentCountry"
             uib-typeahead="country.value as country.label for country in countriesList($viewValue)"
             typeahead-wait-ms="100"
             typeahead-editable="false"
@@ -18,7 +18,7 @@
             input(
             placeholder="{{ 'LOCAL_COUNTRY' | translate }}"
             type="text"
-            ng-model="selectedCountryRel"
+            ng-model="referenceCountry"
             uib-typeahead="country.value as country.label for country in countriesList($viewValue)"
             typeahead-wait-ms="100"
             typeahead-editable="false"
@@ -26,4 +26,4 @@
         .time-slider
           time-slider
 
-    expectancy-map(country-ref="activeCountryRef", country-rel="activeCountryRel")
+    expectancy-map(country="currentCountry", reference="referenceCountry", width="1200" height="500")

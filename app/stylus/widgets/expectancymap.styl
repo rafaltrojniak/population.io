@@ -1,13 +1,8 @@
 expectancy-map
-  /*user-select none*/
   display block
-  /*border-bottom 1px solid border-color*/
   line
     stroke-width 0.8
     stroke #575757
-  .country:hover
-    fill highlight-yellow
-    cursor pointer
   .desc
     .years-left
       font-size 36px
@@ -23,10 +18,21 @@ expectancy-map
     text-anchor start
   .text-rel
     text-anchor end
+  .country
+    stroke border-color
+    fill #e5e5e5
+  .country:hover
+    fill highlight-yellow
+    cursor pointer
+  .country.longer
+    fill #3c763d
+  .country.longer:hover
+    fill highlight-yellow
+  .country.shorter
+    fill #a94442
+  .country.shorter:hover
+    fill highlight-yellow
   .country-rel.country-active
     fill highlight-yellow
   .country-ref.country-active
     fill highlight-blue
-  .country
-    stroke border-color
-    fill #e5e5e5
