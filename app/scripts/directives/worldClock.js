@@ -73,7 +73,7 @@
                             .attr('class', 'counter')
                             .attr({
                                 'clip-path': 'url(#clip)',
-                                transform: 'translate(210, 112)'
+                                transform: 'translate(230, 112)'
                             });
 
                           countElement = clockElement
