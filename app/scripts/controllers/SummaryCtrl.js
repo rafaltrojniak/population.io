@@ -54,7 +54,7 @@ angular.module('populationioApp').controller('SummaryCtrl', [
 		$scope.$on('rankDateLocalChanged', function(event, rank){
 			$scope.rankLocalTomorrow = rank;
 		});
-		$scope.$on('rankDateLocalChanged', function(event, rank){
+		$scope.$on('rankDateGlobalChanged', function(event, rank){
 			$scope.rankGlobalTomorrow = rank;
 			$scope.deltaRankGlobal = Math.ceil(($scope.rankGlobalTomorrow - $scope.rankGlobal) / (24 * 60 * 60));
 		});
@@ -80,7 +80,7 @@ angular.module('populationioApp').controller('SummaryCtrl', [
 					tickerOlderLocal.range([$scope.rankLocal, $scope.rankLocalTomorrow]);
 					$scope.scaledRankYoungerLocal = tickerYoungerLocal(new Date().getTime());
 					$scope.scaledRankYoungerGlobal = tickerYoungerGlobal(new Date().getTime());
-					$scope.scaledRankOlderLocal = $scope.localPopulationToday - tickerYoungerLocal(new Date().getTime());
+					$scope.scaledRankOlderLocal = $scope.countryPopulation - tickerYoungerLocal(new Date().getTime());
 					$scope.scaledRankOlderGlobal = $scope.worldPopulation - $scope.rankGlobal;
 				}
 			}
