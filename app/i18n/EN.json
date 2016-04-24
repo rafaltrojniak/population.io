@@ -4,7 +4,6 @@
   "LOCAL_ASIA": "Asia",
   "LOCAL_EUROPE": "Europe",
   "LOCAL_AFRICA": "Africa",
-  "LOCAL_AFRICA": "Africa",
   "LOCAL_NORTH_AMERICA": "North America",
   "LOCAL_SOUTH_AMERICA": "South America",
   "LOCAL_OCEANIA": "Oceania",
@@ -24,7 +23,7 @@
 
   "FIND_FACEBOOK": "Find us on Facebook!",
   "SHARE_TED_TALK": "Watch the TED talk!",
-  "SHARE_TED_TALK_URL": "https://www.youtube.com/watch?v=87DDL6PiV2g", 
+  "SHARE_TED_TALK_URL": "https://www.youtube.com/watch?v=87DDL6PiV2g",
   "SHARE_TEXT": "Share!",
 
   "HOME_WORLD_CLOCK": "Current world<br> population clock",

@@ -1,11 +1,13 @@
 angular.module('populationioApp').controller('DeathCtrl', [
-	'$scope', '$filter', 'ProfileService', 'PopulationIOService',
-	function($scope, $filter, ProfileService, PopulationIOService){
+	'$scope', '$filter', '$translate', 'ProfileService', 'PopulationIOService',
+	function($scope, $filter, $translate, ProfileService, PopulationIOService){
 		'use strict';
-		var translate = $filter('translate');
 		$scope.type = 'distribution';
+		$scope.$on('languageChange', function(){
+			$scope.country = $translate.instant(ProfileService.country);
+		});
 		$scope.$on('profileUpdated', function(){
-			$scope.country = ProfileService.country;
+			$scope.country = $translate.instant(ProfileService.country);
 			$scope.$root.loading += 1;
 			PopulationIOService.loadMortalityDistribution({
 				country: ProfileService.country,
@@ -53,14 +55,16 @@ angular.module('populationioApp').controller('DeathCtrl', [
 				var diffDays = c.diff(w, 'days');
 				var diffYears = c.diff(w, 'years');
 				$scope.differenceInDays = diffDays < 0 ? '- ' + (-1 * diffDays) + ' days' : '+ ' + diffDays + ' days';
-				$scope.soMuchToDo = diffDays < 1 ? translate('DEATH_EXPECTANCY_TXT_SHORTER') : translate('DEATH_EXPECTANCY_TXT_LONGER');
+				$scope.soMuchToDo = diffDays < 1 ?
+					$translate.instant('DEATH_EXPECTANCY_TXT_SHORTER') :
+					$translate.instant('DEATH_EXPECTANCY_TXT_LONGER');
 				if(diffYears < 1 && diffYears > -1) {
-					$scope.differenceInUnits = diffDays.toString().replace('-', '') + ' ' + translate('UNIT_DAYS');
+					$scope.differenceInUnits = diffDays.toString().replace('-', '') + ' ' + $translate.instant('UNIT_DAYS');
 				} else {
 					if(Math.abs(diffYears) <= 1) {
-						$scope.differenceInUnits = diffYears.toString().replace('-', '') + ' ' + translate('UNIT_YEAR');
+						$scope.differenceInUnits = diffYears.toString().replace('-', '') + ' ' + $translate.instant('UNIT_YEAR');
 					} else {
-						$scope.differenceInUnits = diffYears.toString().replace('-', '') + ' ' + translate('UNIT_YEARS');
+						$scope.differenceInUnits = diffYears.toString().replace('-', '') + ' ' + $translate.instant('UNIT_YEARS');
 					}
 				}
 			};

@@ -1,6 +1,6 @@
 angular.module('populationioApp').controller('SummaryCtrl', [
-	'$scope', '$interval', '$filter', 'PopulationIOService', 'ProfileService',
-	function($scope, $interval, $filter, PopulationIOService, ProfileService){
+	'$scope', '$interval', '$filter', '$translate', 'PopulationIOService', 'ProfileService',
+	function($scope, $interval, $filter, $translate, PopulationIOService, ProfileService){
 		'use strict';
 		var rangeLoaded = false;
 		$scope.region = 'World';
@@ -45,6 +45,12 @@ angular.module('populationioApp').controller('SummaryCtrl', [
 		$scope.calcCountryYoungerPercentageSimple = function(){
 			return $filter('number')(Math.min(100, $scope.rankLocal / ($scope.countryPopulation / 100)), 0);
 		};
+		$scope.$on('profileUpdated', function(){
+			$scope.translatedCountry = $translate.instant(ProfileService.country);
+		});
+		$scope.$on('languageChange', function(){
+			$scope.translatedCountry = $translate.instant(ProfileService.country);
+		});
 		$scope.$on('rankLocalChanged', function(event, rank){
 			$scope.rankLocal = rank;
 		});

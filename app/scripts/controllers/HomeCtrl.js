@@ -25,9 +25,12 @@ angular.module('populationioApp').controller('HomeCtrl', [
 		$scope.$on('languageChange', function(){
 			// This part is required to properly update (and translate) month
 			var month = $scope.profile.birthday.month;
+			var country = $scope.profile.country;
 			$scope.profile.birthday.month = '';
+			$scope.profile.country = '';
 			$scope.$applyAsync(function(){
 				$scope.profile.birthday.month = month;
+				$scope.profile.country = country;
 			});
 		});
 		$scope.goGoGadget = function(){

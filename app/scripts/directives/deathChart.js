@@ -2,8 +2,8 @@
     'use strict';
 
     angular.module('populationioApp')
-      .directive('deathChart', ['$filter', 'PopulationIOService', 'HelloWords', '$timeout', 'ProfileService',
-          function ($filter, PopulationIOService, HelloWords, $timeout, ProfileService) {
+      .directive('deathChart', ['$filter', '$translate', 'PopulationIOService', 'HelloWords', '$timeout', 'ProfileService',
+          function ($filter, $translate, PopulationIOService, HelloWords, $timeout, ProfileService) {
               return {
                   restrict: 'E',
                   link: function ($scope, element) {
@@ -34,19 +34,25 @@
                       _initChart();
 
                       $scope.$on('languageChange', function () {
-                        xLabel.text($filter('translate')('DEATH_CHART_AXIS_X'));
-                        yLabel.text($filter('translate')('DEATH_CHANCES_OF_DYING'));
+                        xLabel.text($translate.instant('DEATH_CHART_AXIS_X'));
+                        yLabel.text($translate.instant('DEATH_CHANCES_OF_DYING'));
                         yLabel.text(function () {
                             if ($scope.type === 'distribution') {
-                                return $filter('translate')('DEATH_CHANCES_OF_DYING')
+                                return $translate.instant('DEATH_CHANCES_OF_DYING');
                             }
                             else {
-                                return $filter('translate')('DEATH_CHART_AXIS_Y')
+                                return $translate.instant('DEATH_CHART_AXIS_Y');
                             }
                         });
-                        someLabel.text($filter('translate')('DEATH_CHART_YOUR_AGE'));
-                        worldLabel.text($filter('translate')('SUMMARY_WORLD'));
-                        worldLabel2.text($filter('translate')('SUMMARY_WORLD'));
+                        someLabel.text($translate.instant('DEATH_CHART_YOUR_AGE'));
+                        pointerWorld.select('.region').text($translate.instant('SUMMARY_WORLD'));
+                        pointerWorld.select('.age').text(function () {
+                          return $filter('number')($scope.totalLifeWorldInYears, 1) + ' ' + $translate.instant('LOCAL_YEARS')
+                        });
+                        pointerCountry.select('.region').text($translate.instant(ProfileService.country));
+                        pointerCountry.select('.age').text(function () {
+                          return $filter('number')($scope.totalLifeCountryInYears, 1) + ' ' + $translate.instant('LOCAL_YEARS')
+                        });
                       });
 
                       $scope.$on('mortalityDistributionDataChanged', function (e, data) {
@@ -91,7 +97,7 @@
                           chart.select('.label-line').remove();
                           chart.select('.vertical-pointer').remove();
                           xLabel = chart.append('text')
-                            .text($filter('translate')('DEATH_CHART_AXIS_X'))
+                            .text($translate.instant('DEATH_CHART_AXIS_X'))
                             .attr(
                             {
                                 class: 'x-label',
@@ -114,7 +120,7 @@
                                 'stroke-width': 1
                             });
                           yLabel = chart.append('text')
-                            .text($filter('translate')('DEATH_CHANCES_OF_DYING'))
+                            .text($translate.instant('DEATH_CHANCES_OF_DYING'))
                             .attr(
                             {
                                 class: 'y-label',
@@ -149,7 +155,6 @@
                                 y1: -30,
                                 x2: 0,
                                 y2: 30
-                                //'stroke-dasharray': '2,2'
                             })
                             .style({
                                 stroke: '#dedede',
@@ -175,7 +180,7 @@
                                 dx: 10,
                                 dy: 10
                             })
-                            .text($filter('translate')('DEATH_CHART_YOUR_AGE'))
+                            .text($translate.instant('DEATH_CHART_YOUR_AGE'))
                           ;
                           pointerPerson.append('text')
                             .style({
@@ -214,7 +219,7 @@
                                 dx: 10,
                                 dy: 10
                             })
-                            .text($filter('translate')('SUMMARY_WORLD'))
+                            .text($translate.instant('SUMMARY_WORLD'))
                           ;
 
                           worldLabel2 = pointerWorld.append('text')
@@ -228,17 +233,8 @@
                                 dx: 10,
                                 dy: 25
                             })
-                            .text($filter('translate')('SUMMARY_WORLD'))
+                            .text($translate.instant('SUMMARY_WORLD'))
                           ;
-                          /*
-                           pointerWorld.append('circle')
-                           .attr({
-                           r: 4
-                           })
-                           .style({
-                           fill: '#333'
-                           });
-                           */
 
                           pointerCountry = chart.append('g').attr({class: 'pointer'}).attr({transform: 'translate(-200,0)'});
                           pointerCountry.append('line')
@@ -278,15 +274,6 @@
                             })
                           ;
 
-                          /*
-                           pointerCountry.append('circle')
-                           .attr({
-                           r: 4
-                           })
-                           .style({
-                           fill: '#333'
-                           });
-                           */
                           actionBox = chart.append('rect')
                             .style({
                                 fill: 'red',
@@ -313,18 +300,13 @@
                                     return item.age >= xRange.invert(mouse[0] + 120) - 5;
                                 }).mortality_percent;
 
-                                /*
-                                 var periodScale = d3.scale.linear()
-                                 .domain([yPositionWorld, personAreaWorld[periodIndex + 1].mortality_percent])
-                                 .range([yRange(yPositionWorld), personAreaWorld[periodIndex + 1].mortality_percent])
-                                 */
-
                                 var deathRateWorld = $filter('number')(yPositionWorld, 2);
                                 var deathRateCountry = $filter('number')(yPositionCountry, 2);
                                 tooltip.html(function (d, i) {
-                                      return "<p><span class='tooltip-label'>Age:</span><span class='tooltip-value'>" + ageFormatted + " years</span></p>"
-                                        + "<p><span class='tooltip-label'>World:</span><span class='tooltip-value'>" + deathRateWorld + "%</span></p>"
-                                        + "<p><span class='tooltip-label'>" + ProfileService.country + ":</span><span class='tooltip-value'>" + deathRateCountry + "%</span></p>"
+                                      return '<p><span class="tooltip-label">Age:</span><span class="tooltip-value">' + ageFormatted + ' years</span></p>'
+                                        + '<p><span class="tooltip-label">World:</span><span class="tooltip-value">' + deathRateWorld + '%</span></p>'
+                                        + '<p><span class="tooltip-label">' + $translate.instant(ProfileService.country) + ':</span>'
+                                        + '<span class="tooltip-value">' + deathRateCountry + '%</span></p>'
                                         ;
                                   }
                                 );
@@ -500,8 +482,7 @@
                           pointerWorld.select('.age')
                             .transition()
                             .text(function () {
-                                return $filter('number')($scope.totalLifeWorldInYears, 1) + ' ' + $filter('translate')('LOCAL_YEARS')
-                                //return '???' + ' years'
+                                return $filter('number')($scope.totalLifeWorldInYears, 1) + ' ' + $translate.instant('LOCAL_YEARS')
                             });
 
                           pointerCountry
@@ -510,21 +491,14 @@
                                 transform: 'translate(' + [xRange($scope.totalLifeCountryInYears), -60] + ')'
                             });
 
-                          pointerCountry.select('.region')
-                            .text(ProfileService.country)
-                          /*
-                           .transition()
-                           .attr({
-                           dy: -yRange(countryMaxMortality.mortality_percent) - 30
-                           });
-                           */
+                          pointerCountry.select('.region').text($translate.instant(ProfileService.country));
 
                           pointerCountry.select('.age')
                             .transition()
                             .text(function () {
-                                return $filter('number')($scope.totalLifeLengthLocal, 1) + ' ' + $filter('translate')('LOCAL_YEARS')
+                                return $filter('number')($scope.totalLifeCountryInYears, 1) + ' ' + $translate.instant('LOCAL_YEARS')
                             })
-                          pointerPerson.select('.age').text(age + ' ' + $filter('translate')('LOCAL_YEARS'))
+                          pointerPerson.select('.age').text(age + ' ' + $translate.instant('LOCAL_YEARS'))
 
                           pointerPerson
                             .transition()
@@ -533,10 +507,10 @@
                             });
                           yLabel.text(function () {
                               if ($scope.type === 'distribution') {
-                                  return $filter('translate')('DEATH_CHANCES_OF_DYING')
+                                  return $translate.instant('DEATH_CHANCES_OF_DYING')
                               }
                               else {
-                                  return $filter('translate')('DEATH_CHART_AXIS_Y')
+                                  return $translate.instant('DEATH_CHART_AXIS_Y')
                               }
                           });
                           yLabelLine

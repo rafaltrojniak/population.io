@@ -24,7 +24,7 @@ angular.module('populationioApp').controller('MainCtrl', [
 		$scope.activeLangKey = $scope.$root.defaultLanguage;
 		$scope.changeLanguage($scope.$root.defaultLanguage);
 		$scope.$root.countriesList = function(newVal){
-			newVal = newVal.toLowerCase();
+			newVal = $translate.instant(newVal).toLowerCase();
 			var alternativeName = newVal;
 			var aliases = [
 				{alias: 'Great Britain', country: 'United Kingdom'},
@@ -42,25 +42,17 @@ angular.module('populationioApp').controller('MainCtrl', [
 			if(foundAlias){
 				alternativeName = foundAlias.country.toLowerCase();
 			}
-			var getCountryName = function(value){
-				switch($scope.activeLangKey){
-					case 'ES':
-						return value.POPIO_NAME_ES;
-					default:
-						return value.POPIO_NAME;
-				}
-			};
 			return _.map(
 				_.filter(
 					Countries,
 					function(v) {
-						var name = v.POPIO_NAME.toLowerCase();
+						var name = $translate.instant(v.POPIO_NAME).toLowerCase();
 						return name.indexOf(alternativeName) > -1 || name.indexOf(newVal) > -1;
 					}
 				),
 				function(v) {
 					return {
-						label: getCountryName(v),
+						label: $translate.instant(v.POPIO_NAME),
 						value: v.POPIO_NAME
 					};
 				}
