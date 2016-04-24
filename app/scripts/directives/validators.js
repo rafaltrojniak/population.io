@@ -51,9 +51,9 @@ angular.module('populationioApp').directive('validateCountry', ['Countries', fun
 	return {
 		require: 'ngModel',
 		link: function(scope, elm, attrs, ctrl){
-			ctrl.$validators.country = function(modelValue, viewValue){
+			ctrl.$validators.country = function(modelValue){
 				var countriesFiltered = _.filter(Countries, function(v){
-					return v.POPIO_NAME.toLowerCase() === viewValue.toLowerCase();
+					return v.POPIO_NAME.toLowerCase() === modelValue.toLowerCase();
 				});
 				if(countriesFiltered.length){
 					return true;

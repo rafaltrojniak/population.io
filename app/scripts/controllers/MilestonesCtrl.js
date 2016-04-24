@@ -7,7 +7,7 @@ angular.module('populationioApp').controller('MilestonesCtrl', [
 				case 'lifeExpWorld':
 					return $translate.instant('MILESTONES_MILESTONE_LIFE_EXPECTANCY') + $translate.instant('LOCAL_WORLD');
 				case 'lifeExpCountry':
-					return $translate.instant('MILESTONES_MILESTONE_LIFE_EXPECTANCY') + ProfileService.country;
+					return $translate.instant('MILESTONES_MILESTONE_LIFE_EXPECTANCY') + $translate.instant(ProfileService.country);
 				case 'ORDINAL_NUMBER_1':
 					return $translate.instant('MILESTONES_MILESTONE_1_BILLION');
 				case 'ORDINAL_NUMBER_2':

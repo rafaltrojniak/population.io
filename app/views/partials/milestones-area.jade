@@ -8,7 +8,7 @@
                 .title {{ 'LOCAL_WORLD' | translate }}
                 rank-graph(country="'World'", data="globalRankData", age="age")
             .local-rank
-                .title {{profile.country}}
+                .title {{ profile.country | translate }}
                 rank-graph(country="country", data="localRankData", age="age")
 
         .timeline

@@ -56,10 +56,17 @@ angular.module('populationioApp').controller('ExpectancyMapComponentCtrl', [
 				return item.GMI_CNTRY === country;
 			});
 			if(result.length > 0){
-				return result[0].POPIO_NAME;
+				return $translate.instant(result[0].POPIO_NAME);
 			}
 			return country;
 		};
+		$scope.$on('languageChange', function(){
+			root.select('.countries').selectAll('.country').attr({
+				'title': function(d){
+					return getCountryTitle(d.properties.GMI_CNTRY);
+				}
+			});
+		});
 		// Load countries topographic data
 		d3.json('/data/countries_topo.json', function(error, data){
 			if(error){
@@ -189,7 +196,7 @@ angular.module('populationioApp').controller('ExpectancyMapComponentCtrl', [
 				})
 				.text($translate.instant('EXPECTANCY_MAP_POINTER_2'))
 				.append('tspan')
-				.text(data.country.POPIO_NAME); // TODO: Support for country translations
+				.text($translate.instant(data.country.POPIO_NAME));
 
 			var deathDate = moment(data.dod).format('DD MMM, YYYY');
 			var estimationText = yearsLeftText.append('g').attr({

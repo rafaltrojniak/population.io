@@ -40,6 +40,7 @@ world-clock
                     uib-typeahead="country.value as country.label for country in countriesList($viewValue)"
                     required
                     validate-country
+                    country-translate
                     )
                 .toggle
                     label.icon.icon-female(ng-model="profile.gender" uib-btn-radio="'female'", required) {{ 'LOCAL_FEMALE' | translate }}
