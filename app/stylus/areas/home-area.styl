@@ -1,12 +1,9 @@
 .home-area
-    height 580px
     z-index 20
     background #fff
     position relative
-    margin 90px 0 240px 0
+    margin-bottom 90px
     .question
-        position relative
-        top 200px
         h1
             margin 0
             padding 0
@@ -19,7 +16,10 @@
             color #666666
             font-family 'Theinhardt-Light', 'Helvetica', sans-serif
     form
-        /*clearfix()*/
+        &:after
+            clear both
+            content ' '
+            display block
         &.highlight
             input
                 &.ng-invalid
