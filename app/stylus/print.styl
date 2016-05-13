@@ -1,0 +1,29 @@
+@media print
+  body
+    > header, > footer, > .copyright
+      display none!important
+    > .content-block
+      page-break-after avoid
+      > .navigation, > .share
+        display none!important
+      #home > world-clock
+        display none!important
+    .container
+      width: auto
+    .home-area
+      margin-bottom 20px
+      a.btn
+        display: none!important
+      .toggle label.active
+        font-weight bold
+    milestones
+      margin-top 300px
+    #summary .region-switcher span.active
+      font-weight bold
+    #milestones li.now
+      font-weight bold
+    #birthdays
+      .continents .toggle label.active
+        font-weight bold
+    #death .type-switcher span.active
+      font-weight bold
