@@ -30,7 +30,7 @@
                     | </svg>
 
 
-                .label(compile-unsafe="'SUMMARY_CITIZEN' | translate")
+                .label(translate="SUMMARY_CITIZEN" translate-values="{region: profile.country}")
             .older-column.country(ng-hide="region=='World'")
                 .number(ng-bind='scaledRankOlderLocal | number: 0')
                 .label(ng-bind='calcCountryOlderPercentage()')

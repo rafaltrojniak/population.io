@@ -48,7 +48,7 @@
   "SUMMARY_WORLD": "Dunia",
   "SUMMARY_PEOPLE_YOUNGER": "Penduduk yang lebih muda dari kamu (",
   "SUMMARY_PEOPLE_OLDER": "Penduduk yang lebih tua dari kamu (",
-  "SUMMARY_CITIZEN": "Kamu adalah penduduk <br>dari <span>{{region || profile.country}}</span>",
+  "SUMMARY_CITIZEN": "Kamu adalah penduduk <br>dari <span>{{region}}</span>",
   "SUMMARY_CHART_AXIS_Y": "Penduduk",
   "SUMMARY_CHART_AXIS_X": "Umur",
 

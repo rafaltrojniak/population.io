@@ -48,7 +48,7 @@
   "SUMMARY_WORLD": "Monde",
   "SUMMARY_PEOPLE_YOUNGER": "Personnes plus jeunes que vous  (",
   "SUMMARY_PEOPLE_OLDER": "Personnes moins jeunes que vous (",
-  "SUMMARY_CITIZEN": "Vous, en tant que citoyen <br>de <span>{{region || profile.country}}</span>",
+  "SUMMARY_CITIZEN": "Vous, en tant que citoyen <br>de <span>{{region}}</span>",
   "SUMMARY_CHART_AXIS_Y": "Personnes",
   "SUMMARY_CHART_AXIS_X": "Age",
 
