@@ -47,7 +47,7 @@
   "SUMMARY_WORLD": "Мир",
   "SUMMARY_PEOPLE_YOUNGER": "Люди младше Вас (",
   "SUMMARY_PEOPLE_OLDER": "Люди старше Вас (",
-  "SUMMARY_CITIZEN": "Вы, как гражданин <br>из <span>{{region || profile.country}}</span>",
+  "SUMMARY_CITIZEN": "Вы, как гражданин <br>из <span>{{region}}</span>",
   "SUMMARY_CHART_AXIS_Y": "Население",
   "SUMMARY_CHART_AXIS_X": "Возраст",
 

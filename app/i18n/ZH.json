@@ -48,7 +48,7 @@
   "SUMMARY_WORLD": "世界",
   "SUMMARY_PEOPLE_YOUNGER": "比您年轻的人 (",
   "SUMMARY_PEOPLE_OLDER": "比您年长的人 (",
-  "SUMMARY_CITIZEN": "您作为一个<br>来自<span>{{region || profile.country}}</span>的公民",
+  "SUMMARY_CITIZEN": "您作为一个<br>来自<span>{{region}}</span>的公民",
   "SUMMARY_CHART_AXIS_Y": "人口",
   "SUMMARY_CHART_AXIS_X": "年龄",
 
