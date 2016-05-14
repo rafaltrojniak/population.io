@@ -14,6 +14,8 @@ angular.module('populationioApp').controller('MainCtrl', [
 			};
 		});
 		$scope.changeLanguage = LanguageService.change;
+		$scope.languages = LanguageService.supportedLanguages;
+		$scope.getLanguageTitle = LanguageService.getTitle;
 		$scope.profile = ProfileService;
 		$scope.$root.countriesList = function(newVal){
 			newVal = $translate.instant(newVal).toLowerCase();
