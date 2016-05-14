@@ -12,7 +12,6 @@ angular.module('populationioApp').directive('deathChart', [
 					personAreaWorld, personAreaCountry,
 					parentHeight = 240,
 					yAxisFormat = d3.format('.0%'),
-					ageFormat = d3.format('.2f'),
 					xRange = d3.scale.linear(),
 					yRange = d3.scale.linear().nice(),
 					line = d3.svg.line(),
@@ -39,13 +38,14 @@ angular.module('populationioApp').directive('deathChart', [
 						}
 					});
 					someLabel.text($translate.instant('DEATH_CHART_YOUR_AGE'));
+					pointerPerson.select('.age').text(age + ' ' + $translate.instant('UNIT_YEARS'));
 					pointerWorld.select('.region').text($translate.instant('SUMMARY_WORLD'));
 					pointerWorld.select('.age').text(function(){
-						return $filter('number')($scope.totalLifeWorldInYears, 1) + ' ' + $translate.instant('LOCAL_YEARS');
+						return $filter('number')($scope.totalLifeWorldInYears, 1) + ' ' + $translate.instant('UNIT_YEARS');
 					});
 					pointerCountry.select('.region').text($translate.instant(ProfileService.country));
 					pointerCountry.select('.age').text(function(){
-						return $filter('number')($scope.totalLifeCountryInYears, 1) + ' ' + $translate.instant('LOCAL_YEARS');
+						return $filter('number')($scope.totalLifeCountryInYears, 1) + ' ' + $translate.instant('UNIT_YEARS');
 					});
 				});
 				$scope.$on('mortalityDistributionDataChanged', function(e, data){
@@ -291,14 +291,14 @@ angular.module('populationioApp').directive('deathChart', [
 									}
 								);
 								tooltip
-									.style("left", (d3.event.pageX - 100) + "px")
-									.style("top", (d3.event.pageY - d3.mouse(this)[1]) + "px");
+									.style('left', (d3.event.pageX - 100) + 'px')
+									.style('top', (d3.event.pageY - d3.mouse(this)[1]) + 'px');
 							}
 						)
 						.on('mouseleave', _hideTooltip);
 					function _showTooltip(){
 						tooltip
-							.attr({class: 'chart-tooltip death'})
+							.attr({'class': 'chart-tooltip death'})
 							.transition()
 							.duration(200)
 							.style({
@@ -311,13 +311,12 @@ angular.module('populationioApp').directive('deathChart', [
 						tooltip
 							.transition()
 							.duration(200)
-							.style("opacity", 0)
+							.style('opacity', 0)
 							.each('end', function(){
 								d3.select(this)
 									.style({display: 'none'})
-									.attr({class: 'chart-tooltip'})
-							})
-						;
+									.attr({'class': 'chart-tooltip'});
+							});
 					}
 				}
 
@@ -336,12 +335,11 @@ angular.module('populationioApp').directive('deathChart', [
 					});
 					var yTickStep = d3.max([worldMax, countryMax]) / 3; // To have 4 ticks total for y axis
 					xAxis.tickFormat(function(d){
-						return d + 'y'
-					})
+						return d + 'y';
+					});
 					yAxis.tickFormat(function(d){
-						return yAxisFormat(d / 100)
-					})
-						.tickValues([0, yTickStep, yTickStep * 2, d3.max([worldMax, countryMax])])
+						return yAxisFormat(d / 100);
+					}).tickValues([0, yTickStep, yTickStep * 2, d3.max([worldMax, countryMax])]);
 					xRange.range([120, parentWidth - 160]).domain([d3.min(personAreaCountry, function(d){
 						return d.age;
 					}), d3.max(personAreaCountry, function(d){
@@ -369,70 +367,70 @@ angular.module('populationioApp').directive('deathChart', [
 					;
 					areaCountry
 						.attr('fill', function(){
-							if($scope.type == 'distribution'){
-								return '#6581f1'
+							if($scope.type === 'distribution'){
+								return '#6581f1';
 							}
 							else {
-								return 'transparent'
+								return 'transparent';
 							}
 						})
 						.attr('stroke', function(){
-							if($scope.type == 'distribution'){
-								return 'transparent'
+							if($scope.type === 'distribution'){
+								return 'transparent';
 							}
 							else {
-								return '#6581f1'
+								return '#6581f1';
 							}
 						})
 						.attr('stroke-width', function(){
-							if($scope.type == 'distribution'){
-								return 0
+							if($scope.type === 'distribution'){
+								return 0;
 							}
 							else {
-								return 5
+								return 5;
 							}
 						})
 						.transition()
 						.attr('d', function(){
 							if($scope.type === 'distribution'){
-								return area(personAreaCountry)
+								return area(personAreaCountry);
 							}
 							else {
-								return line(personAreaCountry)
+								return line(personAreaCountry);
 							}
 						});
 					areaWorld
 						.attr('fill', function(){
-							if($scope.type == 'distribution'){
-								return '#98EC79'
+							if($scope.type === 'distribution'){
+								return '#98EC79';
 							}
 							else {
-								return 'transparent'
+								return 'transparent';
 							}
 						})
 						.attr('stroke', function(){
-							if($scope.type == 'distribution'){
-								return 'transparent'
+							if($scope.type === 'distribution'){
+								return 'transparent';
 							}
 							else {
-								return '#98EC79'
+								return '#98EC79';
 							}
 						})
 						.attr('stroke-width', function(){
-							if($scope.type == 'distribution'){
-								return 0
+							if($scope.type === 'distribution'){
+								return 0;
 							}
 							else {
-								return 5
+								return 5;
 							}
 						})
 						.transition()
 						.attr('d', function(){
 							if($scope.type === 'distribution'){
-								return area(personAreaWorld)
+								return area(personAreaWorld);
 							}
 							else {
-								return line(personAreaWorld)
+								return line(personAreaWorld);
 							}
 						})
 						.style({opacity: 0.5});
@@ -440,8 +438,6 @@ angular.module('populationioApp').directive('deathChart', [
 					areaLine
 						.transition()
 						.attr('d', line(data))
-						//.attr('stroke', '#66666F')
-						//.attr('stroke-width', 3)
 						.attr('fill', 'none');
 					xAxisElement
 						.transition()
@@ -461,7 +457,7 @@ angular.module('populationioApp').directive('deathChart', [
 					pointerWorld.select('.age')
 						.transition()
 						.text(function(){
-							return $filter('number')($scope.totalLifeWorldInYears, 1) + ' ' + $translate.instant('LOCAL_YEARS')
+							return $filter('number')($scope.totalLifeWorldInYears, 1) + ' ' + $translate.instant('UNIT_YEARS');
 						});
 					pointerCountry
 						.transition()
@@ -472,9 +468,9 @@ angular.module('populationioApp').directive('deathChart', [
 					pointerCountry.select('.age')
 						.transition()
 						.text(function(){
-							return $filter('number')($scope.totalLifeCountryInYears, 1) + ' ' + $translate.instant('LOCAL_YEARS')
-						})
-					pointerPerson.select('.age').text(age + ' ' + $translate.instant('LOCAL_YEARS'))
+							return $filter('number')($scope.totalLifeCountryInYears, 1) + ' ' + $translate.instant('UNIT_YEARS');
+						});
+					pointerPerson.select('.age').text(age + ' ' + $translate.instant('UNIT_YEARS'));
 					pointerPerson
 						.transition()
 						.attr({
@@ -482,10 +478,10 @@ angular.module('populationioApp').directive('deathChart', [
 						});
 					yLabel.text(function(){
 						if($scope.type === 'distribution'){
-							return $translate.instant('DEATH_CHANCES_OF_DYING')
+							return $translate.instant('DEATH_CHANCES_OF_DYING');
 						}
 						else {
-							return $translate.instant('DEATH_CHART_AXIS_Y')
+							return $translate.instant('DEATH_CHART_AXIS_Y');
 						}
 					});
 					yLabelLine
@@ -493,13 +489,12 @@ angular.module('populationioApp').directive('deathChart', [
 						.attr({
 							y1: function(){
 								if($scope.type === 'distribution'){
-									return -130
-								}
-								else {
-									return -180
+									return -130;
+								} else {
+									return -180;
 								}
 							}
-						})
+						});
 				}
 			}
 		};

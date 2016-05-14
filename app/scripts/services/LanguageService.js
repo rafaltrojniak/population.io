@@ -15,6 +15,7 @@ angular.module('populationioApp').factory('LanguageService', [
 			change: function(language){
 				language = getSupportedLanguage(language);
 				$translate.use(language).then(function(){
+					moment.locale(language.toLowerCase());
 					tmhDynamicLocale.set(language.toLowerCase());
 					$rootScope.defaultLanguage = language;
 					$rootScope.$broadcast('languageChange');

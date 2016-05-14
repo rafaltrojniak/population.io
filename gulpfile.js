@@ -13,7 +13,7 @@ var nib = require('gulp-stylus/node_modules/nib');
 var sftp = require('gulp-sftp');
 var runSequence = require('run-sequence');
 var scripts = [
-		'bower_components/momentjs/moment.js',
+		'bower_components/momentjs/min/moment-with-locales.min.js',
 		'bower_components/jquery/dist/jquery.js',
 		'bower_components/jquery-ui/jquery-ui.js',
 		'bower_components/d3/d3.js',
