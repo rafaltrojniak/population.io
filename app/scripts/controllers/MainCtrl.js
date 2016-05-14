@@ -1,8 +1,8 @@
 angular.module('populationioApp').controller('MainCtrl', [
 	'$translate', '$scope', '$http', '$interval', '$uibModal', '$location', '$document', '$filter',
-	'ProfileService', 'PopulationIOService', 'BrowserService', 'Countries',
+	'ProfileService', 'PopulationIOService', 'BrowserService', 'Countries', 'LanguageService',
 	function($translate, $scope, $http, $interval, $uibModal, $location, $document, $filter,
-	         ProfileService, PopulationIOService, BrowserService, Countries){
+	         ProfileService, PopulationIOService, BrowserService, Countries, LanguageService){
 		'use strict';
 		$scope.$root.loading = 0;
 		$scope.$root.$on('$translateChangeSuccess', function(){
@@ -13,16 +13,8 @@ angular.module('populationioApp').controller('MainCtrl', [
 				menuApi: $translate.instant('HEADER_MENU_API')
 			};
 		});
-		$scope.changeLanguage = function(langKey){
-			$translate.use(langKey).then(function(){
-				$scope.$root.$broadcast('languageChange');
-			}, function(langKey){
-				console.log('Something wrong with this language:', langKey);
-			});
-		};
+		$scope.changeLanguage = LanguageService.change;
 		$scope.profile = ProfileService;
-		$scope.activeLangKey = $scope.$root.defaultLanguage;
-		$scope.changeLanguage($scope.$root.defaultLanguage);
 		$scope.$root.countriesList = function(newVal){
 			newVal = $translate.instant(newVal).toLowerCase();
 			var alternativeName = newVal;

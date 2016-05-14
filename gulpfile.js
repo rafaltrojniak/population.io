@@ -35,6 +35,7 @@ var scripts = [
 		'bower_components/angular-resource/angular-resource.js',
 		'bower_components/angular-ui-router/release/angular-ui-router.js',
 		'bower_components/angular-sanitize/angular-sanitize.js',
+		'bower_components/angular-dynamic-locale/dist/tmhDynamicLocale.js',
 		'bower_components/angular-translate/angular-translate.js',
 		'bower_components/angular-translate-loader-static-files/angular-translate-loader-static-files.js',
 		'app/scripts/**/*.js'
@@ -85,6 +86,8 @@ gulp.task('trans', function(){
 	gulp.src('app/i18n/*')
 		.pipe(gulp.dest('dist/i18n'))
 		.pipe(connect.reload());
+	gulp.src('bower_components/angular-i18n/angular-locale_*.js')
+		.pipe(gulp.dest('dist/i18n/angular'));
 });
 // scripts watch task for development
 gulp.task('scripts:watch', function () {
