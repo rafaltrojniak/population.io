@@ -84,7 +84,6 @@
   "BIRTHDAYS_SWITCH_LABEL": "生日：",
 
   "EXPECTANCY_INTRO": "想象您现在生活在一个不同的国家或者一个不同的时代——您预期可以活到多少岁？",
-  "EXPECTANCY_MAP_POINTER": "<br>还有{{year}}年生命<br> 在 {{country}}<br><br> 我们估计您将活到<br> {{age}} 岁<br> {{date}}",
   "EXPECTANCY_MAP_POINTER_1": "生命还有 ",
   "EXPECTANCY_MAP_POINTER_2": "在 ",
   "EXPECTANCY_MAP_POINTER_3": "我们估计您将活到",

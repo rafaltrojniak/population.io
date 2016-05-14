@@ -84,7 +84,6 @@
   "BIRTHDAYS_SWITCH_LABEL": "Ulang tahun di:",
 
   "EXPECTANCY_INTRO": "Bayangkan kamu hidup di negara lain dan dengan angka harapan hidup dari waktu yang lain - Berapa lama kamu akan hidup?",
-  "EXPECTANCY_MAP_POINTER": "{{year}}<br> Tahun sisa hidup<br> di {{country}}<br><br> Diperkirakan kamu akan hidup<br> hingga umur {{age}} tahun<br> {{date}}",
   "EXPECTANCY_MAP_POINTER_1": "Sisa tahun",
   "EXPECTANCY_MAP_POINTER_2": "dalam ",
   "EXPECTANCY_MAP_POINTER_3": "Diperkirakan kamu akan hidup",

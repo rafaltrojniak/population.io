@@ -30,7 +30,7 @@ angular.module('populationioApp').controller('DeathCtrl', [
 			}, function(remainingLife){
 				var today = new Date();
 				$scope.$root.loading -= 1;
-				$scope.dodWorld = $filter('date')(today.setDate(today.getDate() + (remainingLife * 365)), 'd MMM, yyyy');
+				$scope.dodWorld = today.setDate(today.getDate() + (remainingLife * 365));
 				$scope.remainingLifeWorldInYears = parseFloat(remainingLife).toFixed(1);
 				$scope.totalLifeWorldInYears = moment(today).diff(moment(ProfileService.birthday.year, 'YYYY'), 'years', true);
 			});
@@ -44,17 +44,18 @@ angular.module('populationioApp').controller('DeathCtrl', [
 			}, function(remainingLife){
 				var today = new Date();
 				$scope.$root.loading -= 1;
-				$scope.dodCountry = $filter('date')(today.setDate(today.getDate() + (remainingLife * 365)), 'd MMM, yyyy');
+				$scope.dodCountry = today.setDate(today.getDate() + (remainingLife * 365));
 				$scope.remainingLifeCountryInYears = parseFloat(remainingLife).toFixed(1);
 				$scope.totalLifeCountryInYears = moment(today).diff(moment(ProfileService.birthday.year, 'YYYY'), 'years', true);
 			});
 
 			var updateValues = function(){
-				var c = moment($scope.dodCountry, 'DD MMM, YYYY');
-				var w = moment($scope.dodWorld, 'DD MMM, YYYY');
+				var c = moment($scope.dodCountry);
+				var w = moment($scope.dodWorld);
 				var diffDays = c.diff(w, 'days');
 				var diffYears = c.diff(w, 'years');
-				$scope.differenceInDays = diffDays < 0 ? '- ' + (-1 * diffDays) + ' days' : '+ ' + diffDays + ' days';
+				$scope.differenceInDays = diffDays < 0 ? '- ' + (-1 * diffDays)  : '+ ' + diffDays;
+				$scope.differenceInDays += ' ' + $translate.instant('UNIT_DAYS');
 				$scope.soMuchToDo = diffDays < 1 ?
 					$translate.instant('DEATH_EXPECTANCY_TXT_SHORTER') :
 					$translate.instant('DEATH_EXPECTANCY_TXT_LONGER');

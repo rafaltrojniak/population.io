@@ -84,7 +84,6 @@
   "BIRTHDAYS_SWITCH_LABEL": "Anniversaires en:",
 
   "EXPECTANCY_INTRO": "Et si vous viviez aujourd'hui dans un pays différent ou avec l'espérance de vie d'une autre époque ? Combien de temps vous resterait-t-il à vivre?",
-  "EXPECTANCY_MAP_POINTER": "{{year}}<br> années à vivre<br> en {{country}}<br><br> Nous estimons que vous vivrez<br>  jusqu'à l'âge de {{age}} années<br> {{date}}",
   "EXPECTANCY_MAP_POINTER_1": "années à vivre",
   "EXPECTANCY_MAP_POINTER_2": "en ",
   "EXPECTANCY_MAP_POINTER_3": "Nous estimons que vous vivrez",
