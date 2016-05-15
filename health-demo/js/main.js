@@ -90,13 +90,14 @@ var app = {
             success: function(data) {
                 var allLines = jQuery.csv.toArrays(data);
                 for (var i = 0; i < allLines.length; i ++) {
-                    if (allLines[i][0] && allLines[i][1] && allLines[i][2] && allLines[i][3] && allLines[i][4] && allLines[i][5]) {
+                    if (allLines[i][0] && allLines[i][1] && allLines[i][2] && allLines[i][3] && allLines[i][4]) {
                         if (allLines[i][0] === 'country_popio') continue;
                         var obj = {
-                            country:  allLines[i][0],
-                            sex:      allLines[i][3],
-                            ageGroup: allLines[i][5],
-                            pcMean:   allLines[i][4]
+                            country:       allLines[i][0],
+                            sex:           allLines[i][1],
+                            ageGroup:      allLines[i][2],
+                            smokerLoss:    parseFloat(allLines[i][3]),
+                            nonsmokerGain: parseFloat(allLines[i][4])
                         };
                         self.smokingRiskData.push(obj);
                     }
@@ -109,8 +110,18 @@ var app = {
     },
     
     getAgeGroup: function(age) {
-        if (age >= 30 && age <= 34) {
-            return 30;
+        if (age >= 5 && age <= 9) {
+            return 5;
+        } else if (age >= 10 && age <= 14) {
+            return 10;                        
+        } else if (age >= 15 && age <= 19) {
+            return 15;            
+        } else if (age >= 20 && age <= 24) {
+            return 20;
+        } else if (age >= 25 && age <= 29) {
+            return 25;
+        } else if (age >= 30 && age <= 34) {
+            return 30;            
         } else if (age >= 35 && age <= 39) {
             return 35;
         } else if (age >= 40 && age <= 44) {
@@ -132,7 +143,7 @@ var app = {
         } else if (age >= 80) {
             return 80;            
         } else {
-            return 0;
+            return 5;
         }
     },
     
@@ -169,15 +180,7 @@ var app = {
             return false;
         });        
     },
-    
-    getPcMeanFactor: function(rows) {
-        if (typeof rows[0] !== 'undefined' && typeof rows[0].pcMean !== 'undefined') {
-            return rows[0].pcMean;
-        }
-        
-        return false;
-    },
-    
+
     getLifeExpectancy: function(sex, country, ageStr) {
         var self   = this;
         var now    = new Date();
@@ -267,28 +270,52 @@ var app = {
             return false;
         }
         
-        var sex     = jQuery('input[name="sex"]:checked').val();
-        var country = jQuery('#country').val();
-        var year    = jQuery('#year').val();
-        var month   = this.getMonthNumber(jQuery('#month').val());
-        var day     = jQuery('#day').val();
-        var ageStr  = this.getAgeString(year, month, day);
-        var pcMean  = this.getPcMeanFactor(this.getPeopleInfo(country, sex, this.getAgeGroup(Math.floor(this.getAgeInDays(year, month, day) / 365))));
-        jQuery('#pc-mean-country').val(pcMean);
+        var sex      = jQuery('input[name="sex"]:checked').val();
+        var country  = jQuery('#country').val();
+        var year     = jQuery('#year').val();
+        var month    = this.getMonthNumber(jQuery('#month').val());
+        var day      = jQuery('#day').val();
+        var ageStr   = this.getAgeString(year, month, day);
+        var numYears = Math.floor(this.getAgeInDays(year, month, day) / 365);
+        var ageGroup = this.getAgeGroup(numYears);
+        var info     = this.getPeopleInfo(country, sex, ageGroup);
+        
+        if (! info.length) {
+            var errorMessage = 'Data for user (' + country + ', ' + sex + ', ' + ageGroup + ') not found in csv data file';
+            alert(errorMessage);
+            throw errorMessage;
+        }
+        info = info[0];
+        
         this.getLifeExpectancy(sex, country, ageStr);
+        
+        jQuery('#smoker-loss-factor').val(info.smokerLoss);
+        jQuery('#nonsmoker-gain-factor').val(info.nonsmokerGain);
     },
     
     recalculate: function() {
-        var lifeExpectancyWorld          = parseFloat(jQuery('#life-expectancy-world').val()).toFixed(1);
-        var lifeExpectancyCountry        = parseFloat(jQuery('#life-expectancy-country').val()).toFixed(1);
-        var lifeDifferenceCountrySmoking = parseFloat(jQuery('#life-expectancy-country').val() * jQuery('#pc-mean-country').val()).toFixed(1);
-
-        if (jQuery('input[name="smoking"]:checked').val() === 'yes') lifeExpectancyCountry -= lifeDifferenceCountrySmoking;
-
-        jQuery('#question-smoking-modifier').html('<span>- ' + lifeDifferenceCountrySmoking + ' years</span>Yes');
-        jQuery('#result-life-expectancy-world').html(lifeExpectancyWorld + ' years');
-        jQuery('#result-life-expectancy-country').html(lifeExpectancyCountry + ' years');
-        jQuery('#result-smoking').html(lifeDifferenceCountrySmoking + ' years');
+        var lifeExpectancyWorld   = parseFloat(jQuery('#life-expectancy-world').val());
+        var lifeExpectancyCountry = parseFloat(jQuery('#life-expectancy-country').val());
+        var smokerLossFactor      = parseFloat(jQuery('#smoker-loss-factor').val());
+        var nonsmokerGainFactor   = parseFloat(jQuery('#nonsmoker-gain-factor').val());
+        
+        var smokingLoss = lifeExpectancyCountry * smokerLossFactor;
+        var smokingGain = lifeExpectancyCountry * nonsmokerGainFactor;        
+        
+        jQuery('#question-smoking-modifier-yes').html(smokingLoss.toFixed(1) + ' years');
+        jQuery('#question-smoking-modifier-no').html('+' + smokingGain.toFixed(1) + ' years');        
+        
+        if (jQuery('input[name="smoking"]:checked').val() === 'yes') {
+            lifeDifferenceCountrySmoking = lifeExpectancyCountry - Math.abs(smokingLoss);
+        } else if (jQuery('input[name="smoking"]:checked').val() === 'no') {
+            lifeDifferenceCountrySmoking = lifeExpectancyCountry + smokingGain;
+        } else {
+            lifeDifferenceCountrySmoking = lifeExpectancyCountry;
+        }        
+        
+        jQuery('#result-life-expectancy-world').html(lifeExpectancyWorld.toFixed(1) + ' years');
+        jQuery('#result-life-expectancy-country').html(lifeExpectancyCountry.toFixed(1) + ' years');        
+        jQuery('#result-smoking').html(lifeDifferenceCountrySmoking.toFixed(1) + ' years');  
     },
     
     init: function() {
