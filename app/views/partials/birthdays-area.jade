@@ -1,16 +1,16 @@
 .container
   .birthdays-area
     header
-      h1(translate="BIRTHDAYS_INTRO" translate-values="{sharedDay: sharedDay, sharedHour: sharedHour }")
+      h1(translate="BIRTHDAYS_INTRO" translate-values="{sharedDay: (sharedDay|number:0), sharedHour: (sharedHour|number:0) }")
     h2.continental(compile-unsafe="'BIRTHDAYS_TITLE_CONTINENTAL' | translate")
     h2.world(compile-unsafe="'BIRTHDAYS_TITLE_WORLD' | translate")
     birthdays-chart(continents-data="continentsData", world-data="worldData", country="country")
     .continents
       span {{ 'BIRTHDAYS_SWITCH_LABEL' | translate }}
       .toggle(ng-disabled="loading")
-        label(ng-model="selectedContinental" btn-radio="'Asia'") {{ 'LOCAL_ASIA' | translate }}
-        label(ng-model="selectedContinental" btn-radio="'Europe'") {{ 'LOCAL_EUROPE' | translate }}
-        label(ng-model="selectedContinental" btn-radio="'Africa'") {{ 'LOCAL_AFRICA' | translate }}
-        label(ng-model="selectedContinental" btn-radio="'North America'") {{ 'LOCAL_NORTH_AMERICA' | translate }}
-        label(ng-model="selectedContinental" btn-radio="'South America'") {{ 'LOCAL_SOUTH_AMERICA' | translate }}
-        label(ng-model="selectedContinental" btn-radio="'Oceania'") {{ 'LOCAL_OCEANIA' | translate }}
+        label(ng-model="selectedContinental" uib-btn-radio="'Asia'") {{ 'LOCAL_ASIA' | translate }}
+        label(ng-model="selectedContinental" uib-btn-radio="'Europe'") {{ 'LOCAL_EUROPE' | translate }}
+        label(ng-model="selectedContinental" uib-btn-radio="'Africa'") {{ 'LOCAL_AFRICA' | translate }}
+        label(ng-model="selectedContinental" uib-btn-radio="'North America'") {{ 'LOCAL_NORTH_AMERICA' | translate }}
+        label(ng-model="selectedContinental" uib-btn-radio="'South America'") {{ 'LOCAL_SOUTH_AMERICA' | translate }}
+        label(ng-model="selectedContinental" uib-btn-radio="'Oceania'") {{ 'LOCAL_OCEANIA' | translate }}

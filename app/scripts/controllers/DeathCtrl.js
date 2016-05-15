@@ -1,13 +1,13 @@
 angular.module('populationioApp').controller('DeathCtrl', [
-	'$scope', '$interpolate', '$timeout', '$http', '$interval', '$modal', '$state', '$location', '$document', '$rootScope', '$filter',
-	'ProfileService', 'PopulationIOService',
-	function($scope, $interpolate, $timeout, $http, $interval, $modal, $state, $location, $document, $rootScope, $filter, ProfileService,
-	         PopulationIOService){
+	'$scope', '$filter', '$translate', 'ProfileService', 'PopulationIOService',
+	function($scope, $filter, $translate, ProfileService, PopulationIOService){
 		'use strict';
-		var translate = $filter('translate');
 		$scope.type = 'distribution';
+		$scope.$on('languageChange', function(){
+			$scope.country = $translate.instant(ProfileService.country);
+		});
 		$scope.$on('profileUpdated', function(){
-			$scope.country = ProfileService.country;
+			$scope.country = $translate.instant(ProfileService.country);
 			$scope.$root.loading += 1;
 			PopulationIOService.loadMortalityDistribution({
 				country: ProfileService.country,
@@ -30,9 +30,9 @@ angular.module('populationioApp').controller('DeathCtrl', [
 			}, function(remainingLife){
 				var today = new Date();
 				$scope.$root.loading -= 1;
-				$scope.dodWorld = $filter('date')(today.setDate(today.getDate() + (remainingLife * 365)), 'd MMM, yyyy');
+				$scope.dodWorld = today.setDate(today.getDate() + (remainingLife * 365));
 				$scope.remainingLifeWorldInYears = parseFloat(remainingLife).toFixed(1);
-				$scope.totalLifeWorldInYears = moment(today).diff(moment(ProfileService.birthday.year), 'years', true);
+				$scope.totalLifeWorldInYears = moment(today).diff(moment(ProfileService.birthday.year, 'YYYY'), 'years', true);
 			});
 
 			$scope.$root.loading += 1;
@@ -44,9 +44,9 @@ angular.module('populationioApp').controller('DeathCtrl', [
 			}, function(remainingLife){
 				var today = new Date();
 				$scope.$root.loading -= 1;
-				$scope.dodCountry = $filter('date')(today.setDate(today.getDate() + (remainingLife * 365)), 'd MMM, yyyy');
+				$scope.dodCountry = today.setDate(today.getDate() + (remainingLife * 365));
 				$scope.remainingLifeCountryInYears = parseFloat(remainingLife).toFixed(1);
-				$scope.totalLifeCountryInYears = moment(today).diff(moment(ProfileService.birthday.year), 'years', true);
+				$scope.totalLifeCountryInYears = moment(today).diff(moment(ProfileService.birthday.year, 'YYYY'), 'years', true);
 			});
 
 			var updateValues = function(){
@@ -54,15 +54,18 @@ angular.module('populationioApp').controller('DeathCtrl', [
 				var w = moment($scope.dodWorld);
 				var diffDays = c.diff(w, 'days');
 				var diffYears = c.diff(w, 'years');
-				$scope.differenceInDays = diffDays < 0 ? '- ' + (-1 * diffDays) + ' days' : '+ ' + diffDays + ' days';
-				$scope.soMuchToDo = diffDays < 1 ? translate('DEATH_EXPECTANCY_TXT_SHORTER') : translate('DEATH_EXPECTANCY_TXT_LONGER');
+				$scope.differenceInDays = diffDays < 0 ? '- ' + (-1 * diffDays)  : '+ ' + diffDays;
+				$scope.differenceInDays += ' ' + $translate.instant('UNIT_DAYS');
+				$scope.soMuchToDo = diffDays < 1 ?
+					$translate.instant('DEATH_EXPECTANCY_TXT_SHORTER') :
+					$translate.instant('DEATH_EXPECTANCY_TXT_LONGER');
 				if(diffYears < 1 && diffYears > -1) {
-					$scope.differenceInUnits = diffDays.toString().replace('-', '') + ' ' + translate('UNIT_DAYS');
+					$scope.differenceInUnits = diffDays.toString().replace('-', '') + ' ' + $translate.instant('UNIT_DAYS');
 				} else {
 					if(Math.abs(diffYears) <= 1) {
-						$scope.differenceInUnits = diffYears.toString().replace('-', '') + ' ' + translate('UNIT_YEAR');
+						$scope.differenceInUnits = diffYears.toString().replace('-', '') + ' ' + $translate.instant('UNIT_YEAR');
 					} else {
-						$scope.differenceInUnits = diffYears.toString().replace('-', '') + ' ' + translate('UNIT_YEARS');
+						$scope.differenceInUnits = diffYears.toString().replace('-', '') + ' ' + $translate.instant('UNIT_YEARS');
 					}
 				}
 			};

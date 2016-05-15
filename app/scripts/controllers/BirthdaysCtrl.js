@@ -1,6 +1,6 @@
 angular.module('populationioApp').controller('BirthdaysCtrl', [
-	'$scope', '$state', '$sce', '$filter', '$rootScope', 'PopulationIOService', 'ProfileService',
-	function($scope, $state, $sce, $filter, $rootScope, PopulationIOService, ProfileService){
+	'$scope', '$filter', 'PopulationIOService', 'ProfileService',
+	function($scope, $filter, PopulationIOService, ProfileService){
 		'use strict';
 		var countries = [];
 		var dataLoaded = false;

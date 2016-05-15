@@ -1,71 +1,52 @@
 angular.module('populationioApp').controller('MainCtrl', [
-	'$translate', '$scope', '$timeout', '$http', '$interval', '$modal', '$location', '$document', '$filter',
-	'ProfileService', 'PopulationIOService', 'BrowserService', 'Countries',
-	function($translate, $scope, $timeout, $http, $interval, $modal, $location, $document, $filter,
-	         ProfileService, PopulationIOService, BrowserService, Countries){
+	'$translate', '$scope', '$http', '$interval', '$uibModal', '$location', '$document', '$filter',
+	'ProfileService', 'PopulationIOService', 'BrowserService', 'Countries', 'LanguageService',
+	function($translate, $scope, $http, $interval, $uibModal, $location, $document, $filter,
+	         ProfileService, PopulationIOService, BrowserService, Countries, LanguageService){
 		'use strict';
 		$scope.$root.loading = 0;
 		$scope.$root.$on('$translateChangeSuccess', function(){
 			$scope.pageHeader = {
-				title: $filter('translate')('HEADER_TITLE'),
-				menuAbout: $filter('translate')('HEADER_MENU_ABOUT'),
-				menuMethodology: $filter('translate')('HEADER_MENU_METHODOLOGY'),
-				menuApi: $filter('translate')('HEADER_MENU_API')
+				title: $translate.instant('HEADER_TITLE'),
+				menuAbout: $translate.instant('HEADER_MENU_ABOUT'),
+				menuMethodology: $translate.instant('HEADER_MENU_METHODOLOGY'),
+				menuApi: $translate.instant('HEADER_MENU_API')
 			};
 		});
-		$scope.changeLanguage = function(langKey){
-			$translate.use(langKey).then(function(){
-				$scope.$root.$broadcast('languageChange');
-				$scope.updatePlaceholders();
-			}, function(langKey){
-				console.log('Something wrong with this language:', langKey);
-			});
-		};
-		$scope.activeLangKey = $scope.$root.defaultLanguage;
-		$scope.updatePlaceholders = function(){
-			$('#inputBirthDay').attr('placeholder', $filter('translate')('LOCAL_DAY')); //LOCAL_DAY
-			$('#inputBirthMonth').attr('placeholder', $filter('translate')('LOCAL_MONTH')); //LOCAL_MONTH
-			$('#inputBirthYear').attr('placeholder', $filter('translate')('LOCAL_YEAR')); //LOCAL_YEAR
-			$('#inputBirthCountry').attr('placeholder', $filter('translate')('LOCAL_COUNTRY')); //LOCAL_COUNTRY
-		};
-		$scope.changeLanguage($scope.$root.defaultLanguage);
+		$scope.changeLanguage = LanguageService.change;
+		$scope.languages = LanguageService.supportedLanguages;
+		$scope.getLanguageTitle = LanguageService.getTitle;
+		$scope.profile = ProfileService;
 		$scope.$root.countriesList = function(newVal){
+			newVal = $translate.instant(newVal).toLowerCase();
 			var alternativeName = newVal;
 			var aliases = [
-					{alias: 'Great Britain', country: 'United Kingdom'},
-					{alias: 'Britain', country: 'United Kingdom'},
-					{alias: 'England', country: 'United Kingdom'},
-					{alias: 'United States of America', country: 'United States'},
-					{alias: 'USA', country: 'United States'},
-					{alias: 'Egypt', country: 'Arab Rep of Egypt'},
-					{alias: 'North Korea', country: 'Dem Peoples Rep of Korea'},
-					{alias: 'South Korea', country: 'Rep of Korea'}
-				]
-				;
+				{alias: 'Great Britain', country: 'United Kingdom'},
+				{alias: 'Britain', country: 'United Kingdom'},
+				{alias: 'England', country: 'United Kingdom'},
+				{alias: 'United States of America', country: 'United States'},
+				{alias: 'USA', country: 'United States'},
+				{alias: 'Egypt', country: 'Arab Rep of Egypt'},
+				{alias: 'North Korea', country: 'Dem Peoples Rep of Korea'},
+				{alias: 'South Korea', country: 'Rep of Korea'}
+			];
 			var foundAlias = _.find(aliases, function(item){
 				return item.alias.toLowerCase().indexOf(newVal.toLowerCase()) > -1;
 			});
 			if(foundAlias){
-				alternativeName = foundAlias.country;
+				alternativeName = foundAlias.country.toLowerCase();
 			}
-			var getCountryName = function(value){
-				switch($scope.activeLangKey){
-					case 'ES':
-						return value.POPIO_NAME_ES;
-					default:
-						return value.POPIO_NAME;
-				}
-			};
 			return _.map(
 				_.filter(
 					Countries,
 					function(v) {
-						return v.POPIO_NAME.toLowerCase().indexOf(alternativeName.toLowerCase()) > -1;
+						var name = $translate.instant(v.POPIO_NAME).toLowerCase();
+						return name.indexOf(alternativeName) > -1 || name.indexOf(newVal) > -1;
 					}
 				),
 				function(v) {
 					return {
-						label: getCountryName(v),
+						label: $translate.instant(v.POPIO_NAME),
 						value: v.POPIO_NAME
 					};
 				}
@@ -74,13 +55,12 @@ angular.module('populationioApp').controller('MainCtrl', [
 
 		$scope.rankGlobal = 0;
 		if(!BrowserService.isSupported()){
-			$modal.open({
+			$uibModal.open({
 				templateUrl: 'browser-warning.html'
 			});
 		}
 
 		$scope.clockType = 'world';
-		$scope.profile = ProfileService;
 		$scope.worldPopulation = 0;
 		PopulationIOService.getWorldPopulation(function(data){
 			$scope.worldPopulation = data.total_population[1].population;
@@ -92,10 +72,9 @@ angular.module('populationioApp').controller('MainCtrl', [
 		$interval(function(){
 			$scope.worldPopulation += $scope.peopleBornPerSecond;
 		}, 1000);
-
 		$scope.$on('$locationChangeSuccess', function (e, newValue) {
 			var hashPosition = newValue.indexOf('#/');
-			var hash = newValue.substr(hashPosition+2, newValue.length);
+			var hash = decodeURIComponent(newValue.substr(hashPosition+2, newValue.length));
 			var newLocation = hash.split('/');
 
 			if (newLocation.length !== 6) {
@@ -128,10 +107,8 @@ angular.module('populationioApp').controller('MainCtrl', [
 				ProfileService.update();
 			}
 		});
-		$scope.$root.$watch('loading', function(value){
-			if (value === 0 && ProfileService.active === true) {
-				$scope.showSection('summary');
-			}
+		$scope.$on('profileUpdated', function(){
+			$scope.showSection('summary');
 		});
 		$scope.$root.$on('duScrollspy:becameActive', function($event, $element){
 			var section = $element.prop('id');
@@ -198,17 +175,17 @@ angular.module('populationioApp').controller('MainCtrl', [
 				});
 		};
 		$scope.showAbout = function(){
-			$modal.open({
+			$uibModal.open({
 				templateUrl: 'about.html'
 			});
 		};
 		$scope.showMethodology = function(){
-			$modal.open({
+			$uibModal.open({
 				templateUrl: 'methodology.html'
 			});
 		};
 		$scope.showDevelopers = function(){
-			$modal.open({
+			$uibModal.open({
 				templateUrl: 'developers.html'
 			});
 		};

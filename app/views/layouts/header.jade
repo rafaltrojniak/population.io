@@ -9,24 +9,29 @@ header
 
         form.change-language
             label
-                select(ng-model="activeLangKey" ng-init="activeLangKey" ng-change="changeLanguage(activeLangKey)")
-                    option(value="EN") English
-                    option(value="ES") Español
-                    option(value="FR") Français
-                    option(value="DE") Deutsch
-                    option(value="ZH") 汉语
-                    option(value="ID") Bahasa Indonesia
-                    option(value="RU") русский
+                select(
+                    ng-model="defaultLanguage"
+                    ng-change="changeLanguage(defaultLanguage)"
+                    ng-options="getLanguageTitle(lang) for lang in languages"
+                )
         ul.link-list
             li
                 a(ng-click="showAbout()" ng-bind="pageHeader.menuAbout") About
                 a(ng-click="showMethodology()" ng-bind="pageHeader.menuMethodology") Methodology
                 a(ng-click="showDevelopers()" ng-bind="pageHeader.menuApi") API
 
-        .profile.animate( ng-show="currentPage > 0", ng-click="showHomepage()", ng-cloak ) {{profile.birthday.formatted | date:'dd MMM yyyy' }}, {{profile.country}}
+        .profile.animate(
+        ng-show="currentPage > 0"
+        ng-click="showHomepage()"
+        ng-cloak
+        ) {{ profile.getFormattedBirthday() | date:'dd MMM yyyy' }}, {{ profile.country | translate }}
         .world-population.animate(ng-show="currentPage > 0", ng-cloak)
             span(ng-show="clockType === 'personal'") {{rankGlobal | number:0}}
             span(ng-show="clockType === 'world'") {{worldPopulation | number:0}}
             .toggle
-                label( ng-class="{'icon-gender icon-female': profile.gender === 'female', 'icon-male icon-gender': profile.gender === 'male'}", ng-model="clockType", btn-radio="'personal'" )
-                label(class="icon-world", ng-model="clockType", btn-radio="'world'")
+                label(
+                ng-class="{'icon-gender icon-female': profile.gender === 'female', 'icon-male icon-gender': profile.gender === 'male'}"
+                ng-model="clockType",
+                uib-btn-radio="'personal'"
+                )
+                label(class="icon-world", ng-model="clockType", uib-btn-radio="'world'")

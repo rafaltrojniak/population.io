@@ -1,21 +1,48 @@
 world-clock
-    h3<i class="icon icon-world"> </i> <p translate="HOME_WORLD_CLOCK" />
+    h3 <i class="icon icon-world"> </i> <p translate="HOME_WORLD_CLOCK" />
 .container
     .home-area
         .question
             h1 {{ 'HOME_TEXT_BIG' | translate }}
             p(compile-unsafe="'HOME_TEXT_SMALL' | translate")
-            form.form-inline(name="goForm", novalidate, ng-class='{highlight:highlightErrors, "highlight-extra":highlightExtra}', autocomplete='off')
-                input.fake-disable-autocomplete(type="password", style="display: none")
+            form.form-inline(name="goForm", ng-class="{'highlight':highlightErrors, 'highlight-extra':highlightExtra}", autocomplete="off")
                 .typeahead
-                    input.day-field.form-control(id="inputBirthDay", type="text", name="birthdayDay", ng-value="profile.birthday.day", ng-model = "profile.birthday.day", typeahead="birthdayDay for birthdayDay in birthdays($viewValue,'d')", typeahead-wait-ms="100", typeahead-editable="true", required, validate-day, typeahead-on-select='setDay($item, $model, $label)', formnovalidate)
+                    input.day-field.form-control(
+                    placeholder="{{ 'LOCAL_DAY' | translate }}"
+                    type="text"
+                    ng-model="profile.birthday.day"
+                    required
+                    validate-day
+                    )
                 .typeahead
-                    input.month-field.form-control(id="inputBirthMonth", type="text", name="birthdayMonth", ng-value="profile.birthday.month", ng-model = "profile.birthday.month", typeahead="birthdayMonth for birthdayMonth in birthdays($viewValue,'m')", typeahead-wait-ms="100", typeahead-editable="true", required, validate-month, typeahead-on-select='setMonth($item, $model, $label)', formnovalidate)
+                    input.month-field.form-control(
+                    placeholder="{{ 'LOCAL_MONTH' | translate }}"
+                    type="text"
+                    ng-model="profile.birthday.month"
+                    uib-typeahead="month.value as month.label for month in months | filter: { label: $viewValue }"
+                    typeahead-min-length="0"
+                    required
+                    validate-month
+                    )
                 .typeahead
-                    input.year-field.form-control(id="inputBirthYear", type="text", name="birthdayYear", ng-value="profile.birthday.year", ng-model = "profile.birthday.year", typeahead="birthdayYear for birthdayYear in birthdays($viewValue,'y')", typeahead-wait-ms="100", typeahead-editable="true", required, validate-year, typeahead-on-select='setYear($item, $model, $label)', formnovalidate)
+                    input.year-field.form-control(
+                    placeholder="{{ 'LOCAL_YEAR' | translate }}"
+                    type="text"
+                    ng-model="profile.birthday.year"
+                    required
+                    validate-year
+                    )
                 .typeahead.icon-country
-                    input.form-control(id="inputBirthCountry", type="text",name='country', ng-model="profile.country", ng-value="profile.country.value", typeahead="country.value as country.label for country in countriesList($viewValue)", typeahead-wait-ms="100", typeahead-editable="true", required, stoptab, validate-country, typeahead-on-select='setCountry($item, $model, $label)', formnovalidate)
+                    input.form-control(
+                    placeholder="{{ 'LOCAL_COUNTRY' | translate }}"
+                    type="text"
+                    ng-model="profile.country"
+                    uib-typeahead="country.value as country.label for country in countriesList($viewValue)"
+                    required
+                    validate-country
+                    country-translate
+                    )
                 .toggle
-                    label.icon.icon-female(ng-model="profile.gender" btn-radio="'female'", required) {{ 'LOCAL_FEMALE' | translate }}
-                    label.icon.icon-male(ng-model="profile.gender" btn-radio="'male'", required) {{ 'LOCAL_MALE' | translate }}
+                    label.icon.icon-female(ng-model="profile.gender" uib-btn-radio="'female'", required) {{ 'LOCAL_FEMALE' | translate }}
+                    label.icon.icon-male(ng-model="profile.gender" uib-btn-radio="'male'", required) {{ 'LOCAL_MALE' | translate }}
                 a.btn.btn-big(ng-click="goGoGadget()", ng-disabled="loading", ng-class='{inactive:goForm.$invalid, loading:loading}') <span class="fa fa-refresh"></span>

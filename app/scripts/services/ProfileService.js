@@ -7,19 +7,20 @@ angular.module('populationioApp').service('ProfileService', [
 			birthday: {year: null, month: null, day: null, formatted: ''},
 			country: '',
 			active: false,
+			getBirthDate: function(){
+				return new Date(this.birthday.year, this.birthday.month - 1, this.birthday.day, 0, 0, 0);
+			},
 			getFormattedBirthday: function(){
-				return [this.birthday.year, this.birthday.month, this.birthday.day].join('-');
+				return moment(this.getBirthDate()).format('YYYY-MM-DD');
 			},
 			getAge: function(){
-				var formatted = [this.birthday.year, this.birthday.month, this.birthday.day].join('-');
-				var ageDate = new Date(Date.now() - (new Date(formatted)).getTime());
+				var ageDate = new Date(Date.now() - this.getBirthDate().getTime());
 				return Math.abs(ageDate.getUTCFullYear() - 1970);
 			},
 			getAgeString: function(){
-				var formatted = [this.birthday.year, this.birthday.month, this.birthday.day].join('-');
-				var ageDate = new Date(Date.now() - (new Date(formatted)).getTime());
-				var year = Math.abs(ageDate.getUTCFullYear() - 1970),
-					months = ageDate.getMonth();
+				var ageDate = new Date(Date.now() - this.getBirthDate().getTime());
+				var year = Math.abs(ageDate.getUTCFullYear() - 1970);
+				var months = ageDate.getMonth();
 				return year + 'y' + months + 'm';
 			},
 			update: function(){
@@ -96,8 +97,15 @@ angular.module('populationioApp').service('ProfileService', [
 					$rootScope.loading -= 1;
 					$rootScope.$broadcast('worldPopulationDataChanged', data);
 				});
-				this.active = true;
-				$rootScope.$broadcast('profileUpdated');
+
+				var self = this;
+				var deregisterWatcher = $rootScope.$watch('loading', function(newValue){
+					if (!newValue){
+						deregisterWatcher();
+						self.active = true;
+						$rootScope.$broadcast('profileUpdated');
+					}
+				});
 			}
 		};
 	}
