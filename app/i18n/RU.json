@@ -83,7 +83,6 @@
   "BIRTHDAYS_SWITCH_LABEL": "Дни рождения в:",
 
   "EXPECTANCY_INTRO": "Представьте себе, что сегодня Вы живёте в другой стране и с продолжительностью жизни из другого времени - сколько, предположительно, Вы проживёте?",
-  "EXPECTANCY_MAP_POINTER": "{{year}}<br> оставшихся лет жизни<br> в {{country}}<br><br> Мы предполагаем, что Вы проживёте<br> до {{age}} лет<br> {{date}}",
   "EXPECTANCY_MAP_POINTER_1": "оставшихся лет жизни",
   "EXPECTANCY_MAP_POINTER_2": "в ",
   "EXPECTANCY_MAP_POINTER_3": "Мы предполагаем, что Вы проживёте",

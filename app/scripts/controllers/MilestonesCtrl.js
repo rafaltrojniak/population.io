@@ -79,7 +79,7 @@ angular.module('populationioApp').controller('MilestonesCtrl', [
 				return new Date(date) >= new Date();
 			};
 			var _updateTitleAlive = function(date, atomicNumber){
-				$scope.milestoneDate = $filter('date')(date, 'd MMM, yyyy');
+				$scope.milestoneDate = date;
 				$scope.milestoneCounter = $translate.instant(atomicNumber);
 			};
 			$scope.$root.loading += 1;

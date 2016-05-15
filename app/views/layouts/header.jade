@@ -9,14 +9,11 @@ header
 
         form.change-language
             label
-                select(ng-model="activeLangKey" ng-init="activeLangKey" ng-change="changeLanguage(activeLangKey)")
-                    option(value="EN") English
-                    option(value="ES") Español
-                    option(value="FR") Français
-                    option(value="DE") Deutsch
-                    option(value="ZH") 汉语
-                    option(value="ID") Bahasa Indonesia
-                    option(value="RU") русский
+                select(
+                    ng-model="defaultLanguage"
+                    ng-change="changeLanguage(defaultLanguage)"
+                    ng-options="getLanguageTitle(lang) for lang in languages"
+                )
         ul.link-list
             li
                 a(ng-click="showAbout()" ng-bind="pageHeader.menuAbout") About

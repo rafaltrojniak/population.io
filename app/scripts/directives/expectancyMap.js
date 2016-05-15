@@ -60,6 +60,7 @@ angular.module('populationioApp').controller('ExpectancyMapComponentCtrl', [
 			}
 			return country;
 		};
+		var estimationText;
 		$scope.$on('languageChange', function(){
 			root.select('.countries').selectAll('.country').attr({
 				'title': function(d){
@@ -198,8 +199,8 @@ angular.module('populationioApp').controller('ExpectancyMapComponentCtrl', [
 				.append('tspan')
 				.text($translate.instant(data.country.POPIO_NAME));
 
-			var deathDate = moment(data.dod).format('DD MMM, YYYY');
-			var estimationText = yearsLeftText.append('g').attr({
+			var deathDate = moment(data.dod).format('DD MMM YYYY');
+			estimationText = yearsLeftText.append('g').attr({
 				'class': 'text-block',
 				'transform': 'translate(0,120)'
 			});
