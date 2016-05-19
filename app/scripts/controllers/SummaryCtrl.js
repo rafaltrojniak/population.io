@@ -25,22 +25,22 @@ angular.module('populationioApp').controller('SummaryCtrl', [
 		};
 		$scope.calcWorldOlderPercentage = function(){
 			var value = $filter('number')(Math.max(0, 100 - $scope.rankGlobal / ($scope.worldPopulation / 100)), 0);
-			return $filter('translate')('SUMMARY_PEOPLE_OLDER') + value + '%)';
+			return $translate.instant('SUMMARY_PEOPLE_OLDER') + value + '%)';
 		};
 		$scope.calcCountryOlderNumber = function(){
 			return $filter('number')(Math.max(0, $scope.countryPopulation - $scope.rankLocal), 0);
 		};
 		$scope.calcCountryOlderPercentage = function(){
 			var value = $filter('number')(Math.max(0, 100 - $scope.rankLocal / ($scope.countryPopulation / 100)), 0);
-			return $filter('translate')('SUMMARY_PEOPLE_OLDER') + value + '%)';
+			return $translate.instant('SUMMARY_PEOPLE_OLDER') + value + '%)';
 		};
 		$scope.calcCountryYoungerPercentage = function(){
 			var value = $filter('number')(Math.min(100, $scope.rankLocal / ($scope.countryPopulation / 100)), 0);
-			return $filter('translate')('SUMMARY_PEOPLE_YOUNGER') + value + '%)';
+			return $translate.instant('SUMMARY_PEOPLE_YOUNGER') + value + '%)';
 		};
 		$scope.calcWorldYoungerPercentage = function(){
 			var value = $filter('number')(Math.min(100, $scope.rankGlobal / ($scope.worldPopulation / 100)), 0);
-			return $filter('translate')('SUMMARY_PEOPLE_YOUNGER') + value + '%)';
+			return $translate.instant('SUMMARY_PEOPLE_YOUNGER') + value + '%)';
 		};
 		$scope.calcCountryYoungerPercentageSimple = function(){
 			return $filter('number')(Math.min(100, $scope.rankLocal / ($scope.countryPopulation / 100)), 0);
