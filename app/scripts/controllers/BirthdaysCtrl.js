@@ -120,8 +120,8 @@ angular.module('populationioApp').controller('BirthdaysCtrl', [
 				country: 'World',
 				age: ProfileService.getAge()
 			}, function(data){
-				$scope.sharedDay = $filter('number')(parseInt(data[0].total / 365, 0), 0);
-				$scope.sharedHour = $filter('number')(parseInt(data[0].total / 365 / 24, 0), 0);
+				$scope.sharedDay = parseInt(data[0].total / 365, 0);
+				$scope.sharedHour = parseInt(data[0].total / 365 / 24, 0);
 				$scope.$root.loading -= 1;
 			}, function(){
 				$scope.$root.loading -= 1;
