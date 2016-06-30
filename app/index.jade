@@ -12,16 +12,13 @@ block content
             include ../assets/milestones.svg
 
     .share.animate(ng-class="{'expanded': !expanded}", ng-cloak)
-        .find-facebook
-            a(href='https://www.facebook.com/populationio') {{ 'FIND_FACEBOOK' | translate }}
         .tedtalk
             a(href="{{ 'SHARE_TED_TALK_URL' | translate }}") {{ 'SHARE_TED_TALK' | translate }}
 
         span {{ 'SHARE_TEXT' | translate }}
         .links
-            a.fa.fa-facebook-square(target="_blank", share="facebook", share-title="population.io")
-            a.fa.fa-twitter-square(target="_blank", share="twitter", share-title="population.io")
-            a.fa.fa-linkedin-square(target="_blank", share="linkedin", share-title="population.io")
+            a.fa.fa-facebook-square(href="https://facebook.com/populationio")
+            a.fa.fa-twitter-square(href="https://twitter.com/populationio")
 
     ul.navigation(ng-show="profile.active")
         li(ng-class="{'active': currentPage == 0}", ng-click="showSection('home')") <span></span>
