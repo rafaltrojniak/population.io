@@ -20,10 +20,10 @@ html(ng-app="populationioApp")
         meta(name="apple-mobile-web-app-status-bar-style", content="black")
 
         link(rel="icon", href="images/favicon.png?v=2", type="image/png")
-        link(rel="stylesheet", href="fonts/plantin/MyFontsWebfontsKit.css")
-        link(rel="stylesheet", href="css/main.css")
-
-        script(src='scripts/main.js')
+        <!-- inject:deps:css -->
+        <!-- endinject -->
+        <!-- inject:css -->
+        <!-- endinject -->
 
     body(ng-controller='MainCtrl', ng-cloak)
         include header
@@ -31,3 +31,7 @@ html(ng-app="populationioApp")
             block content
         include footer
         .chart-tooltip
+        <!-- inject:deps:js -->
+        <!-- endinject -->
+        <!-- inject:js -->
+        <!-- endinject -->

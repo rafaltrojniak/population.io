@@ -210,16 +210,16 @@
                                 transform: 'translate(49,45)'
                             });
 
-                          helloBubble.select('text').text(function () {
-                              //var randomItem = _.random(0, HelloWords.length - 1);
-                              //return HelloWords[randomItem].greeting;
-                              return helloText;
-                          })
-                            .each(function () {
+                          if (helloText){
+                            helloBubble.select('text').text(helloText)
+                              .each(function(){
                                 var bbox = this.getBBox();
                                 this.scale = Math.min(60 / bbox.width, 40 / bbox.height);
-                            })
-                            .style('font-size', function () { return (14 * this.scale) + 'px'; });
+                              })
+                              .style('font-size', function(){
+                                return (14 * this.scale) + 'px';
+                              });
+                          }
                       };
 
                       function _initBabiesFlood() {

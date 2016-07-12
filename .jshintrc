@@ -35,6 +35,7 @@
     "Bloodhound": true,
     "ics": true,
     "_": true,
-    "moment": true
+    "moment": true,
+    "bowser": true
   }
 }

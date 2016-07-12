@@ -22,15 +22,9 @@ angular.module('populationioApp').controller('SummaryCtrl', [
 			$scope.rankLocalTomorrow = ProfileService.rankLocalTomorrow;
 		}
 		var today = new Date();
-		var _getNextDay = function(){
-			var tomorrow = new Date();
-			tomorrow.setDate((new Date()).getDate() + 1);
-			return tomorrow;
-		};
-		var tickerYoungerGlobal = d3.scale.linear().domain([today.getTime(), _getNextDay().getTime()]);
-		var tickerYoungerLocal = d3.scale.linear().domain([today.getTime(), _getNextDay().getTime()]);
-		var tickerOlderGlobal = d3.scale.linear().domain([today.getTime(), _getNextDay().getTime()]);
-		var tickerOlderLocal = d3.scale.linear().domain([today.getTime(), _getNextDay().getTime()]);
+		var nextDay = moment(today).add(1, 'day').toDate();
+		var tickerYoungerGlobal = d3.scale.linear().domain([today.getTime(), nextDay.getTime()]);
+		var tickerYoungerLocal = d3.scale.linear().domain([today.getTime(), nextDay.getTime()]);
 
 		$scope.calcWorldOlderNumber = function(){
 			if(!$scope.rankGlobal || !$scope.worldPopulation){
@@ -57,15 +51,6 @@ angular.module('populationioApp').controller('SummaryCtrl', [
 			var value = $filter('number')(Math.min(100, $scope.rankGlobal / ($scope.worldPopulation / 100)), 0);
 			return $translate.instant('SUMMARY_PEOPLE_YOUNGER') + value + '%)';
 		};
-		$scope.calcCountryYoungerPercentageSimple = function(){
-			return $filter('number')(Math.min(100, $scope.rankLocal / ($scope.countryPopulation / 100)), 0);
-		};
-		$scope.$on('profileUpdated', function(){
-			$scope.translatedCountry = $translate.instant(ProfileService.country);
-		});
-		$scope.$on('languageChange', function(){
-			$scope.translatedCountry = $translate.instant(ProfileService.country);
-		});
 		$scope.$on('rankLocalChanged', function(event, rank){
 			$scope.rankLocal = rank;
 		});
@@ -92,16 +77,14 @@ angular.module('populationioApp').controller('SummaryCtrl', [
 		$scope.$watchGroup(
 			['rankLocal', 'rankGlobal', 'rankLocalTomorrow', 'rankGlobalTomorrow', 'countryPopulation', 'worldPopulation'],
 			function(newVals){
-				$scope.countryYoungerPercentageSimple = $filter('number')(Math.min(100, $scope.rankLocal / ($scope.countryPopulation / 100)), 0);
-				$scope.worldYoungerPercentageSimple = $filter('number')(Math.min(100, $scope.rankGlobal / ($scope.worldPopulation / 100)), 0);
+				$scope.worldYoungerPercentageSimple = Math.min(100, $scope.rankGlobal / ($scope.worldPopulation / 100));
+				$scope.countryYoungerPercentageSimple = Math.min(100, $scope.rankLocal / ($scope.countryPopulation / 100));
 				if(!_(newVals).contains(undefined) && !rangeLoaded){
 					tickerYoungerGlobal.range([$scope.rankGlobal, $scope.rankGlobalTomorrow]);
 					tickerYoungerLocal.range([$scope.rankLocal, $scope.rankLocalTomorrow]);
-					tickerOlderGlobal.range([$scope.rankGlobalTomorrow, $scope.worldPopulation]);
-					tickerOlderLocal.range([$scope.rankLocal, $scope.rankLocalTomorrow]);
 					$scope.scaledRankYoungerLocal = tickerYoungerLocal(new Date().getTime());
 					$scope.scaledRankYoungerGlobal = tickerYoungerGlobal(new Date().getTime());
-					$scope.scaledRankOlderLocal = $scope.countryPopulation - tickerYoungerLocal(new Date().getTime());
+					$scope.scaledRankOlderLocal = $scope.countryPopulation - $scope.rankLocal;
 					$scope.scaledRankOlderGlobal = $scope.worldPopulation - $scope.rankGlobal;
 				}
 			}

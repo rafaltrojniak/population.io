@@ -131,11 +131,11 @@ angular.module('populationioApp').service('PopulationIOService', [
 							onSuccess(data.rank);
 						}
 					})
-					.error(function(){
+					.error(function(error){
 						if(onError){
 							onError();
 						}
-						console.info('loadWpRankToday() error');
+						console.info('loadWpRankToday() error', error);
 					});
 			},
 			// GET /1.0/wp-rank/{dob}/{sex}/{country}/on/{date}/
@@ -187,7 +187,7 @@ angular.module('populationioApp').service('PopulationIOService', [
 						if(onError){
 							onError();
 						}
-						console.info('loadWpRankRanked() error: ', error.detail);
+						console.info('loadWpRankRanked() error: ', args, error);
 					});
 			},
 			// GET /1.0/life-expectancy/remaining/{sex}/{country}/{date}/{age}

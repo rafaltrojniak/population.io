@@ -24,11 +24,11 @@
 @import url("//hello.myfonts.net/count/2b237a");
 
 
-@font-face {font-family: 'PlantinMTStd-Light';src: url('webfonts/2B237A_0_0.eot');src: url('webfonts/2B237A_0_0.eot?#iefix') format('embedded-opentype'),url('webfonts/2B237A_0_0.woff') format('woff'),url('webfonts/2B237A_0_0.ttf') format('truetype');}
+@font-face {font-family: 'PlantinMTStd-Light';src: url('/fonts/plantin/webfonts/2B237A_0_0.eot');src: url('/fonts/plantin/webfonts/2B237A_0_0.eot?#iefix') format('embedded-opentype'),url('/fonts/plantin/webfonts/2B237A_0_0.woff') format('woff'),url('/fonts/plantin/webfonts/2B237A_0_0.ttf') format('truetype');}
 
 @font-face {
   font-family: 'PlantinStd-Semibold';
-  src:url('webfonts/PlantinStd-Semibold.eot');
-  src: url('webfonts/PlantinStd-Semibold.eot?#iefix')format('embedded-opentype'),url('webfonts/PlantinStd-Semibold.woff')format('woff'),url('webfonts/PlantinStd-Semibold.ttf')format('truetype'); 
+  src:url('/fonts/plantin/webfonts/PlantinStd-Semibold.eot');
+  src: url('/fonts/plantin/webfonts/PlantinStd-Semibold.eot?#iefix')format('embedded-opentype'),url('/fonts/plantin/webfonts/PlantinStd-Semibold.woff')format('woff'),url('/fonts/plantin/webfonts/PlantinStd-Semibold.ttf')format('truetype');
 
 }
