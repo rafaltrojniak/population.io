@@ -39,7 +39,7 @@ angular.module('populationioApp').directive('validateYear', function(){
 		link: function(scope, elm, attrs, ctrl){
 			ctrl.$validators.year = function($viewValue){
 				var value = parseInt($viewValue, 0);
-				if(value && value > 1919 && value < new Date().getFullYear()){
+				if(value && value > 1919 && value <= new Date().getFullYear()){
 					return true;
 				}
 				return false;

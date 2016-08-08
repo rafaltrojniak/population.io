@@ -174,6 +174,12 @@ angular.module('populationioApp').controller('MilestonesCtrl', [
 				$scope.globalRankData = data;
 			});
 		};
+		if (ProfileService.rankGlobal > -1) {
+			$scope.rankGlobal = ProfileService.rankGlobal;
+		}
+		if (ProfileService.rankLocal > -1) {
+			$scope.rankLocal = ProfileService.rankLocal;
+		}
 		$scope.dateOrder = function(item){
 			return (new Date(item.date)).getTime();
 		};

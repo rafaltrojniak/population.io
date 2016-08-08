@@ -7,6 +7,10 @@ angular.module('populationioApp').service('ProfileService', [
 			birthday: {year: null, month: null, day: null, formatted: ''},
 			country: '',
 			active: false,
+			rankGlobal: -1,
+			rankGlobalTomorrow: -1,
+			rankLocal: -1,
+			rankLocalTomorrow: -1,
 			getBirthDate: function(){
 				return new Date(this.birthday.year, this.birthday.month - 1, this.birthday.day, 0, 0, 0);
 			},
@@ -24,6 +28,7 @@ angular.module('populationioApp').service('ProfileService', [
 				return year + 'y' + months + 'm';
 			},
 			update: function(){
+				var self = this;
 				this.active = false;
 				$rootScope.loading = 0;
 				var formatted = this.getFormattedBirthday();
@@ -40,6 +45,7 @@ angular.module('populationioApp').service('ProfileService', [
 					sex: 'unisex',
 					country: this.country
 				}, function(rank){
+					self.rankLocal = rank;
 					$rootScope.loading -= 1;
 					$rootScope.$broadcast('rankLocalChanged', rank);
 				});
@@ -51,6 +57,7 @@ angular.module('populationioApp').service('ProfileService', [
 					sex: 'unisex',
 					country: 'World'
 				}, function(rank){
+					self.rankGlobal = rank;
 					$rootScope.loading -= 1;
 					$rootScope.$broadcast('rankGlobalChanged', rank);
 				});
@@ -64,6 +71,7 @@ angular.module('populationioApp').service('ProfileService', [
 					country: this.country,
 					date: date
 				}, function(rank){
+					self.rankLocalTomorrow = rank;
 					$rootScope.loading -= 1;
 					$rootScope.$broadcast('rankDateLocalChanged', rank, date);
 				});
@@ -76,6 +84,7 @@ angular.module('populationioApp').service('ProfileService', [
 					country: 'World',
 					date: date
 				}, function(rank){
+					self.rankGlobalTomorrow = rank;
 					$rootScope.loading -= 1;
 					$rootScope.$broadcast('rankDateGlobalChanged', rank, date);
 				});

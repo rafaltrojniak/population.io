@@ -42,6 +42,12 @@
                               _updateChart(population);
                           }, 2000);
                       });
+                      if (ProfileService.rankGlobal > -1) {
+                        $scope.rankGlobal = ProfileService.rankGlobal;
+                      }
+                      if (ProfileService.rankLocal > -1) {
+                        $scope.rankLocal = ProfileService.rankLocal;
+                      }
                       $scope.$on('rankGlobalChanged', function (e, rank) {
                           $scope.rankGlobal = rank;
 

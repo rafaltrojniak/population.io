@@ -15,6 +15,7 @@ angular.module('populationioApp', [
 	// $locationProvider.html5Mode(true);
 	// cross domain restriction fixes
 	$httpProvider.defaults.useXDomain = true;
+	$httpProvider.defaults.cache = true;
 	delete $httpProvider.defaults.headers.common['X-Requested-With'];
 	$translateProvider.useSanitizeValueStrategy(null);
 	$translateProvider.useStaticFilesLoader({
