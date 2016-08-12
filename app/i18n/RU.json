@@ -12,6 +12,7 @@
   "LOCAL_MONTH": "Месяц",
   "LOCAL_YEAR": "Год",
   "LOCAL_YEARS": "Год(а), лет",
+  "INVALID_BIRTHDATE": "We support birth dates from 1st of January 1920 until today.",
 
   "LOCAL_FEMALE": "Женщина",
   "LOCAL_MALE": "Мужчина",

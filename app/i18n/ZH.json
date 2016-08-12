@@ -12,6 +12,7 @@
   "LOCAL_MONTH": "月",
   "LOCAL_YEAR": "年",
   "LOCAL_YEARS": "年",
+  "INVALID_BIRTHDATE": "We support birth dates from 1st of January 1920 until today.",
 
   "LOCAL_FEMALE": "女性",
   "LOCAL_MALE": "男性",
