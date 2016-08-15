@@ -1,4 +1,4 @@
-/* jshint node: true */
+// jshint ignore: start
 var gulp = require('gulp');
 var git = require('git-rev-sync');
 //noinspection JSUnresolvedVariable
@@ -23,6 +23,7 @@ var nib = require('gulp-stylus/node_modules/nib');
 var connect = require('gulp-connect');
 var hash = git.short(); // jshint ignore:line
 
+var fs = require('fs');
 var awspublish = require('gulp-awspublish');
 // var scripts = [
 // 		'bower_components/d3.slider/d3.slider.js', // ?
@@ -126,11 +127,9 @@ gulp.task('rebuild', function(done){
 	runSequence('clean', 'build', done);
 });
 
-gulp.task('deploy', ['rebuild'], function(){
-	// TODO: Create proper deployment method
-	var publisher = awspublish.create({
-		region: 'us-west-2'
-	}, {});
+gulp.task('deploy', function(){
+	var config = JSON.parse(fs.readFileSync('./aws-credentials.json', 'utf8'));
+	var publisher = awspublish.create(config, {});
 
 	return gulp.src('dist/**/*')
 		.pipe(publisher.publish())

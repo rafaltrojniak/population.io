@@ -22,11 +22,6 @@
         $ cd node_modules/gulp-stylus
         $ npm install nib
 
-## Prepare
-
-1. Create a `dist` folder
-2. Copy the `assets` folder into dist the folder `dist/assets`
-
 ## Run
 
 * Navigate to *PROJECT_ROOT* and start the server by using `gulp`
@@ -37,13 +32,8 @@
 
 ## Deploy
 
-* Add `.ftppass` file to your *PROJECT_ROOT* and enter ftp credentials
-
-        {
-          "keyMain": {
-            "user": USER,
-            "pass": PASS
-          }
-        }
-
-* Run `gulp deploy`
+1. Copy `aws-credentials.json.sample` to `aws-credentials.json`
+2. In `aws-credentials.json`:
+    * Set required credentials: `accessKeyId` and `secretAccessKey`
+    * Check whether AWS Bucket is correct (`Bucket` key).
+3. Run `gulp deploy`
