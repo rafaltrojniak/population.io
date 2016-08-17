@@ -18,7 +18,7 @@ var jade = require('gulp-jade');
 var inject = require('gulp-inject');
 var stylus = require('gulp-stylus');
 var csso = require('gulp-csso');
-var nib = require('gulp-stylus/node_modules/nib');
+var nib = require('nib');
 
 var connect = require('gulp-connect');
 var hash = git.short(); // jshint ignore:line
