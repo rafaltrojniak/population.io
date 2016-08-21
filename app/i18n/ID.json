@@ -12,6 +12,7 @@
   "LOCAL_MONTH": "Bulan",
   "LOCAL_YEAR": "Tahun",
   "LOCAL_YEARS": "Tahun",
+  "INVALID_BIRTHDATE": "We support birth dates from 1st of January 1920 until today.",
 
   "LOCAL_FEMALE": "Perempuan",
   "LOCAL_MALE": "Laki-laki",

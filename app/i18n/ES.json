@@ -12,6 +12,7 @@
   "LOCAL_MONTH": "Mes",
   "LOCAL_YEAR": "Año",
   "LOCAL_YEARS": "Años",
+  "INVALID_BIRTHDATE": "We support birth dates from 1st of January 1920 until today.",
 
   "LOCAL_FEMALE": "Mujer",
   "LOCAL_MALE": "Hombre",

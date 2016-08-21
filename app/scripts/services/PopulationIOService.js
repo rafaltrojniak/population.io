@@ -3,6 +3,7 @@ angular.module('populationioApp').service('PopulationIOService', [
 	function($rootScope, $http){
 		'use strict';
 		var baseUrl = ' http://api.population.io/1.0';
+		// var baseUrl = ' http://localhost:8000/1.0';
 		return {
 			getWorldPopulation: function(onSuccess, onError){
 				$http({
@@ -63,7 +64,7 @@ angular.module('populationioApp').service('PopulationIOService', [
 					;
 				$http({
 					method: 'get',
-					url: baseUrl + '/mortality-distribution/World/' + args.gender + '/' + args.age + 'y/today'
+					url: baseUrl + '/mortality-distribution/World/' + args.gender + '/' + args.age + 'y/today/'
 				})
 					.success(function(data){
 						if(data.mortality_distribution){
@@ -77,7 +78,7 @@ angular.module('populationioApp').service('PopulationIOService', [
 							});
 							$http({
 								method: 'get',
-								url: baseUrl + '/mortality-distribution/' + args.country + '/' + args.gender + '/' + args.age + 'y/today'
+								url: baseUrl + '/mortality-distribution/' + args.country + '/' + args.gender + '/' + args.age + 'y/today/'
 							})
 								.success(function(data){
 									if(data.mortality_distribution && onSuccess){
@@ -262,7 +263,7 @@ angular.module('populationioApp').service('PopulationIOService', [
 					});
 			},
 			// GET /1.0/population/{year}/{country}/{age}/
-			loadPopulationByAge: function(args, onSuccess, onError){
+			loadPopulationByCountryAndAge: function(args, onSuccess, onError){
 				$http({
 					method: 'get',
 					url: [
@@ -270,6 +271,30 @@ angular.module('populationioApp').service('PopulationIOService', [
 						'population',
 						args.year,
 						args.country,
+						args.age
+					].join('/') + '/'
+				})
+					.success(function(data){
+						if(data){
+							onSuccess(data);
+						}
+					})
+					.error(function(){
+						if(onError){
+							onError();
+						}
+						console.info('loadPopulation() error');
+					});
+			},
+			// GET /1.0/population/{year}/aged/{age}/
+			loadPopulationByAge: function(args, onSuccess, onError){
+				$http({
+					method: 'get',
+					url: [
+						baseUrl,
+						'population',
+						args.year,
+						'aged',
 						args.age
 					].join('/') + '/'
 				})

@@ -5,9 +5,15 @@ world-clock
         .question
             h1 {{ 'HOME_TEXT_BIG' | translate }}
             p(compile-unsafe="'HOME_TEXT_SMALL' | translate")
-            form.form-inline(name="goForm", ng-class="{'highlight':highlightErrors, 'highlight-extra':highlightExtra}", autocomplete="off")
+            p.error(ng-if="!hasValidBirthday(profile.birthday)") {{ 'INVALID_BIRTHDATE' | translate }}
+            form.form-inline(
+            name="goForm"
+            ng-class="{'highlight':highlightErrors, 'highlight-extra':highlightExtra}"
+            autocomplete="off"
+            )
                 .typeahead
                     input.day-field.form-control(
+                    name="day"
                     placeholder="{{ 'LOCAL_DAY' | translate }}"
                     type="text"
                     ng-model="profile.birthday.day"
@@ -16,6 +22,7 @@ world-clock
                     )
                 .typeahead
                     input.month-field.form-control(
+                    name="month"
                     placeholder="{{ 'LOCAL_MONTH' | translate }}"
                     type="text"
                     ng-model="profile.birthday.month"
@@ -26,6 +33,7 @@ world-clock
                     )
                 .typeahead
                     input.year-field.form-control(
+                    name="year"
                     placeholder="{{ 'LOCAL_YEAR' | translate }}"
                     type="text"
                     ng-model="profile.birthday.year"

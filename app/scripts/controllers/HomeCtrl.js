@@ -33,6 +33,25 @@ angular.module('populationioApp').controller('HomeCtrl', [
 				$scope.profile.country = country;
 			});
 		});
+		$scope.hasValidBirthday = function(birthday){
+			if ($scope.goForm.year.$touched && $scope.goForm.year.$dirty && $scope.goForm.year.$invalid) {
+				return false;
+			}
+			if (!birthday.day || !birthday.month || !birthday.year) {
+				return true;
+			}
+
+			var date = moment(birthday.day + '-' + birthday.month + '-' + birthday.year, 'DD-MM-YYYY');
+			var today = moment();
+			var first = moment('01-01-1920', 'DD-MM-YYYY');
+			var isValid = date.isSameOrBefore(today) && date.isSameOrAfter(first);
+
+			$scope.goForm.day.$setValidity('day', isValid);
+			$scope.goForm.month.$setValidity('month', isValid);
+			$scope.goForm.year.$setValidity('year', isValid);
+
+			return isValid;
+		};
 		$scope.goGoGadget = function(){
 			if($scope.goForm.$invalid){
 				$scope.highlightErrors = true;

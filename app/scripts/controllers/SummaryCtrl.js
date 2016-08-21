@@ -6,6 +6,21 @@ angular.module('populationioApp').controller('SummaryCtrl', [
 		$scope.region = 'World';
 		$scope.profile = ProfileService;
 		$scope.age = new Date().getFullYear() - ProfileService.birthday.year;
+		if (ProfileService.rankGlobal > -1) {
+			$scope.rankGlobal = ProfileService.rankGlobal;
+		}
+		if (ProfileService.rankLocal > -1) {
+			$scope.rankLocal = ProfileService.rankLocal;
+		}
+		if (ProfileService.rankGlobalTomorrow > -1) {
+			$scope.rankGlobalTomorrow = ProfileService.rankGlobalTomorrow;
+			if ($scope.rankGlobal) {
+				$scope.deltaRankGlobal = Math.ceil(($scope.rankGlobalTomorrow - $scope.rankGlobal) / (24 * 60 * 60));
+			}
+		}
+		if (ProfileService.rankLocalTomorrow > -1) {
+			$scope.rankLocalTomorrow = ProfileService.rankLocalTomorrow;
+		}
 		var today = new Date();
 		var _getNextDay = function(){
 			var tomorrow = new Date();
@@ -92,8 +107,10 @@ angular.module('populationioApp').controller('SummaryCtrl', [
 			}
 		);
 		$interval(function(){
-			$scope.rankGlobal += $scope.deltaRankGlobal;
-			$scope.$root.$broadcast('rankGlobalChanged', $scope.rankGlobal);
+			if ($scope.deltaRankGlobal) {
+				$scope.rankGlobal += $scope.deltaRankGlobal;
+				$scope.$root.$broadcast('rankGlobalChanged', $scope.rankGlobal);
+			}
 		}, 1000);
 	}
 ]);
