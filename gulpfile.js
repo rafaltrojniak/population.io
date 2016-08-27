@@ -93,8 +93,6 @@ gulp.task('templates', function(){
 gulp.task('assets', function(){
 	gulp.src('assets/*')
 		.pipe(gulp.dest('dist/assets'));
-	gulp.src('assets/celebrities/**/*')
-		.pipe(gulp.dest('dist/celebrities'));
 });
 gulp.task('fonts', function(){
 	gulp.src(['fonts/**/*'])
